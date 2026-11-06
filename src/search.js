@@ -429,8 +429,19 @@
       const term = typeof filters.search === "string" ? filters.search.trim() : "";
       if (!term || !api.hasChinese(term)) return original.apply(this, arguments);
 
-      markHit(methodName);
       const args = Array.prototype.slice.call(arguments);
+
+      // 首选：把中文查询翻成英文，交给原生插件自己搜。
+      // 原生英文搜索一定可用，这样能完全对齐英文搜索的行为（排序、匹配范围、条数限制）。
+      const english = api.englishQueryForChinese(term);
+      if (english && !api.hasChinese(english)) {
+        markHit(methodName + ":英文改写");
+        args[0] = JSON.stringify(Object.assign({}, filters, { search: english }));
+        return original.apply(this, args);
+      }
+
+      // 兜底：无法可靠翻译时才本地过滤（清空 search，取回列表后按中英名过滤）
+      markHit(methodName + ":本地过滤");
       const nextFilters = Object.assign({}, filters, { search: "" });
       args[0] = JSON.stringify(nextFilters);
 
@@ -459,9 +470,17 @@
             for (const key of ["type", "search", "onlyOwned"]) {
               if (filters[key] !== undefined) ctx[key] = filters[key];
             }
+            let sample = "";
+            if (Array.isArray(parsed) && parsed.length) {
+              const first = parsed[0];
+              if (first && typeof first === "object") {
+                sample = " 首条字段=" + Object.keys(first).slice(0, 12).join("/") +
+                  " name=" + JSON.stringify(first.name);
+              }
+            }
             console.info(
               "[AFZH 中文搜索] " + methodName + ' 中文="' + term + '" 未命中：原生 ' +
-              parsed.length + " 条，过滤条件 " + JSON.stringify(ctx)
+              parsed.length + " 条，过滤条件 " + JSON.stringify(ctx) + sample
             );
           } catch (_) { /* ignore */ }
         }
@@ -492,7 +511,15 @@
       const term = typeof search === "string" ? search.trim() : "";
       if (!term || !api.hasChinese(term) || typeof callback !== "function") return original.apply(this, arguments);
 
-      markHit(methodName);
+      // 首选：中文翻英文交给原生搜
+      const english = api.englishQueryForChinese(term);
+      if (english && !api.hasChinese(english)) {
+        markHit(methodName + ":英文改写");
+        return original.call(this, english, callback);
+      }
+
+      // 兜底：取全量再本地过滤
+      markHit(methodName + ":本地过滤");
       return original.call(this, "", (success, data) => {
         if (!success) return callback(success, data);
         const filtered = safeCall(() => api.filterItems(JSON.parse(data), term, ["name"]), null);

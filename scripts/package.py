@@ -18,7 +18,7 @@ ROOT_FILES = [
     "安装OCR前置组件.cmd", "启用中文遗物OCR.cmd", "关闭中文遗物OCR.cmd",
     "README.md", "LICENSE", "NOTICE.md", "CHANGELOG.md", "VERSION",
 ]
-DIRS = ["bin", "dict", "src", "docs"]
+DIRS = ["bin", "dict", "src", "docs", "scripts"]
 
 # 运行期/本机数据，不进发布包
 EXCLUDE_DIRS = {".tools", "__pycache__", "state", "logs", "dist", "backup", "verify"}
@@ -55,6 +55,30 @@ def main():
     if missing:
         print("WARN missing:", ", ".join(missing))
     print(f"wrote {out} ({os.path.getsize(out)} bytes)")
+    verify(out)
+
+
+def verify(out):
+    """发布包必须自包含：缺一个文件就会让用户端功能静默失效。"""
+    required = [
+        "AlecaFrame-ZH/Start-Chinese.cmd",
+        "AlecaFrame-ZH/安装OCR前置组件.cmd",
+        "AlecaFrame-ZH/bin/AlecaFrame-ZH.ps1",
+        "AlecaFrame-ZH/bin/alecaframe-zh-cn.js",
+        "AlecaFrame-ZH/bin/ocr/afzh-items.js",
+        "AlecaFrame-ZH/bin/ocr/relic-ocr-server.js",
+        "AlecaFrame-ZH/scripts/Install-OcrPrerequisites.ps1",
+        "AlecaFrame-ZH/src/search.js",
+        "AlecaFrame-ZH/src/relic-reward-fallback.js",
+        "AlecaFrame-ZH/dict/items.tsv",
+        "AlecaFrame-ZH/VERSION",
+    ]
+    with zipfile.ZipFile(out) as z:
+        names = set(z.namelist())
+    lacking = [r for r in required if r not in names]
+    if lacking:
+        raise SystemExit("发布包缺少必需文件：\n  " + "\n  ".join(lacking))
+    print(f"verify: {len(required)} 个必需文件齐全，共 {len(names)} 个条目")
 
 
 if __name__ == "__main__":

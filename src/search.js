@@ -448,8 +448,23 @@
       args[callbackIndex] = function (success, data) {
         const pass = Array.prototype.slice.call(arguments);
         if (!success) return callback.apply(this, pass);
-        const filtered = safeCall(() => api.filterItems(JSON.parse(data), term, nameFields), null);
+        let parsed = null;
+        safeCall(() => { parsed = JSON.parse(data); }, null);
+        const filtered = Array.isArray(parsed) ? api.filterItems(parsed, term, nameFields) : null;
         if (!Array.isArray(filtered)) return callback.apply(this, pass);
+        // 0 命中时留一条诊断：能区分「该分类本来就没有这个物品」和「过滤逻辑没匹配上」
+        if (filtered.length === 0) {
+          try {
+            const ctx = {};
+            for (const key of ["type", "search", "onlyOwned"]) {
+              if (filters[key] !== undefined) ctx[key] = filters[key];
+            }
+            console.info(
+              "[AFZH 中文搜索] " + methodName + ' 中文="' + term + '" 未命中：原生 ' +
+              parsed.length + " 条，过滤条件 " + JSON.stringify(ctx)
+            );
+          } catch (_) { /* ignore */ }
+        }
         pass[1] = JSON.stringify(filtered);
         return callback.apply(this, pass);
       };

@@ -1,5 +1,19 @@
 # Changelog
 
+## v1.1.4 (2026-11-07)
+
+中文搜索可诊断性 + 空结果提示本地化。
+
+### 修复 / 改进
+
+- 中文搜索 0 命中时输出诊断日志（原生条数、过滤条件），便于区分
+  “该分类本来就没有这个物品” 与 “过滤逻辑没匹配上”
+- 补齐仓库空结果相关文案：
+  - `Try another search or clear your filters.` → 附带说明「中文搜索只在当前分类内生效」
+  - `No items in this category yet`、`Try again`、`No matches in this ranking. Try another search.`
+- 说明：库存「所有部件（All parts）」分类不包含 MOD/赋能/遗物，这是官方分类行为，
+  英文搜索在该分类下同样搜不到 `Serration`；中文搜索与英文搜索的分类范围一致
+
 ## v1.1.3 (2026-11-07)
 
 桌面快捷方式改为中文命名，防止误操作。

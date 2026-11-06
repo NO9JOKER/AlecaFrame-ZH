@@ -757,7 +757,17 @@ function Invoke-InstallOcr {
     if (-not (Test-Path $installer)) { throw "缺少安装脚本：$installer" }
     Write-Log "运行 OCR 前置安装：$installer"
     $p = Start-Process -FilePath "powershell.exe" -ArgumentList @("-NoProfile", "-ExecutionPolicy", "Bypass", "-File", ('"' + $installer + '"')) -Wait -PassThru
-    if ($p.ExitCode -ne 0) { throw "OCR 前置组件安装失败（退出码 $($p.ExitCode)），详见安装窗口输出。" }
+    if ($p.ExitCode -ne 0) {
+        # 安装器的完整输出在 logs\ocr-install.log，失败时把末尾几行带给用户，避免"一闪而过看不到原因"
+        $log = Join-Path $script:LogDir "ocr-install.log"
+        $tail = ""
+        if (Test-Path $log) {
+            $lines = @(Get-Content -LiteralPath $log -Tail 12 -Encoding UTF8 -ErrorAction SilentlyContinue)
+            $tail = ($lines | Where-Object { $_.Trim() }) -join "`r`n"
+        }
+        $hint = if ($tail) { "`n`n最近日志：`n$tail" } else { "" }
+        throw ("OCR 前置组件安装失败（退出码 $($p.ExitCode)）。" + $hint + "`n`n完整日志：$log")
+    }
     Show-Message "OCR 前置组件安装完成。`n`n现在用 Start-Chinese.cmd 启动即可使用中文遗物/裂罅识别。"
 }
 

@@ -1,5 +1,20 @@
 # Changelog
 
+## v1.1.1 (2026-11-07)
+
+修复 OCR 前置组件安装失败（退出码 1）。
+
+### 修复
+
+- **`scripts/Install-OcrPrerequisites.ps1`：依赖探测阶段必然失败**
+  PowerShell 5.1 下 `$ErrorActionPreference = "Stop"` 时，native 命令写 stderr 再被重定向（`*> $null` / `2>$null`）
+  会被当成终止性错误（`NativeCommandError`）。`Test-PythonPackages` 探测未安装的 paddle 时正好触发，
+  导致脚本在"下载 pip"之前就退出（退出码 1），表现为装完便携 Python 后立即失败。
+  改为 `Invoke-NativeQuiet` / `Get-NativeVersion`，临时放宽 EAP 后再调用。
+- **安装失败时拿不到原因**：安装器现在用 `Start-Transcript` 全程写 `logs\ocr-install.log`，
+  失败时窗口停留并提示日志路径；启动器也会把日志末尾几行带进错误弹窗。
+- 发布包完整性：`scripts/package.py` 增加 `verify()`，缺必需文件时直接让发布流水线失败（含 `scripts/` 目录）。
+
 ## v1.1.0 (2026-11-07)
 
 第二个开源整理版本：并入 MIOEU 的**中文搜索**与**中文 OCR**，并用两个上游项目做词库查漏补缺。

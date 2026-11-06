@@ -32,9 +32,48 @@ $getPipUrl = "https://mirrors.aliyun.com/pypi/get-pip.py"
 $pypiMirror = "https://mirrors.aliyun.com/pypi/simple"
 $paddleCpuMirror = "https://www.paddlepaddle.org.cn/packages/stable/cpu/"
 
+# 全过程写入日志，失败时窗口停留并提示日志位置（否则安装窗口一闪而过，用户拿不到信息）
+$transcriptPath = Join-Path $pkgRoot "logs\ocr-install.log"
+New-Item -ItemType Directory -Force -Path (Split-Path -Parent $transcriptPath) | Out-Null
+try { Start-Transcript -Path $transcriptPath -Force | Out-Null } catch { }
+
+trap {
+    Write-Host ""
+    Write-Host ("[OCR 前置安装] 失败：" + $_.Exception.Message) -ForegroundColor Red
+    Write-Host ("完整日志：" + $transcriptPath) -ForegroundColor Yellow
+    try { Stop-Transcript | Out-Null } catch { }
+    Read-Host "按回车关闭窗口"
+    exit 1
+}
+
 function Write-Step {
     param([string]$Text)
     Write-Host "[OCR 前置安装] $Text" -ForegroundColor Cyan
+}
+
+# PowerShell 5.1 的坑：$ErrorActionPreference="Stop" 时，native 命令往 stderr 写内容
+# 再被重定向（*> / 2>）会被当成终止性错误（NativeCommandError），脚本会在探测阶段直接退出。
+# 因此探测类调用必须临时把 EAP 放宽到 Continue。
+function Invoke-NativeQuiet {
+    param([string]$FilePath, [string[]]$Arguments)
+    $oldEap = $ErrorActionPreference
+    try {
+        $ErrorActionPreference = "Continue"
+        & $FilePath @Arguments *> $null
+    } finally {
+        $ErrorActionPreference = $oldEap
+    }
+}
+
+function Get-NativeVersion {
+    param([string]$FilePath)
+    $oldEap = $ErrorActionPreference
+    try {
+        $ErrorActionPreference = "Continue"
+        return (((& $FilePath --version 2>$null) -join " ").Trim())
+    } finally {
+        $ErrorActionPreference = $oldEap
+    }
 }
 
 function Get-DownloadFile {
@@ -65,7 +104,7 @@ assert paddleocr.__version__ == "2.9.1", paddleocr.__version__
 assert numpy.__version__ == "1.26.4", numpy.__version__
 assert PIL.__version__ == "12.3.0", PIL.__version__
 '@
-    & $pythonExe -c $versionCheck *> $null
+    Invoke-NativeQuiet -FilePath $pythonExe -Arguments @("-c", $versionCheck)
     return $LASTEXITCODE -eq 0
 }
 
@@ -85,7 +124,7 @@ function Test-PaddleModels {
 function Ensure-PortablePython {
     $pythonReady = $false
     if (Test-Path -LiteralPath $pythonExe) {
-        $installedVersion = (& $pythonExe --version 2>$null).Trim()
+        $installedVersion = Get-NativeVersion $pythonExe
         $pythonReady = $LASTEXITCODE -eq 0 -and $installedVersion -eq "Python $pythonVersion"
         if ($pythonReady -and -not $Force) {
             Write-Step "便携 Python $pythonVersion 已存在，跳过下载和解压。"
@@ -109,7 +148,7 @@ function Ensure-PortablePython {
 function Ensure-PortableNode {
     $nodeReady = $false
     if (Test-Path -LiteralPath $nodeExe) {
-        $installedVersion = (& $nodeExe --version 2>$null).Trim()
+        $installedVersion = Get-NativeVersion $nodeExe
         $nodeReady = $LASTEXITCODE -eq 0 -and $installedVersion -eq "v$nodeVersion"
         if ($nodeReady -and -not $Force) {
             Write-Step "便携 Node.js v$nodeVersion 已存在，跳过下载和解压。"
@@ -178,3 +217,5 @@ if ($LASTEXITCODE -ne 0) { throw "Node.js 验证失败。" }
 Write-Host ""
 Write-Host "OCR 前置组件已准备完成。接下来运行 Start-Chinese.cmd 启动中文界面。" -ForegroundColor Green
 Write-Host "缓存位置：$cacheRoot"
+Write-Host "安装日志：$transcriptPath"
+try { Stop-Transcript | Out-Null } catch { }

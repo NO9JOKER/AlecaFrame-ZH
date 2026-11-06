@@ -1,4 +1,4 @@
-﻿#requires -Version 5.1
+#requires -Version 5.1
 <#
   AlecaFrame 简体中文补丁 - 启动器
   用法：
@@ -129,7 +129,7 @@ function Find-OverwolfRoot {
     }
     $candidates.Add("C:\Program Files (x86)\Overwolf")
     $candidates.Add("C:\Program Files\Overwolf")
-    $candidates.Add("D:\Install\Overwolf")
+    $candidates.Add((Join-Path $env:LOCALAPPDATA "Overwolf"))
     foreach ($c in $candidates) {
         if (-not $c) { continue }
         $c = $c.TrimEnd("\")

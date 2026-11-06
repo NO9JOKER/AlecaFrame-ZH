@@ -430,8 +430,7 @@ exit /b                          exit /b          :: 关闭版为 -Action OcrOff
 
 ## 12. 语法与契约校验（已全部真跑，可复现）
 
-运行环境：Windows PowerShell 5.1.26100、Node（`C:\Users\Power\.dsh\dsh-runtimes\dsh-primary-runtime\dependencies\node\bin\node.exe`）、
-Python（`...\dependencies\python\python.exe`）。**没有**启动 OCR 服务、没有下载 Paddle 模型、没有启动 Overwolf。
+运行环境：Windows PowerShell 5.1、Node 20（PATH 中的 `node`）、Python 3（`python`）。**没有**启动 OCR 服务、没有下载 Paddle 模型、没有启动 Overwolf。
 
 ### 12.1 `node --check`（11 个文件，全部 exit=0）
 

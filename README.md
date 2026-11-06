@@ -167,6 +167,17 @@ Start-Chinese.cmd
 - 已适配基线：AlecaFrame `3.0.6` / Overwolf `0.311.1.6`（2026-11）。
 - **OCR 对官方脚本有两处原位补丁**（`relicOverlay/main.js` 的奖励回退、`rivenOverlay.html` 的 `:key`），升级后先跑 `scripts\test-inject.ps1` 的“真实安装锚点只读检查”。
 
+### 从源码更新 / 换机器部署
+
+| 场景 | 做法 | 需要 Python？ |
+|---|---|---|
+| 普通用户更新 | 下载新 Release zip 覆盖旧目录（保留自己的 `state/`、`logs/`） | 不需要 |
+| 从 clone 更新 | `git pull` 后运行 `python src\build.py` 重新生成运行时脚本 | 需要 |
+| 换一台电脑 | 拷整个目录（或 Release zip），双击 `Install-Shortcuts.cmd`；`state/`、`logs/` 不必同步 | 不需要 |
+
+> 仓库里只有源码与词典；`bin/alecaframe-zh-cn.js`、`bin/ocr/afzh-items.js` 是构建产物，Release zip 内已包含。
+> 仓库**不含任何本机路径、账号或环境变量**；`bin/ocr/.tools`（OCR 运行期依赖）只在执行 `安装OCR前置组件.cmd` 时下载，不入库。
+
 ---
 
 ## ❓ FAQ

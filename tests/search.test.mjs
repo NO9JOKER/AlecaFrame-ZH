@@ -3,7 +3,6 @@
  * AlecaFrame-ZH 中文搜索纯函数测试
  *
  * 运行：node tests/search.test.mjs
- * （node 路径：C:\Users\Power\.dsh\dsh-runtimes\dsh-primary-runtime\dependencies\node\bin\node.exe）
  *
  * 做法：用假 window（__AFZH_TEST__ + __AFCN_DICT__）执行 src/search.js，
  * 从 repo/dict/items.tsv 抽样 + 精选真实词条构造 __AFCN_DICT__，

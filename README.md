@@ -53,9 +53,9 @@
 3. 双击 `Install-Shortcuts.cmd`（桌面生成 3 个快捷方式）；
 4. （可选）双击 `安装OCR前置组件.cmd` 装中文 OCR；
 5. 以后：
-   - **AlecaFrame-ZH Start**：中文模式启动（会重启 Overwolf）；
-   - **AlecaFrame-ZH Restore**：恢复英文原版；
-   - **AlecaFrame-ZH Toggle**：在中文会话内快速切换中/英（不重启 Overwolf）。
+   - **AlecaFrame 中文版（启动）**：中文模式启动（会重启 Overwolf）；
+   - **AlecaFrame 英文版（恢复）**：恢复英文原版（会重启 Overwolf）；
+   - **AlecaFrame 中英切换（不重启）**：在中文会话内快速切换中/英（只重载 AlecaFrame）。
 
 > 如果启动后仍是英文：看 `logs\launcher.log`；如果 AlecaFrame 打不开：先运行 **Restore**，再运行 **Start**。
 

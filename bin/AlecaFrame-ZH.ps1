@@ -812,10 +812,23 @@ function Invoke-Status {
 function Invoke-InstallShortcuts {
     $desktop = [Environment]::GetFolderPath("Desktop")
     $wsh = New-Object -ComObject WScript.Shell
+    # 名称直接写明后果，避免误点：前两个会重启 Overwolf，第三个不会
     $items = @(
-        @{ Name = "AlecaFrame-ZH Start"; Target = (Join-Path $script:PkgRoot "Start-Chinese.cmd") },
-        @{ Name = "AlecaFrame-ZH Restore"; Target = (Join-Path $script:PkgRoot "Restore-English.cmd") },
-        @{ Name = "AlecaFrame-ZH Toggle"; Target = (Join-Path $script:PkgRoot "Toggle-Chinese.cmd") }
+        @{
+            Name = "AlecaFrame 中文版（启动）"
+            Target = (Join-Path $script:PkgRoot "Start-Chinese.cmd")
+            Description = "启动 AlecaFrame 中文版。会关闭并重启 Overwolf，加载中文界面与中文 OCR。"
+        },
+        @{
+            Name = "AlecaFrame 英文版（恢复）"
+            Target = (Join-Path $script:PkgRoot "Restore-English.cmd")
+            Description = "恢复官方英文版。会关闭并重启 Overwolf，还原官方文件。"
+        },
+        @{
+            Name = "AlecaFrame 中英切换（不重启）"
+            Target = (Join-Path $script:PkgRoot "Toggle-Chinese.cmd")
+            Description = "在中文会话内切换中/英界面。不会重启 Overwolf，仅重载 AlecaFrame。"
+        }
     )
     foreach ($it in $items) {
         $lnk = Join-Path $desktop ($it.Name + ".lnk")
@@ -823,11 +836,23 @@ function Invoke-InstallShortcuts {
         $sc.TargetPath = $it.Target
         $sc.WorkingDirectory = $script:PkgRoot
         $sc.WindowStyle = 7
-        $sc.Description = "AlecaFrame 简体中文补丁"
+        $sc.Description = $it.Description
         $sc.Save()
     }
-    Write-Log "已创建桌面快捷方式"
-    Show-Message "已在桌面创建 3 个快捷方式：`nStart（中文启动）、Restore（恢复英文）、Toggle（会话内切换）。"
+    # 清理旧版英文命名快捷方式，避免新旧两套并存导致误点
+    foreach ($legacy in @("AlecaFrame-ZH Start", "AlecaFrame-ZH Restore", "AlecaFrame-ZH Toggle")) {
+        $old = Join-Path $desktop ($legacy + ".lnk")
+        if (Test-Path -LiteralPath $old) {
+            Remove-Item -LiteralPath $old -Force
+            Write-Log "已删除旧快捷方式：$legacy"
+        }
+    }
+    Write-Log "已创建中文命名桌面快捷方式"
+    Show-Message ("已在桌面创建 3 个快捷方式：`n`n" +
+        "  AlecaFrame 中文版（启动）        —— 会重启 Overwolf`n" +
+        "  AlecaFrame 英文版（恢复）        —— 会重启 Overwolf`n" +
+        "  AlecaFrame 中英切换（不重启）    —— 只重载 AlecaFrame`n`n" +
+        "旧的英文命名快捷方式已清理。")
 }
 
 try {

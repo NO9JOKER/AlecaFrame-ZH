@@ -1,4 +1,4 @@
-# AlecaFrame-ZH 构建脚本（Windows / PowerShell）
+﻿# AlecaFrame-ZH 构建脚本（Windows / PowerShell）
 #   默认：合并现有 dict/*.tsv -> bin/alecaframe-zh-cn.js
 #   -WithItems：先从本机 AlecaFrame 游戏数据重新生成 dict/items.tsv，再合并
 param(

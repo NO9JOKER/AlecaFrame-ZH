@@ -1,4 +1,4 @@
-#requires -Version 5.1
+﻿#requires -Version 5.1
 <#
   AlecaFrame 简体中文补丁 - 启动器
   用法：

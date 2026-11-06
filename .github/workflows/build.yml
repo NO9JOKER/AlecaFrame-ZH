@@ -42,6 +42,17 @@ jobs:
                   assert "\t" in line, f"{p}:{i} not a TSV row: {line[:60]}"
           print("dict tsv ok")
           PY
+      - name: Check PowerShell UTF-8 BOM
+        run: |
+          python - <<'PY'
+          import glob
+          bad = []
+          for p in glob.glob("**/*.ps1", recursive=True):
+              if open(p, "rb").read(3) != b"\xef\xbb\xbf":
+                  bad.append(p)
+          assert not bad, "missing UTF-8 BOM (PowerShell 5.1 would break): " + ", ".join(bad)
+          print("all ps1 have UTF-8 BOM")
+          PY
       - name: Syntax check JS
         run: |
           for f in src/engine.js src/search.js src/relic-reward-fallback.js; do

@@ -1,0 +1,55 @@
+name: build
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Build dictionary
+        run: python src/build.py
+      - name: Verify artifact
+        run: |
+          python - <<'PY'
+          import os
+          p = "bin/alecaframe-zh-cn.js"
+          assert os.path.exists(p), "missing build artifact"
+          s = open(p, encoding="utf-8").read()
+          assert "__AFCN_DICT__" in s, "dictionary missing"
+          assert "__ALECAFRAME_ZH_CN_ITEMS__" in s, "OCR compat shim missing"
+          assert "AlecaFrame-ZH" in s
+          print("artifact bytes:", len(s.encode("utf-8")))
+          q = "bin/ocr/afzh-items.js"
+          assert os.path.exists(q), "missing OCR dictionary artifact"
+          print("ocr dict bytes:", os.path.getsize(q))
+          PY
+      - name: Check dict files
+        run: |
+          python - <<'PY'
+          import glob
+          for p in glob.glob("dict/*.tsv"):
+              for i, line in enumerate(open(p, encoding="utf-8"), 1):
+                  if not line.strip():
+                      continue
+                  assert "\t" in line, f"{p}:{i} not a TSV row: {line[:60]}"
+          print("dict tsv ok")
+          PY
+      - name: Syntax check JS
+        run: |
+          for f in src/engine.js src/search.js src/relic-reward-fallback.js; do
+            if [ -f "$f" ]; then node --check "$f" && echo "ok $f"; fi
+          done
+          for f in bin/ocr/*.js; do
+            if [ -f "$f" ]; then node --check "$f" && echo "ok $f"; fi
+          done
+      - name: Run search tests
+        run: |
+          if [ -f tests/search.test.mjs ]; then node tests/search.test.mjs; else echo "no search tests"; fi

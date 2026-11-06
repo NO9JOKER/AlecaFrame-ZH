@@ -1,0 +1,1113 @@
+0.06 means 6%. Editable baseline from the documented Update 30.5 change.	0.06 表示 6%。可编辑的基准值，来自 30.5 更新中记录的改动。
+0.18 means an 18% independent chance of doubling a collected drop. Use 0 when absent.	0.18 表示有 18% 的独立几率使已采集的掉落翻倍。不存在时填 0。
+0s between drones	无人机间隔 0 秒
+90th percentile	第 90 百分位
+A log line exceeds the 1 MiB limit.	单行日志超过 1 MiB 上限。
+A run cannot be deleted while it is recording.	录制中的记录无法删除。
+ARBITRATION RUN REPORT	仲裁记录报告
+Aborted	已中止
+Active	活跃
+Active waves	活动波次
+Add a target	添加目标
+Add conditions segment	添加条件分段
+Add favorite mods to Mod Planner	将收藏 MOD 添加到 MOD 规划器
+Add targets	添加目标
+Added Railjack Void Storms to the fissure panel, with mission details, countdowns and customizable notifications	在虚空裂缝面板中加入航道星舰虚空风暴，包含任务详情、倒计时与可自定义的通知
+Added WFMarket message notifications	新增 WFMarket 消息通知
+Added a compact Duviri row with the current Spiral, next Spiral and countdown	新增紧凑的双衍王境行，显示当前螺旋、下一个螺旋与倒计时
+Added bulk price updates with progress and cancellation, and clearer inventory warnings	新增批量价格更新，支持进度显示与取消，并让仓库警告更清晰
+Added rare invasion and event rewards to Timers & Events, with optional alerts for Catalysts, Reactors, Exilus adapters and selected weapon parts	在计时器与事件中加入稀有的入侵与活动奖励，并可选择对催化剂、反应堆、特殊功能适配器及选定武器部件发出提醒
+Added sources for targets your route did not cover. Review access and rotation requirements before farming.	已为你的路线未覆盖的目标补充来源。刷取前请确认进入条件与轮次要求。
+Additional copies you can safely list on warframe.market. Copies already listed and copies kept for crafting have been subtracted.	可安全在 warframe.market 挂单的额外份数。已挂单的份数与为制作保留的份数已扣除。
+Agent composition	单位构成
+AlecaFrame Riven	AlecaFrame 裂罅
+Alert settings could not be loaded.	无法加载提醒设置。
+Alerts	警报
+Alerts, Invasions	警报、入侵
+All Arbitration missions	全部仲裁任务
+All Arcanes	全部赋能
+All spawns	全部生成
+All the overlays and the main window have a brand new design, with clearer navigation and many QoL improvements	所有叠加层与主窗口采用全新设计，导航更清晰，并带来大量体验优化
+Allied agent population reported by game log samples, when present.	由游戏日志采样报告出的友方单位数量（如有）。
+Allied agents	友方单位
+Allocated to this plan / total needed	已分配至本规划 / 总需求
+Allocated to this plan / total needed, including pending crafts and surplus from planned batches	已分配至本规划 / 总需求，包含待完成的制作与已规划批次的剩余
+Alloy	合金
+Alpha	内测版
+Amount per drop	单次掉落数量
+An earlier recorded balance is needed to calculate a change.	需要更早的记录余额才能计算变化。
+Analyzing relics…	正在分析遗物…
+Any value	任意数值
+App	应用
+Apply your Relic planner filters to the recommendations overlay	将你的遗物规划器筛选应用到推荐叠加层
+Arbitration aborted	仲裁已中止
+Arbitration alert preferences saved.	仲裁提醒偏好已保存。
+Arbitration complete	仲裁已完成
+Arbitration earnings	仲裁收益
+Arbitration ended	仲裁已结束
+Arbitration failed	仲裁失败
+Arbitration recorded. Open Run history to view the report.	仲裁已记录。打开历史记录查看报告。
+Arbitration, AlecaFrame	仲裁，AlecaFrame
+Arcane progress unavailable	赋能进度不可用
+Arcanes now show collection progress toward max rank, including copies already combined into ranked Arcanes	赋能现在显示升至满级的收集进度，包含已合并为升级赋能的份数
+Archon	执刑官
+Ask for help on Discord before reinstalling Overwolf. This check looks for a problem with its Warframe detection files	重装 Overwolf 前请先在 Discord 求助。此检查用于排查其 Warframe 检测文件的问题
+At least 10 copies	至少 10 张
+At least 50% and 10 seconds above the run median	至少高于记录中位数 50% 且持续 10 秒
+At most one	至多一个
+Attack speed	攻击速度
+Attack type	攻击类型
+Attribute combination	属性组合
+Attribute price	属性价格
+Automatically update or remove matching listings from warframe.market, including sold Rivens	自动更新或移除 warframe.market 上的匹配挂单，包含已售出的裂罅
+Availability not verified	可用性未验证
+Average	平均
+Average after excluding more extreme prices	排除极端价格后的平均值
+Average attempts to collect the remaining amount. One attempt may be a rotation, stage, or enemy drop.	收集剩余数量的平均尝试次数。一次尝试可以是一个轮次、阶段或敌人掉落。
+Average attempts to obtain one relic, not the Prime part.	获得一个遗物的平均尝试次数（不含 Prime 部件）。
+Average best ducat reward	平均最佳杜卡德金币奖励
+Average best platinum reward	平均最佳白金奖励
+Average best reward per run for the selected squad size. Each player uses the same relic and refinement. Platinum and ducats are evaluated separately.	所选小队规模下每局的平均最佳奖励。每名玩家使用相同的遗物与精炼等级。白金与杜卡德金币分别评估。
+Average drone spawns per minute of gameplay, including intermissions and excluding preparation and the extraction tail	每分钟游玩时间内平均无人机生成数，包含间隔，不含准备阶段与撤离收尾
+A–Z, Reverse order	A–Z，反向排序
+Back to history	返回历史
+Back to prices	返回价格
+Baro Ki’Teer rewards, Hover or click	Baro Ki’Teer 奖励，悬停或点击
+Base armor	基础护甲
+Base drop probability	基础掉落概率
+Base energy	基础能量
+Base health	基础生命
+Base shields	基础护盾
+Blocked by Mastery Rank	受精通段位限制
+Blocking angle	阻挡角度
+Blueprints	蓝图
+Browse unveiled and veiled Rivens	浏览已揭示与未揭示的裂罅
+Browse your tradable items and check what you can spare	浏览可交易物品，查看可放心出售的部分
+Bug fixes	错误修复
+Bulk action finished. Refreshing listings…	批量操作已完成，正在刷新挂单…
+Bulk actions	批量操作
+Buy	买入
+Cached forecast	缓存的预测
+Calculating resource needs…	正在计算资源需求…
+Calculating…	计算中…
+Cancelling price update…	正在取消价格更新…
+Cancelling… Waiting for the current request to finish.	正在取消… 等待当前请求完成。
+Capture:	采集：
+Card	卡片
+Card view	卡片视图
+Catalog	目录
+Categories	分类
+Cetus cycle	希图斯周期
+Change since previous record	与上次记录相比的变化
+Check a Riven linked in chat or compare your options when rerolling	检查聊天中链接的裂罅，或在重掷时比较你的选择
+Check components, resources, and drop locations	查看部件、资源与掉落位置
+Check missing items and detect completed trades	检查缺失物品并检测已完成的交易
+Check rewards, ownership, and platinum values	查看奖励、拥有情况与白金价值
+Check the forecast, follow a live run, and review past sessions	查看预测、跟随实时运行并回顾过去的记录
+Check your Mastery progress	查看你的精通进度
+Check your collection and see what you need for your next craft	查看你的收藏，了解下一次制作所需
+Check your materials, crafting needs, and Archon shards	查看你的材料、制作需求与执刑官源力石
+Checklist unavailable	清单不可用
+Chinese, Simplified	简体中文
+Chinese, Traditional	繁体中文
+Choose a changelog release and category.	选择更新日志版本与分类。
+Choose a changelog release.	选择更新日志版本。
+Choose a notification type.	选择通知类型。
+Choose a reward with its value and your collection in view	在可见奖励价值与你的收藏情况下选择奖励
+Choose a run to record earnings and model its expected yield.	选择一条记录以登记收益并模拟其预期产出。
+Choose a stop line after the current position and within this log.	在当前行之后、且在此日志范围内选择一个终点行。
+Choose a tab guide.	选择选项卡指南。
+Choose a valid date range to view this chart.	选择有效的日期范围以查看此图表。
+Choose a welcome tour section.	选择欢迎导览章节。
+Choose a wider range or another weapon	选择更大的范围或其他武器
+Choose an item, then set its price and quantity in the trading panel	选择物品，然后在交易面板中设置价格与数量
+Choose an option	选择一个选项
+Choose files	选择文件
+Choose relics by their rewards, missing items, or expected value	按奖励、缺失物品或预期价值选择遗物
+Choose rewards and notifications	选择奖励与通知
+Choose the item type for your order.	为你的订单选择物品类型。
+Choose up to 100 files at a time.	每次最多选择 100 个文件。
+Choose up to 100 targets. Quantities can be adjusted in your plan.	最多选择 100 个目标。数量可在你的规划中调整。
+Choose what to share. History starts with recorded data	选择要分享的内容。历史从已记录的数据开始
+Choose whether to enable or disable the subscription override.	选择启用或禁用订阅覆盖。
+Choose which items to keep crafting parts for. Favorites only includes mastered favorites you no longer own, and ignores other crafting needs.	选择要为哪些物品保留制作部件。“仅收藏”只包含已精通且已不再拥有的收藏，并忽略其他制作需求。
+Choose your targets	选择你的目标
+Cleanup	清理
+Clear filters	清除筛选
+Clear search	清除搜索
+Click a wave to link its time range across charts, drone cadence, and the spawn map. Hover for its timing and observed drones.	点击某个波次可将其时间范围联动到图表、无人机频率与生成地图。悬停可查看其时间与观测到的无人机。
+Client	客户端
+Close AlecaFrame	关闭 AlecaFrame
+Close Warframe, keep Overwolf and AlecaFrame open, then launch the game again	关闭 Warframe，保持 Overwolf 与 AlecaFrame 开启，然后重新启动游戏
+Close alert settings	关闭提醒设置
+Close bulk actions	关闭批量操作
+Close details	关闭详情
+Close filters	关闭筛选
+Close item picker	关闭物品选择器
+Close live Arbitration	关闭实时仲裁
+Close saved-search form	关闭已保存搜索表单
+Close shard details	关闭源力石详情
+Colors	颜色
+Combined multiplier you want to assume for this segment.	你希望为此分段假定采用的综合倍率。
+Combo duration	连击持续时间
+Community farming tier	社区刷取档位
+Community farming tiers	社区刷取档位
+Community forecast	社区预测
+Compact list	紧凑列表
+Companion double probability	同伴双倍概率
+Companion weapon	同伴武器
+Compare platinum and ducat values for the squad's rewards	比较小队奖励的白金与杜卡德金币价值
+Compare refinements and reward chances	比较精炼等级与奖励概率
+Compare sellers' prices or find a seller to buy from	比较卖家价格，或寻找卖家购买
+Compare similar market listings without leaving the game	无需离开游戏即可比较类似的市场挂单
+Compare trading opportunities	比较交易机会
+Compare upgrade costs with your balances	将升级花费与你的余额进行比较
+Compared with	与…相比
+Compatible	兼容
+Compatible game permissions	兼容的游戏权限
+Complete	完成
+Complete capture	完整采集
+Complete each segment with valid counts, probabilities and multipliers.	用有效的计数、概率与倍率补全每个分段。
+Complete intervals	完整间隔
+Complete sets	完整套装
+Completed	已完成
+Completed interval durations, seconds, full run	各间隔时长（秒），完整一局
+Completed price changes were kept.	已完成的价格更改已保留。
+Components to craft	需制作的部件
+Confirm removal	确认移除
+Confirm removal from favorites	确认取消收藏
+Confirm the conditions below to calculate an estimate.	确认下方条件以计算估算值。
+Connect	连接
+Connected	已连接
+Connecting	正在连接
+Copied to clipboard.	已复制到剪贴板。
+Copies in your sell orders, including hidden orders and listed sets. Buy orders do not reserve copies.	你卖单中的份数，包含隐藏订单与已挂单套装。买单不会预留份数。
+Copies kept to craft favorited items you do not own.	为制作你尚未拥有的收藏物品而保留的份数。
+Copies kept to craft items you neither own nor have mastered.	为制作你既未拥有也未精通的物品而保留的份数。
+Copies owned	拥有份数
+Copies owned across these refinements	这些精炼等级下的拥有份数
+Copy lowest sell into the price draft	将最低售价复制到价格草稿
+Copy summary	复制摘要
+Could not cancel. Please try again.	无法取消，请重试。
+Could not confirm the saved alerts. Retry saving your choices.	无法确认已保存的提醒。请重新保存你的选择。
+Could not copy. Try again.	无法复制，请重试。
+Could not open the EE.log simulator.	无法打开 EE.log 模拟器。
+Could not open the guide. Please try again.	无法打开指南，请重试。
+Could not post	无法发布
+Could not refresh analytics. Your previous results are still shown.	无法刷新分析。仍显示你之前的结果。
+Could not restore the EE.log simulator.	无法还原 EE.log 模拟器。
+Could not save tour completion. The tour may appear again next time.	无法保存导览完成状态。下次可能再次出现该导览。
+Could not send reputation. Please try again.	无法发送声望，请重试。
+Could not update favorites. Try again.	无法更新收藏，请重试。
+Could not verify developer access.	无法验证开发者权限。
+Craft	制作
+Craftable favorites appear in your plan automatically. Favorites are shared across AlecaFrame.	可制作的收藏会自动出现在你的规划中。收藏在 AlecaFrame 内共享。
+Crafting requirements are unavailable. AlecaFrame cannot determine how many copies to keep.	制作需求不可用。AlecaFrame 无法确定需要保留多少份数。
+Crafting requirements could not be verified. This part is excluded from Safe to list.	无法验证制作需求。此部件未计入“可安全挂单”。
+Crafting unknown	制作需求未知
+Create an order	创建订单
+Create listings with an optional warframe.market account	使用可选的 warframe.market 账户创建挂单
+Critical chance	暴击几率
+Critical multiplier	暴击倍率
+Cumulative Arbitration drone spawn events observed by this log. Does not measure drone kills or drops.	此日志观测到的累计仲裁无人机生成事件。不代表无人机击杀或掉落。
+Cumulative enemy spawn events observed by this log. Does not measure kills or enemies currently alive.	此日志观测到的累计敌人生成事件。不代表击杀或当前存活敌人数。
+Current grade	当前评级
+Current progenitor (Valence) bonus, including changes made with Elemental Vice	当前的起源（效价）加成，包含使用 Elemental Vice 所做的更改
+Current progenitor (Valence) bonus. Open details to compare owned copies.	当前的起源（效价）加成。打开详情可比较已拥有的副本。
+Current wave time	当前波次时间
+Custom range	自定义范围
+Custom zoom	自定义缩放
+Cut Gem	切割宝石
+Daily reset: standing caps, daily tribute and Steel Path alerts	每日重置：声望上限、每日献礼与钢铁之路警报
+Daily value	每日价值
+Daily volume	每日成交量
+Daily, weekly and Sortie timers, Hover or click	每日、每周与突击计时器，悬停或点击
+Data details	数据详情
+Data export	数据导出
+Date unavailable	日期不可用
+Debug tools are restricted to the developer account.	调试工具仅限开发者账户使用。
+Debug tools could not be opened.	无法打开调试工具。
+Debug tools, AlecaFrame	调试工具，AlecaFrame
+Decrease	减少
+Default	默认
+Defense objective	防御目标
+Delete alert	删除提醒
+Delete saved run?	删除已保存的记录？
+Delivery	交付
+Delivery off	交付关闭
+Delta request failed	增量请求失败
+Density	密度
+Diagnostics copied.	诊断信息已复制。
+Diagnostics could not be copied.	无法复制诊断信息。
+Discard edits	放弃修改
+Discord changelog copied.	已复制 Discord 更新日志。
+Dismiss error	忽略错误
+Dismiss notification	忽略通知
+Dismiss recap, Escape	忽略回顾，Esc
+Dismiss these finds	忽略这些发现
+Drag to pan, scroll to zoom, double-click to fit	拖动平移，滚轮缩放，双击适应
+Drain	消耗
+Drone cadence	无人机生成频率
+Drone spawns	无人机生成次数
+Drone spawns per minute of active wave time. Compared with the duration-weighted rate of earlier completed waves, excluding intermissions.	每活动波次分钟的无人机生成数。与先前已完成波次的时长加权速率比较，不含间隔。
+Drones per interval	每个间隔的无人机数
+Drop blessing expired	掉落祝福已过期
+Drop blessing, confirmation missing	掉落祝福，缺少确认
+Drop blessing, unknown	掉落祝福，未知
+Drop chance multiplier	掉落几率倍率
+Drop one log file at a time.	一次只能拖入一个日志文件。
+Drop-rate source	掉率来源
+Ducats from the newly found copies.	新发现份数对应的杜卡德金币。
+Ducats per platinum	每白金杜卡德金币
+Duplicate Warframe identity	重复的战甲标识
+Duplicate mods could not be loaded. Try again.	无法加载重复 MOD，请重试。
+Duration	持续时间
+EE.log simulator opened.	EE.log 模拟器已打开。
+EE.log simulator, AlecaFrame	EE.log 模拟器，AlecaFrame
+Edit matching preferences	编辑匹配偏好
+Eligible drone kills	符合条件的无人机击杀
+Empty slot	空槽位
+Enable Stats in Settings, then try again.	请在设置中启用统计，然后重试。
+Enabled	已启用
+End of file	文件末尾
+End of log	日志末尾
+End time unavailable	结束时间不可用
+Ended	已结束
+Enemies per interval	每个间隔的敌人数
+Enemies, vendors & other sources	敌人、商人与其他来源
+Enemy counter	敌人计数器
+Enemy positions	敌人位置
+Enemy spawn rate	敌人生成速率
+Enemy spawns	敌人生成次数
+Energy drain at the displayed rank	显示等级下的能量消耗
+English	英语
+Enter a price from 1 to 800,000 platinum per item.	请输入每件 1 到 800,000 白金的单价。
+Enter a quantity from 1 to 9,998.	请输入 1 到 9,998 的数量。
+Enter a whole Vitus amount from 0 to 1,000,000, or leave it blank.	请输入 0 到 1,000,000 之间的整数生息精华，或留空。
+Enter a whole number for other Vitus.	请输入其他生息精华的整数。
+Enter the Vitus collected in a run. Inventory balance changes are tracked separately.	输入一局中收集的生息精华。仓库余额变化单独记录。
+Entire run	整局
+Equipped	已装备
+Essence / hour	生息精华 / 小时
+Estimated fraction of eligible drops you collect. Use 1 only if assuming all drops are collected.	你采集到的符合条件掉落的估算比例。仅在假设全部掉落都被采集时使用 1。
+Estimated sell value of the newly found copies. Prices can change.	新发现份数的估算出售价值。价格可能变动。
+Events	事件
+Everything	全部
+Exclude all copies of your favorite mods	排除收藏 MOD 的所有份数
+Exclude favorites	排除收藏
+Expand interval chart	展开间隔图表
+Expand observations chart	展开观测图表
+Expected Essence	预期生息精华
+Expected Vitus	预期生息精华
+Expected Vitus unavailable, gameplay timing, drone observations, or reward cycles are missing.	预期生息精华不可用：缺少游玩计时、无人机观测或奖励周期数据。
+Expected yield	预期产出
+Explore price history and market activity	查看价格历史与市场活动
+Explore tabs	浏览选项卡
+Export run	导出记录
+Extra capacity	额外容量
+Faction	阵营
+Faction control	阵营控制
+Failed	失败
+Farming	刷取
+Faster	更快
+Fastest	最快
+Fastest median	最快中位数
+Favorite items	收藏物品
+Favorite run	收藏记录
+Favorite stars now stay filled on hover without changing size or position	收藏星标在悬停时保持填充，且不再改变大小或位置
+Favorites changed. Refresh to recalculate.	收藏已变更，请刷新以重新计算。
+Favorites only: other crafting needs are ignored	仅收藏：忽略其他制作需求
+Fewest missing copies first, reverse order	缺少份数最少优先，反向排序
+Filter	筛选
+Filter duplicate mods	筛选重复 MOD
+Filter foundry	筛选铸造厂
+Filter mods	筛选 MOD
+Filter relics	筛选遗物
+Filter resources	筛选资源
+Filter rivens	筛选裂罅
+Filter saved runs	筛选已保存记录
+Filter your shopping list	筛选你的购物清单
+Filtered average	过滤后平均
+Filters applied to the relic recommendation overlay, owned relics only	筛选条件应用于遗物推荐叠加层，仅限已拥有的遗物
+Final interval	最后一个间隔
+Finalizing run report	正在完成记录报告
+Find a node	查找节点
+Find a source	查找来源
+Find crafting goals	查找制作目标
+Find drop sources and save favorite relics	查找掉落来源并收藏遗物
+Find equipment to level for your next Mastery rank	查找可用于提升下一精通段位的装备
+Find equipped shards	查找已装备的源力石
+Find missing ingredients with Crafting helper	使用制作助手查找缺失材料
+Find unmastered equipment you already own	查找你已拥有但尚未精通的装备
+Find your next Arbitration	查找下一场仲裁
+Find your next relic alongside the in-game relic selection screen	在游戏内遗物选择界面旁找到你的下一个遗物
+Fire rate	射速
+First 100 intervals	前 100 个间隔
+First 50 intervals	前 50 个间隔
+First measured wave	首个测量的波次
+Fish	鱼类
+Fit	适应
+Fit the entire crafting tree	适应整棵制作树
+Fixed Archon shard socket positions and outdated shard effects	修复了执刑官源力石插槽位置与过时的源力石效果
+Fixed Riven price history when records are missing or out of order	修复了记录缺失或顺序混乱时的裂罅价格历史
+Fixed Stats and event popups being cut off or appearing behind other dialogs	修复了统计与事件弹窗被截断或显示在其他对话框之后的问题
+Fixed crafting trees showing missing materials as already owned	修复了制作树将缺失材料显示为已拥有的问题
+Fixed failed loads appearing as empty results in Foundry, Mastery helper and Stats	修复了加载失败时在铸造厂、精通助手与统计中显示为空结果的问题
+Fixed inventory and Archon shards sometimes failing to load at startup, and reduced startup pauses	修复了启动时仓库与执刑官源力石有时加载失败的问题，并减少了启动卡顿
+Fixed older searches replacing newer results or showing details for the wrong item	修复了较早的搜索覆盖较新结果或显示错误物品详情的问题
+Fixed price spikes, incorrect max-rank mod prices and daily trading volume estimates	修复了价格尖峰、满级 MOD 价格错误与每日交易量估算的问题
+Fixed release-channel selection for Patreon Tier 1 and Overwolf subscribers	修复了 Patreon 第 1 档与 Overwolf 订阅者的发布通道选择
+Fixed trade notifications cutting off player names and losing your message when giving reputation fails	修复了交易通知截断玩家名称以及赠送声望失败时丢失消息的问题
+Fixed trading for veiled Rivens	修复了未揭示裂罅的交易
+Focus on value or the rewards you still need	关注价值或你仍需要的奖励
+Follow Platinum, Ducats, Endo, Credits, Aya, and Vitus	关注白金、杜卡德金币、内融核心、星币、阿耶精华与生息精华
+Follow crafting trees and save favorites	追踪制作树并收藏
+Follow listings with Sniper, with limits based on your plan	使用狙击手关注挂单，限额基于你的规划
+Follow wave timing and drone activity as you play	游玩时追踪波次时间与无人机活动
+For example, damage or support	例如：伤害或辅助
+For other analyzers	用于其他分析器
+Forecast ready	预测已就绪
+Forecast unavailable	预测不可用
+Foundry categories	铸造厂分类
+Foundry request failed	铸造厂请求失败
+Fraction collected	采集比例
+French	法语
+From	起始
+From, seconds	起始（秒）
+Front, Y / Z	正面，Y / Z
+Fully Tauforged	全部 Tau 融造
+Game information is unavailable.	游戏信息不可用。
+Gameplay time, excluding preparation and ending at extraction when observed	游玩时间，不含准备阶段，并在观测到撤离时结束
+Gameplay time, including intermissions	游玩时间（含间隔）
+Gem	宝石
+German	德语
+Getting latest prices…	正在获取最新价格…
+Getting your latest orders…	正在获取你的最新订单…
+Has Tauforged shards	有 Tau 融造源力石
+Has regular shards	有普通源力石
+Heavy attack wind-up	重击蓄力
+Hi everyone! It's been a long time. I really hope you enjoy this new update :)	大家好！好久不见。真心希望你们喜欢这次新更新 :)
+Hide all	全部隐藏
+Hide the ingredients of components you already own	隐藏已拥有部件的材料
+Hide weapon insights	隐藏武器详情
+Highest first, Reverse order	最高优先，反向排序
+Host	主机
+Hourly rates use observed gameplay time, including intermissions.	每小时速率使用观测到的游玩时间，包含间隔。
+Hover an item to preview the mastery XP you could gain from it.	悬停在物品上可预览你可从中获得的精通经验。
+Icons	图标
+Icons on BG	背景图标
+Image preview	图片预览
+Import failed.	导入失败。
+Import logs	导入日志
+Imported log	已导入日志
+Imported report	已导入报告
+Improved Riven Finder, price history charts and Riven details, with clearer grades and recommended attributes	改进裂罅查找器、价格历史图表与裂罅详情，评级更清晰并给出推荐属性
+Improvements	改进
+In Overwolf settings, open Overlay & Hotkeys and enable the Warframe overlay, then restart the game	在 Overwolf 设置中打开“叠加层与热键”，启用 Warframe 叠加层，然后重启游戏
+In game	游戏中
+Incarnon Genesis	灵化之源
+Include hidden variants	包含隐藏变体
+Include player names where available	尽可能包含玩家名称
+Includes hidden orders. Quantities and visibility stay the same. Orders without a matching price for their rank, variant, or pack size are skipped.	包含隐藏订单。数量与可见性保持不变。没有匹配其等级、变体或包装规格价格的订单将被跳过。
+Includes listings outside your current filters	包含当前筛选之外的挂单
+Includes time between rewards	包含奖励之间的时间
+Incomplete set	不完整套装
+Incomplete sets	不完整套装
+Incomplete shard response	源力石响应不完整
+Increase	增加
+Increase listed quantity by 1	挂单数量增加 1
+Increments in the mission's Spawned counter, separate from named agent creations. These are not kills or the number of enemies alive.	任务中“已生成”计数器的增量，与具名单位的创建分开计算。不代表击杀数或存活敌人数。
+Innate	固有
+Inspect spawns	查看生成情况
+Installation	安装
+Installed Archon shards	已安装的执刑官源力石
+Intermission not classified	未分类的间隔
+Intermissions	间隔
+Interrupted	已中断
+Interval analysis	间隔分析
+Interval pace	间隔节奏
+Intervals	间隔
+Invalid Arbitration response	仲裁响应无效
+Invalid Arbitration schedule	仲裁日程无效
+Invalid Arcane progress	赋能进度无效
+Invalid Foundry response	铸造厂响应无效
+Invalid checklist	清单无效
+Invalid delta response	增量响应无效
+Invalid inventory response	仓库响应无效
+Invalid item response	物品响应无效
+Invalid mastery response	精通响应无效
+Invalid mod plan response	MOD 规划响应无效
+Invalid picker path.	文件选择路径无效。
+Invalid picker result.	文件选择结果无效。
+Invalid plan response	规划响应无效
+Invalid preferences	偏好设置无效
+Invalid prices	价格无效
+Invalid relic response	遗物响应无效
+Invalid saved goals	已保存目标无效
+Invalid shard records	源力石记录无效
+Invalid stats response	统计响应无效
+Invalid weapon response	武器响应无效
+Inventory categories	仓库分类
+Inventory check completed. Refreshing listings…	仓库检查已完成，正在刷新挂单…
+Inventory now has a compact list view. New items found separates your latest finds from your total inventory and shows their value	仓库现在提供紧凑列表视图。“新发现物品”会将最新发现与仓库总量分开显示，并展示其价值
+Inventory now shows which spare parts you can sell after accounting for crafting needs and existing listings	仓库现在会显示在计入制作需求与现有挂单后，哪些多余部件可以出售
+Inventory request failed	仓库请求失败
+Inventory unverified	仓库未验证
+Italian	意大利语
+Item data request failed	物品数据请求失败
+Item details could not be loaded. Try again.	无法加载物品详情，请重试。
+Item details took too long. Try again.	物品详情加载超时，请重试。
+Item unavailable	物品不可用
+Items	物品
+Japanese	日语
+Keep between 1 and 100 copies.	保留份数需在 1 到 100 之间。
+Keep your listings, but hide them from other players.	保留你的挂单，但向其他玩家隐藏。
+Kicked	已踢出
+Korean	韩语
+Last 30 days	最近 30 天
+Last 7 days	最近 7 天
+Last 90 days	最近 90 天
+Last wave time	上一波次时间
+Latest recorded balance in range	范围内最新记录的余额
+Leave positive reviews for traders on warframe.market	在 warframe.market 上为交易者留下好评
+Legendary	传说
+Lich	玄骸
+Linking page opened in your browser. Finish linking there, then restart AlecaFrame after 1–2 minutes.	已在浏览器中打开关联页面。在那里完成关联，然后在 1–2 分钟后重启 AlecaFrame。
+Listed on warframe.market	已在 warframe.market 挂单
+Listing is hidden.	挂单已隐藏。
+Listing is visible.	挂单可见。
+Listing not found on warframe.market.	warframe.market 上未找到该挂单。
+Listing removed.	挂单已移除。
+Listings unverified	挂单未验证
+Live Arbitration window opened.	实时仲裁窗口已打开。
+Live inventory	实时仓库
+Load a forecast to see missions matching your preferences	加载预测以查看符合你偏好的任务
+Load a log to start a simulator session.	加载日志以开始模拟器会话。
+Loading log…	正在加载日志…
+Loading recipe…	正在加载配方…
+Loading relics…	正在加载遗物…
+Loading run report	正在加载记录报告
+Loading saved runs	正在加载已保存记录
+Loading saved runs…	正在加载已保存记录…
+Local time	本地时间
+Log out of warframe.market	退出登录 warframe.market
+Login failed. Check your details and try again.	登录失败，请检查你的信息并重试。
+Longest first	最长优先
+Longest observed gaps	观测到的最长间隔
+Loops unavailable	循环不可用
+Lowest first, Reverse order	最低优先，反向排序
+Lowest sell price unavailable	最低售价不可用
+Made with ❤️ in 🇪🇸 🇪🇺 by Alejandro Cabrerizo	由 Alejandro Cabrerizo 在 🇪🇸 🇪🇺 用 ❤️ 制作
+Magazine / ammo	弹匣 / 弹药
+Main navigation	主导航
+Major changes	主要变更
+Manage buy orders, sell orders, and Riven contracts	管理买单、卖单与裂罅合约
+Manage your listings with an optional warframe.market account	使用可选的 warframe.market 账户管理你的挂单
+Marked 1 as bought.	已将 1 件标记为已买入。
+Marked 1 as sold.	已将 1 件标记为已卖出。
+Market order	市场订单
+Market ranking	市场排行
+Mastery helper now shows when Easy mode recommendations are blocked by your Mastery Rank	当“简单模式”推荐因精通段位受限时，精通助手现在会予以提示
+Mastery rank required	需要精通段位
+Mastery request failed	精通请求失败
+Match quantities to inventory	将数量与仓库同步
+Matches a fissure alert rule	符合虚空裂缝提醒规则
+Matches my alert preferences	符合我的提醒偏好
+Matches unavailable	匹配不可用
+Matching your orders to current market prices.	正在将你的订单与当前市场价格匹配。
+Materials needed	所需材料
+Materials ready	材料已备齐
+Maximize	最大化
+Maximized	已最大化
+Mean gap	平均间隔
+Measurements and notes	测量与备注
+Median	中位数
+Median gap	中位间隔
+Median interval:	中位间隔：
+Melee weapon	近战武器
+Minimize	最小化
+Minimum copies to keep per mod, including ranked and equipped copies	每个 MOD 需保留的最少份数，含已升级与已装备的份数
+Minimum price must be no higher than maximum price.	最低价不得高于最高价。
+Minimum rerolls must be no higher than maximum rerolls.	最少重掷次数不得高于最多重掷次数。
+Minimum sell price	最低售价
+Missing core	缺少核心
+Missing relics can't be used in the recommendation overlay. Select All relics or Owned first.	缺失的遗物无法用于推荐叠加层。请先选择“全部遗物”或“已拥有”。
+Missing safe-to-list quantities	缺少可安全挂单数量
+Missing weapon	缺少武器
+Mission observations	任务观测
+Mission type	任务类型
+Mission types	任务类型
+Missions & activities	任务与活动
+Mobile	移动端
+Monitor information is unavailable.	显示器信息不可用。
+More	更多
+More categories	更多分类
+More than one	多于一个
+Most expected Essence	预期生息精华最多
+Most intervals	间隔最多
+Most missing copies first, reverse order	缺少份数最多优先，反向排序
+Most recent	最新
+Move stop earlier	将终点前移
+Move stop later	将终点后移
+Munio	墓垒
+Murmur	低语者
+Name this search	为此搜索命名
+Named creations observed in the log, including unclassified agents. This is separate from the mission's enemy spawn counter.	日志中观测到的具名单位创建，含未分类单位。这与任务的敌人生成计数器分开计算。
+Names	名称
+Narrow your farming sources	缩小刷取来源
+Navigation	导航
+Needed for:	需要用于：
+Needed to craft one of your favourites	制作你的收藏之一所需
+Needs inventory or recipe data	需要仓库或配方数据
+Needs parts	需要部件
+Net change between first and last balance in range	范围内首末余额的净变化
+New	新
+New Endo helper in Planner estimates Endo from spare unranked mods, with copies to keep, favorite protection and market prices	规划器新增内融核心助手，可根据多余未升级 MOD 估算内融核心，并考虑保留份数、收藏保护与市场价格
+New in-game conversation from **	来自 ** 的新游戏内对话
+New view showing the materials missing from your favorites, with a combined shopping list you can copy	新增视图，显示你的收藏所缺材料，并提供可复制的合并购物清单
+Newest first	最新优先
+Next page	下一页
+No complete interval boundaries were recorded	未记录到完整的间隔边界
+No complete interval timings in this capture	本次采集中没有完整的间隔计时
+No complete interval timings in this range	该范围内没有完整的间隔计时
+No complete intervals	没有完整间隔
+No copies need to be kept for crafting.	无需为制作保留份数。
+No copies owned	未拥有份数
+No current matching shortage	当前没有匹配的短缺
+No drone telemetry	无无人机遥测数据
+No drop table in the current data	当前数据中没有掉落表
+No earlier spawn rate	无更早的生成速率
+No favorite nodes	无收藏节点
+No file errors reported	未报告文件错误
+No fixed end time	无固定结束时间
+No matching recipes	没有匹配的配方
+No matching rotation	没有匹配的轮次
+No measurements	无测量数据
+No modifier details available	无可用修饰符详情
+No named agent creation events were retained for this capture	本次采集未保留具名单位创建事件
+No observations for this measurement in the selected range	所选范围内没有该测量的观测数据
+No original game log was retained for this run. Importing a structured report cannot reconstruct the original events.	此记录未保留原始游戏日志。导入结构化报告无法重建原始事件。
+No original log retained, import its game log to use arbi.guide	未保留原始日志，请导入其游戏日志以使用 arbi.guide
+No owned copies were found. Remove this sell order?	未找到已拥有的份数。要移除此卖单吗？
+No price data in this range	该范围内没有价格数据
+No recommended positive combination is available for this weapon	此武器没有可用的推荐正面组合
+No records for this metric in the selected period.	所选时段内没有该指标的记录。
+No spawn coordinates in this range	该范围内没有生成坐标
+No stats available in this shared view.	此分享视图中没有可用统计。
+No stats recorded yet.	尚未记录统计。
+No timeline events in this range	该范围内没有时间线事件
+Node	节点
+Noise	噪音
+Non-prime	非 Prime
+Not available	不可用
+Not compatible	不兼容
+Not equipped	未装备
+Not graded	未评级
+Not listed	未挂单
+Not reported	未上报
+Number of players opening the same relic at the same refinement	开启同一精炼等级同一遗物的玩家数量
+Observed agents	观测到的单位
+Observed drone spawn events per minute between adjacent captured samples.	相邻采集样本之间每分钟观测到的无人机生成事件。
+Observed drone spawn events, not kills or Vitus drops.	观测到的无人机生成事件，不代表击杀或生息精华掉落。
+Observed drone spawns	观测到的无人机生成
+Observed drone spawns, not kills or Vitus drops	观测到的无人机生成，不代表击杀或生息精华掉落
+Observed enemy spawn events per minute between adjacent captured samples.	相邻采集样本之间每分钟观测到的敌人生成事件。
+Observed enemy spawns:	观测到的敌人生成：
+Observed spawn events, not kills or drops.	观测到的生成事件，不代表击杀或掉落。
+Off	关闭
+Offers could not be loaded. Try refreshing.	无法加载报价，请尝试刷新。
+Oldest first	最早优先
+On pace	进度正常
+On this Riven	在此裂罅上
+One overlay records detected trades in Stats and updates matching warframe.market listings	一个叠加层会在统计中记录检测到的交易，并更新匹配的 warframe.market 挂单
+Only favorite nodes is enabled, but no nodes are starred. Add favorites on the schedule or include non-favorite nodes	已启用“仅收藏节点”，但没有星标节点。请在日程中添加收藏，或包含非收藏节点
+Only positions recorded in the log appear here	此处仅显示日志中记录的位置
+Only show rolls that include this attribute	仅显示包含此属性的词条
+Only your unowned favorites reserve parts. Parts needed for other items may be shown as safe to list.	只有你尚未拥有的收藏会预留部件。其他物品所需的部件可能会显示为可安全挂单。
+Open Arbitration schedule	打开仲裁日程
+Open Warframe on this PC and log in to your account in the game	在此电脑上打开 Warframe 并在游戏中登录你的账户
+Open in the trading panel	在交易面板中打开
+Open original run log in arbi.guide	在 arbi.guide 中打开原始记录日志
+Open relic details	打开遗物详情
+Open run history	打开历史记录
+Open the full link shared by its owner.	打开其所有者分享的完整链接。
+Open the tab guide for details	打开选项卡指南查看详情
+Opening the Arbitration window was cancelled.	已取消打开仲裁窗口。
+Order matching listings	将订单与挂单匹配
+Order updated.	订单已更新。
+Original run log (.log)	原始记录日志（.log）
+Orphix	奥影
+Other Vitus included	包含的其他生息精华
+Outcome	结果
+Overwolf installation working	Overwolf 安装正常
+Overwolf started before Warframe	Overwolf 先于 Warframe 启动
+Ownership uses the selected refinement. With no refinement selected, Missing shows relics with no copies at any refinement.	拥有情况按所选精炼等级计算。未选择精炼等级时，“缺失”显示在所有精炼等级下都无份数的遗物。
+Pace	节奏
+Partial	部分
+Partial capture	部分采集
+Partial run captured	已采集部分运行
+Parts	部件
+Paused	已暂停
+Peak in 10s	10 秒内峰值
+Peak in 60s	60 秒内峰值
+Peak observed agents	观测到的单位峰值
+Period	周期
+Personal choices	个人选择
+Perspective	视角
+Perspective unknown	视角未知
+Plan mod upgrades around your Endo and Credits	根据你的内融核心与星币规划 MOD 升级
+Planets	星球
+Plant	植物
+Platform unavailable	平台不可用
+Platform:	平台：
+Platinum / trades	白金 / 交易
+Play Warframe locally on this PC. Complete a mission or enter and leave a relay to update your saved inventory and progress.	在此电脑本地游玩 Warframe。完成一个任务或进出一次中继站即可更新已保存的仓库与进度。
+Play Warframe locally on this PC. Your account and inventory will appear as you play missions or enter and leave a relay.	在此电脑本地游玩 Warframe。随着你执行任务或进出中继站，你的账户与仓库将会显示。
+Play with AlecaFrame running to record your stats.	在 AlecaFrame 运行时游玩以记录你的统计。
+Playback returned to line 1. Earlier app actions have not been undone.	回放已回到第 1 行。此前应用执行的操作并未被撤销。
+Playing	游玩中
+Please try again.	请重试。
+Please try loading the recipe again.	请尝试重新加载配方。
+Polish	波兰语
+Poor	较差
+Portuguese	葡萄牙语
+Positioned enemy spawns	带位置的敌人生成
+Possible combinations with available shards and Stela, calculated separately for each recipe.	使用可用源力石与虚空石块的可行组合数，按每个配方分别计算。
+Potential	潜力
+Preferred negatives	偏好负面属性
+Premium Trading Analytics now has separate views for your trading history and market activity	高级版交易分析现在为你的交易历史与市场活动提供独立视图
+Premium settings now show separate Tier 1 and Tier 2+ sections, with visible previews of locked controls	高级版设置现在分为第 1 档与第 2 档以上两个区域，并显示锁定控件的预览
+Preparing	准备中
+Previous page	上一页
+Price already matches lowest sell	价格已与最低售价一致
+Price history	价格历史
+Price must be a whole number from 1 to 800,000 platinum.	价格必须是 1 到 800,000 之间的整数白金。
+Price update cancelled	价格更新已取消
+Price update cancelled:	价格更新已取消：
+Price update complete	价格更新完成
+Price update stopped	价格更新已停止
+Price updated.	价格已更新。
+Price × quantity of the buy orders shown, including hidden orders	所显示买单的价格 × 数量，含隐藏订单
+Price × quantity of the sell orders shown, including hidden orders	所显示卖单的价格 × 数量，含隐藏订单
+Prices could not be updated. Please try again.	无法更新价格，请重试。
+Prices now update properly. A weird edge case sometimes prevented them from refreshing. Sorry about that!	价格现在能正常更新了。此前某个奇怪的边界情况有时会阻止刷新。非常抱歉！
+Prices unavailable	价格不可用
+Prices:	价格：
+Prime Resurgence rewards, Hover or click	Prime 重生奖励，悬停或点击
+Prime parts	Prime 部件
+Purchase count	购买次数
+Purchase platinum	购买白金
+Quality of the random stat value	随机属性数值的品质
+Quantity must be a whole number from 1 to 9,998.	数量必须是 1 到 9,998 之间的整数。
+Quantity updated.	数量已更新。
+Railjack Void Storm	航道星舰虚空风暴
+Ranged weapon	远程武器
+Ranked copies count toward the total	已升级的份数计入总数
+Ranked up	已升级
+Ranks and star counts must be whole numbers, zero or higher.	等级与星级必须为大于等于零的整数。
+Rarity	稀有度
+Rate unavailable	速率不可用
+Readable summary	可读摘要
+Received:	收到：
+Reconnecting	正在重新连接
+Recorded here	记录于此
+Recording	录制中
+Recording interrupted	录制已中断
+Reduce sell quantities to the copies in your latest inventory. Remove sell orders with no copies left.	将卖单数量降至你最新仓库中的份数。移除已无剩余份数的卖单。
+Reduce this sell order to	将此卖单减少至
+Refresh contracts	刷新合约
+Refresh orders	刷新订单
+Refresh to recalculate	刷新以重新计算
+Refreshing shards	正在刷新源力石
+Release channel unavailable.	发布通道不可用。
+Relic Planner now calculates faster and makes refinement costs and squad reward chances easier to compare	遗物规划器现在计算更快，并让精炼花费与小队奖励概率更易比较
+Relic categories	遗物分类
+Relic prices unavailable	遗物价格不可用
+Relic recommendations	遗物推荐
+Relic request failed	遗物请求失败
+Relic rewards	遗物奖励
+Relic window layout ready	遗物窗口布局已就绪
+Reload time	装填时间
+Reminder removed.	提醒已移除。
+Reminders	提醒
+Remove ads and support development	移除广告并支持开发
+Remove all	全部移除
+Remove any weapon part	移除任意武器部件
+Remove contract	移除合约
+Remove contracts for Rivens not found in your latest inventory.	移除最新仓库中未找到的裂罅对应合约。
+Remove favorite node	移除收藏节点
+Remove from favorites	取消收藏
+Remove manual target	移除手动目标
+Remove missing Rivens	移除缺失的裂罅
+Remove order	移除订单
+Remove reminder	移除提醒
+Remove stop	移除站点
+Remove this	移除此项
+Remove this alert rule	移除此提醒规则
+Remove this contract?	移除此合约？
+Remove this many copies from your sell listings to protect your crafting reserve and avoid listing more than you own.	从你的卖单中移除相应份数，以保护制作预留并避免挂单量超过实际拥有量。
+Remove weapon part	移除武器部件
+Reported Vitus	上报的生息精华
+Reported Vitus / hour	上报生息精华 / 小时
+Reported minus expected	上报值减去预期值
+Reported runs	上报的记录数
+Request failed. Retrying in 3 seconds…	请求失败，3 秒后重试…
+Requires MR	需要段位
+Requires higher mastery	需要更高精通
+Rerolled	已重掷
+Research prices and trading activity with Premium market tools	使用高级版市场工具研究价格与交易活动
+Reset range	重置范围
+Reset to 100%	重置为 100%
+Reset zoom	重置缩放
+Resource needs are unavailable.	资源需求不可用。
+Resource regions	资源区域
+Resources & credits	资源与星币
+Resources could not be updated. Your saved plan is safe. Try again.	无法更新资源。你已保存的规划安全无损，请重试。
+Resources could not connect to the AlecaFrame plugin. Try again.	资源功能无法连接到 AlecaFrame 插件，请重试。
+Restore	还原
+Resulting item	产出物品
+Resulting item owned or mastered	产出物品已拥有或已精通
+Resulting item owned, mastered, or in Foundry	产出物品已拥有、已精通或正在铸造厂制作
+Retrying price update…	正在重试价格更新…
+Reverse order	反向排序
+Review activity and trade history over time	查看一段时间内的活动与交易历史
+Review installed shards, effects, and fusion recipes	查看已安装源力石、效果与融合配方
+Review saved runs and export reports	查看已保存记录并导出报告
+Review spare mods in Endo helper	在内融核心助手中查看多余 MOD
+Review traded items, quantities, platinum, and trading partners in Stats	在统计中查看已交易物品、数量、白金与交易伙伴
+Review your Rivens and compare similar rolls on the market	查看你的裂罅并在市场上比较相似词条
+Reward prices unavailable	奖励价格不可用
+Reworked the activity view, balance charts and trade history, including public stats pages	重构了活动视图、余额图表与交易历史，包括公开统计页面
+Riven	裂罅
+Riven data is unavailable	裂罅数据不可用
+Riven disposition	裂罅倾向
+Riven mod	裂罅 MOD
+Riven overlay	裂罅叠加层
+Rivens graded per month	每月评级的裂罅数
+Role, entered by you	角色，由你填写
+Rotation time	轮次时间
+Run	记录
+Run added to favorites.	记录已加入收藏。
+Run data is unavailable. Retrying automatically.	运行数据不可用，正在自动重试。
+Run earnings could not be loaded.	无法加载运行收益。
+Run earnings could not be saved. Your edits are still here.	无法保存运行收益。你的修改仍保留在此。
+Run earnings saved.	运行收益已保存。
+Run exported.	记录已导出。
+Run finished	运行已结束
+Run library unavailable	记录库不可用
+Run notes saved.	记录备注已保存。
+Run removed from favorites.	记录已取消收藏。
+Run report	运行报告
+Run summary copied.	本局摘要已复制。
+Run unavailable	记录不可用
+Russian	俄语
+Safe for favorites only	仅对收藏安全
+Sales count	销售次数
+Sales platinum	销售白金
+Save or cancel your open edits before updating all prices.	在更新全部价格前，请保存或取消当前未完成的修改。
+Save or discard your edits before choosing another run.	在选择另一条记录前，请保存或放弃你的修改。
+Save this preview	保存此预览
+Saved	已保存
+Saved inventory	已保存仓库
+Saved run deleted.	已保存记录已删除。
+Saved runs	已保存记录
+Saving this order…	正在保存此订单…
+Screenshot	截图
+Search Warframes, colors, or effects…	搜索战甲、颜色或效果…
+Search could not be loaded	无法加载搜索
+Search duplicate mods	搜索重复 MOD
+Search foundry	搜索铸造厂
+Search inventory	搜索仓库
+Search items	搜索物品
+Search materials or locations	搜索材料或地点
+Search node, mode, role, or notes	搜索节点、模式、角色或备注
+Search relics	搜索遗物
+Search sources or target items	搜索来源或目标物品
+Search unavailable	搜索不可用
+Search weapons, attributes, and asking prices in Finder	在查找器中搜索武器、属性与要价
+Search within this ranking	在此排行中搜索
+Search your resource inventory	搜索你的资源仓库
+Search, filters and dropdowns now use consistent controls across tabs	搜索、筛选与下拉菜单现在在各选项卡中使用统一的控件
+Searching…	正在搜索…
+See Prime parts, mods, Arcanes, and their prices	查看 Prime 部件、MOD、赋能及其价格
+See attribute grades and suggested rolls	查看属性评级与推荐词条
+See owned, mastered, and crafting items	查看已拥有、已精通与制作中的物品
+See the Endo and Credits needed to max your favorite mods	查看将收藏 MOD 升满所需的内融核心与星币
+See what to craft or level next	查看接下来要制作或升级的内容
+See which rewards you own or have already mastered	查看你已拥有或已精通的奖励
+See your resources and how much to keep for favorites and remaining unlocks	查看你的资源，以及为收藏与剩余解锁需保留的数量
+Select a UTF-8 text log, not a binary or UTF-16 file.	请选择 UTF-8 文本日志，而非二进制或 UTF-16 文件。
+Selected	已选中
+Sell	卖出
+Selling	出售中
+Sending line…	正在发送行…
+Session diagnostics could not be read.	无法读取会话诊断信息。
+Session diagnostics refreshed.	会话诊断信息已刷新。
+Set	套装
+Set alerts for preferred missions in the community forecast	在社区预测中为偏好任务设置提醒
+Set listing price to lowest sell	将挂单价格设为最低售价
+Setup	设置
+Shard color	源力石颜色
+Shard quality	源力石品质
+Shards currently installed on your Warframes	当前安装在你的战甲上的源力石
+Shortest build time when different recipes are crafted at the same time	不同配方同时制作时的最短建造时间
+Show 50 more	再显示 50 条
+Show 80 more	再显示 80 条
+Show all	显示全部
+Show in Timers	在计时器中显示
+Show more recipes	显示更多配方
+Show more runs	显示更多记录
+Show sources for this target	显示此目标的来源
+Side, X / Y	侧面，X / Y
+Sign in to warframe.market and let your orders sync to verify listed quantities.	登录 warframe.market 并同步订单以验证挂单数量。
+Similarity to the selected attributes	与所选属性的相似度
+Simulator action failed.	模拟器操作失败。
+Simulator session ended.	模拟器会话已结束。
+Slower	更慢
+Slower sections	较慢的分段
+Slowest	最慢
+Some details are unavailable	部分详情不可用
+Sorting uses the lower estimate when a range is shown.	显示范围时按较低的估算值排序。
+Source	来源
+Source unknown	来源未知
+Sources	来源
+Sources could not be loaded. Try again.	无法加载来源，请重试。
+Spanish	西班牙语
+Spawn counts are observed events, not kills or drops.	生成计数是观测到的事件，不代表击杀或掉落。
+Spawn map	生成地图
+Spawn phase	生成阶段
+Spawns	生成
+Split kills into segments when conditions change. Other Vitus is a fixed amount you explicitly include, such as rotation earnings.	条件变化时将击杀拆分为分段。“其他生息精华”是你明确计入的固定数量，例如轮次收益。
+Sprint speed	冲刺速度
+Stable	稳定版
+Stale forecast, alerts paused	预测已过期，提醒已暂停
+Start at 0	从 0 开始
+Started	已开始
+Starting	开始中
+State	状态
+Stats are disabled.	统计已禁用。
+Stats collection and trade detection are enabled by default. Sign in to warframe.market to update listings and review traders	统计收集与交易检测默认启用。登录 warframe.market 以更新挂单并评价交易者
+Stats recorded on this day	当日记录的统计
+Stats request failed	统计请求失败
+Status chance	触发几率
+Status unavailable	状态不可用
+Steel Path, Incarnons	钢铁之路、灵化
+Still collecting	仍在收集
+Stopped, restart required	已停止，需要重启
+Stopping the import after the current operation.	将在当前操作完成后停止导入。
+Subsumed	已吞噬
+Summary of results below	结果摘要见下方
+Target reached	已达成目标
+Tauforged shards in your collection	收藏中的 Tau 融造源力石
+Text	文本
+Text report (.txt)	文本报告（.txt）
+The Arbitration forecast could not be loaded. Try again.	无法加载仲裁预测，请重试。
+The Arbitration forecast could not be refreshed. Try again.	无法刷新仲裁预测，请重试。
+The Arbitration forecast took too long to load. Try again.	加载仲裁预测超时，请重试。
+The Arbitration forecast was incomplete. Try again.	仲裁预测不完整，请重试。
+The Arbitration window could not be focused.	无法聚焦仲裁窗口。
+The Arbitration window could not be opened.	无法打开仲裁窗口。
+The Arbitration window could not be opened. Try again.	无法打开仲裁窗口，请重试。
+The Arbitration window could not be positioned.	无法定位仲裁窗口。
+The Arbitration window could not be resized.	无法调整仲裁窗口大小。
+The Arbitration window could not be restored.	无法还原仲裁窗口。
+The Discord changelog could not be generated.	无法生成 Discord 更新日志。
+The application is closing.	应用正在关闭。
+The change could not be saved. Please try again.	无法保存更改，请重试。
+The crafting recipe could not be read.	无法读取制作配方。
+The debug action failed.	调试操作失败。
+The favorite could not be saved.	无法保存收藏。
+The favorite could not be updated. Try again.	无法更新收藏，请重试。
+The file picker returned an invalid file path.	文件选择器返回了无效的文件路径。
+The import could not be stopped.	无法停止导入。
+The inventory update took too long. Your saved plan is safe. Try again.	仓库更新超时。你已保存的规划安全无损，请重试。
+The linking page could not be opened. Please try again.	无法打开关联页面，请重试。
+The live Arbitration window could not be opened.	无法打开实时仲裁窗口。
+The live run status could not be loaded.	无法加载实时运行状态。
+The live run status could not be read.	无法读取实时运行状态。
+The local app data folder is unavailable.	本地应用数据文件夹不可用。
+The main window is still loading. Try again in a moment.	主窗口仍在加载，请稍后重试。
+The mod plan could not be refreshed. Your favorites are safe. Try again.	无法刷新 MOD 规划。你的收藏安全无损，请重试。
+The price-update result could not be read. Refresh your orders before trying again.	无法读取价格更新结果。请先刷新订单再重试。
+The report could not be copied.	无法复制报告。
+The request could not be completed. Try again.	无法完成请求，请重试。
+The request failed. Try again.	请求失败，请重试。
+The request took too long. Try again.	请求超时，请重试。
+The resource response was incomplete. Try refreshing your inventory.	资源响应不完整。请尝试刷新仓库。
+The response could not be read. Try again.	无法读取响应，请重试。
+The run chart data was incomplete.	记录图表数据不完整。
+The run could not be deleted.	无法删除记录。
+The run could not be exported.	无法导出记录。
+The run could not be saved.	无法保存记录。
+The run library response was incomplete.	记录库响应不完整。
+The run request timed out. Retrying automatically.	记录请求超时，正在自动重试。
+The run response did not match the current mission.	记录响应与当前任务不匹配。
+The run response was incomplete.	记录响应不完整。
+The saved subscription override could not be verified. Refresh and try again.	无法验证已保存的订阅覆盖设置。请刷新后重试。
+The shard refresh took too long. Try again.	刷新源力石超时，请重试。
+The shard response was incomplete. Try again.	源力石响应不完整，请重试。
+The simulator returned an invalid response.	模拟器返回了无效响应。
+The simulator window was closed or replaced.	模拟器窗口已关闭或被替换。
+The subscription override could not be read.	无法读取订阅覆盖设置。
+The subscription override could not be saved.	无法保存订阅覆盖设置。
+The subscription override could not be saved. Refresh to check its saved setting.	无法保存订阅覆盖设置。请刷新以检查其保存状态。
+The subscription override is already being saved.	订阅覆盖设置正在保存中。
+The welcome tour is saving. Try again in a moment.	欢迎导览正在保存，请稍后重试。
+The window could not be opened.	无法打开窗口。
+The window could not be shown.	无法显示窗口。
+Theme applied!	主题已应用！
+Theme created!	主题已创建！
+These suggestions are already covered by your stops. You can add other sources from the list.	这些建议已被你的站点覆盖。你可以从列表中添加其他来源。
+These values reflect the assumptions I want to use.	这些数值反映的是我想采用的假设。
+This Warframe is no longer in the latest inventory.	此战甲已不在最新仓库中。
+This deletes the saved report, its notes, and its retained log from AlecaFrame. This cannot be undone.	此操作会从 AlecaFrame 删除已保存的报告、其备注与保留的日志。此操作无法撤销。
+This file exceeds the 128 MiB limit. Split it into smaller logs.	此文件超过 128 MiB 上限。请将其拆分为更小的日志。
+This forecast has not been refreshed for over 24 hours. Arbitration notifications are paused until fresh data is available.	此预测已超过 24 小时未刷新。在有新数据前，仲裁通知将暂停。
+This item is not available on warframe.market.	此物品在 warframe.market 上不可用。
+This item's Mastery Rank requirement has not been met.	尚未满足此物品的精通段位要求。
+This log exceeds the limit of 1,000,000 lines. Split it into smaller logs.	此日志超过 1,000,000 行的上限。请将其拆分为更小的日志。
+This log is empty.	此日志为空。
+This model uses your conditions and independent drop trials. Log spawns do not prove kills, collection, booster state or companion effects.	此模型使用你的条件与独立掉落试验。日志中的生成记录不能证明击杀、采集、加成状态或同伴效果。
+This plan could not be saved on this device. Your changes will last for this session.	此规划无法保存在本设备上。你的更改仅在本次会话中有效。
+This reminder has already been delivered or the rotation has started.	此提醒已发送，或轮次已经开始。
+This report has no captured player names. Original log export preserves game evidence, including any names in the original text.	此报告没有采集到玩家名称。导出原始日志会保留游戏证据，包括原始文本中的任何名称。
+This run could not be opened.	无法打开此记录。
+This stats link is incomplete.	此统计链接不完整。
+This week’s Circuit rewards, Hover or click	本周无尽回廊奖励，悬停或点击
+Time since the last reward	距上次奖励的时间
+Time since the wave ended	距波次结束的时间
+Time until the next Duviri Spiral	距下一个双衍王境螺旋的时间
+Time until the next daily sortie	距下次每日突击的时间
+Timeline	时间线
+Timers	计时器
+Timers & Events and Fissures now have separate tabs beside Buy / Sell, giving fissure missions and alerts more room	计时器与事件、虚空裂缝现在在“买入 / 卖出”旁拥有独立选项卡，为裂缝任务与提醒提供更多空间
+Times use observed mission boundaries.	时间以观测到的任务边界为准。
+Timing breakdown	时间分布
+To	结束
+To, seconds	结束（秒）
+Toggle maximize	切换最大化
+Too few expected drop or non-drop events for a useful normal-approximation range.	预期掉落或非掉落事件过少，无法给出有用的正态近似区间。
+Top purchases	购买排行
+Top sales	销售排行
+Top, X / Z	顶部，X / Z
+Total build time if every recipe is crafted one after another	所有配方依次制作的总建造时间
+Total credits required for the remaining crafting steps	剩余制作步骤所需星币总计
+Total in selected range	所选范围内的总计
+Total interval	间隔总计
+Total platinum	白金总计
+Totals and counts follow the current category, search, and filters.	总计与计数随当前分类、搜索与筛选而变化。
+Tour and changelog previews closed.	导览与更新日志预览已关闭。
+Trace cost from Intact, Average platinum	从完整状态起算的光体消耗，平均白金
+Track your balances and activity while you use AlecaFrame	使用 AlecaFrame 时追踪你的余额与活动
+Trade overlay	交易叠加层
+Trading Analytics (Premium)	交易分析（高级版）
+Trading analytics could not be loaded. Please try again.	无法加载交易分析，请重试。
+Trading partners	交易伙伴
+Trading region unavailable	交易区域不可用
+Trading region:	交易区域：
+Trigger	扳机
+Try again.	重试。
+Turkish	土耳其语
+Turn off demo mode in Settings to post an order.	请在设置中关闭演示模式以发布订单。
+Turn off “Run as administrator” for Steam, the launcher and Warframe, then restart the game	关闭 Steam、启动器与 Warframe 的“以管理员身份运行”，然后重启游戏
+Ukrainian	乌克兰语
+Unable to initialize Arbitration ad	无法初始化仲裁广告
+Unable to initialize ad placement	无法初始化广告位
+Unable to load	无法加载
+Unable to load Riven	无法加载裂罅
+Unable to load attributes	无法加载属性
+Unable to load listings	无法加载挂单
+Unable to load stash	无法加载藏匿物品
+Unable to load weapon	无法加载武器
+Unavailable	不可用
+Unavailable mod	不可用的 MOD
+Unavailable recipe	不可用的配方
+Unclassified	未分类
+Unequipped shards, ready to install or fuse	未装备的源力石，可安装或融合
+Unexpected playback position. Restart before sending more lines.	回放位置异常。请先重新开始再发送更多行。
+Unique drone spawns observed during this wave. The log does not confirm individual drone kills.	本波次观测到的唯一无人机生成。日志无法确认单次无人机击杀。
+Unknown	未知
+Unknown agent	未知单位
+Unknown debug action.	未知调试操作。
+Unknown mission	未知任务
+Unknown mode	未知模式
+Unknown node	未知节点
+Unknown plan version	未知规划版本
+Unknown shard	未知源力石
+Unowned	未拥有
+Unranked	未升级
+Unranked copies available to dissolve in-game	可在游戏内分解的未升级份数
+Unrated	未评级
+Unreadable Resources plan	无法读取的资源规划
+Unrecognized effect	未识别的效果
+Unsupported Resources plan	不支持的资源规划
+Unsupported riven	不支持的裂罅
+Unsupported saved plan	不支持的已保存规划
+Unverified	未验证
+Update prices to latest	将价格更新至最新
+Update prices, quantities, and listing visibility	更新价格、数量与挂单可见性
+Updated	已更新
+Updating order prices	正在更新订单价格
+Updating plan…	正在更新规划…
+Updating prices:	正在更新价格：
+Updating ranking…	正在更新排行…
+Use	使用
+Use Keep for crafting and Safe to list before selling	出售前请使用“保留用于制作”与“可安全挂单”
+Use no more than 16 segments.	最多使用 16 个分段。
+Use the amount attributable to this run. A blank value means unknown, 0 means none collected.	使用归因于本次运行的数量。留空表示未知，0 表示未收集。
+Use the current filters in the in-game relic recommendation overlay, which always shows owned relics	在游戏内遗物推荐叠加层中使用当前筛选，该叠加层始终显示已拥有的遗物
+Use unowned & unmastered	使用未拥有且未精通的
+Version unavailable.	版本不可用。
+View Premium options	查看高级版选项
+View Riven details	查看裂罅详情
+View available and installed shards, each Warframe's sockets and fusion costs	查看可用与已安装的源力石、各战甲的插槽及融合花费
+View guide	查看指南
+View market listings	查看市场挂单
+View reward missions, Hover or click	查看奖励任务，悬停或点击
+View sell orders (WTS)	查看卖单（WTS）
+Visible	可见
+Vitus	生息精华
+Vitus / hour	生息精华 / 小时
+Vitus collected	已收集的生息精华
+Vitus per successful collected drop, before an optional companion double.	每次成功采集掉落的生息精华，在可选的同伴双倍之前。
+Void traces available for refining relics	可用于精炼遗物的虚空光体
+Wait for the current line to finish before loading a log.	请等待当前行完成后再加载日志。
+Wait for the current line to finish before loading another log.	请等待当前行完成后再加载另一份日志。
+Waiting for Foundry	正在等待铸造厂
+Waiting for Warframe data	正在等待 Warframe 数据
+Waiting for inventory	正在等待仓库数据
+Waiting for run data	正在等待运行数据
+Waiting for the gameplay start	正在等待游玩开始
+Waiting for the next Arbitration	正在等待下一场仲裁
+Waiting for wave 1	正在等待第 1 波
+Warframe overlay enabled	Warframe 叠加层已启用
+Warframe running and logged in	Warframe 正在运行且已登录
+Wave span starts at the first observed wave and includes its intermissions. Full capture also includes setup and the final decision or extraction.	波次区间从首个观测到的波次开始，并包含其间隔。完整采集还包含准备阶段与最终决策或撤离。
+Weapon bonuses unavailable	武器加成不可用
+Weapon type	武器类型
+Weapon-family history, rolling 30-day averages	武器系列历史，滚动 30 天平均值
+Weekly reset: Archon Hunt, Circuit, Nightwave and weekly traders	每周重置：执刑官猎杀、无尽回廊、午夜电波与每周商人
+Welcome	欢迎
+Wiki	维基
+World state unavailable	世界状态不可用
+You are missing parts required to sell this set	你缺少出售此套装所需的部件
+You can now resize and arrange the main window using Windows' built-in Snap features	你现在可以使用 Windows 内置的贴靠功能调整与排列主窗口
+You have an order placed on warframe.market	你在 warframe.market 上有已下单的订单
+Your Arbitration preferences could not be saved. Retrying automatically.	无法保存你的仲裁偏好，正在自动重试。
+Your Arbitration preferences could not be saved. Try again.	无法保存你的仲裁偏好，请重试。
+Your Archon shards could not be loaded. Try again.	无法加载你的执刑官源力石，请重试。
+Your account could not be linked. Please try again.	无法关联你的账户，请重试。
+Your estimate of eligible killed drones. Observed spawns do not establish kills.	你对符合条件已击杀无人机的估计。观测到的生成不能证明击杀。
+Your listings exceed your spare copies. Reduce the listed quantity to protect the copies you need to keep.	你的挂单数量超过多余份数。请降低挂单数量以保护你需要保留的份数。
+Your notes	你的备注
+Your order prices have been checked.	你的订单价格已检查。
+Your plan could not be refreshed. Your saved targets are safe. Try again.	无法刷新你的规划。你已保存的目标安全无损，请重试。
+Your plan works for this session, but could not be saved on this device.	你的规划在本次会话中可用，但无法保存在本设备上。
+Your preferences have no matches in the next seven days	未来七天内没有符合你偏好的内容
+Your route has 12 stops. Remove a stop before adding another.	你的路线已有 12 个站点。请先移除一个站点再添加。
+Your saved Resources plan could not be read. Open Resources to review it, or turn off the linked plan.	无法读取你已保存的资源规划。打开“资源”查看，或关闭关联的规划。
+Zoom in	放大
+Zoom out	缩小
+Z–A, Reverse order	Z–A，反向排序
+… (preview shortened, the full line is sent)	…（预览已截断，实际发送完整行）
+Custom Menu Scale value	自定义菜单缩放值

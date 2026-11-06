@@ -1,0 +1,29 @@
+# 运行时/本机数据（不入库）
+state/
+logs/
+backup/
+dist/
+verify/
+build-unmatched.txt
+
+# 构建产物（由 python src/build.py 生成）
+bin/alecaframe-zh-cn.js
+bin/ocr/afzh-items.js
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# 系统
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# OCR 运行期依赖（PaddleOCR/Node/Python 便携版，体积大，不入库）
+bin/ocr/.tools/
+bin/ocr/item-translations.normalized.runtime.json
+# 本机设置（OCR 开关）
+AlecaFrame-ZH.settings.json
+# 测试临时目录
+tests/tmp/

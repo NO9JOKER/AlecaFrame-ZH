@@ -15,9 +15,15 @@ DIST = os.path.join(PKG, "dist")
 ROOT_FILES = [
     "Start-Chinese.cmd", "Restore-English.cmd", "Toggle-Chinese.cmd",
     "Refresh-Chinese.cmd", "Status.cmd", "Install-Shortcuts.cmd",
+    "安装OCR前置组件.cmd", "启用中文遗物OCR.cmd", "关闭中文遗物OCR.cmd",
     "README.md", "LICENSE", "NOTICE.md", "CHANGELOG.md", "VERSION",
 ]
 DIRS = ["bin", "dict", "src", "docs"]
+
+# 运行期/本机数据，不进发布包
+EXCLUDE_DIRS = {".tools", "__pycache__", "state", "logs", "dist", "backup", "verify"}
+EXCLUDE_FILES = {"build-unmatched.txt", "item-translations.normalized.runtime.json"}
+
 
 
 def read_version():
@@ -38,9 +44,10 @@ def main():
             else:
                 missing.append(name)
         for d in DIRS:
-            for root, _dirs, files in os.walk(os.path.join(PKG, d)):
+            for root, dirs, files in os.walk(os.path.join(PKG, d)):
+                dirs[:] = [x for x in dirs if x not in EXCLUDE_DIRS]
                 for f in files:
-                    if f in ("build-unmatched.txt",):
+                    if f in EXCLUDE_FILES or f.endswith(".pyc"):
                         continue
                     p = os.path.join(root, f)
                     rel = os.path.relpath(p, PKG).replace(os.sep, "/")

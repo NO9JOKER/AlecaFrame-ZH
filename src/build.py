@@ -1,13 +1,22 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""构建 AlecaFrame-ZH 运行时脚本：合并词典 + 翻译层，输出 bin/alecaframe-zh-cn.js。
+"""构建 AlecaFrame-ZH 运行时脚本：合并词典 + 翻译层 + 可选增强模块。
 
 用法：
     python src/build.py                 # 合并 dict/ + vendor 词典，并做本地校验
     python src/build.py --skip-validate # 跳过“词条是否在应用源码中出现”的校验
     python src/build.py --app-dir "C:\\...\\Extensions\\<appId>\\3.0.6"
 
-输出：bin/alecaframe-zh-cn.js
+词典分层（后者覆盖前者）：
+    dict/items.tsv       游戏数据生成的物品/部件名（官方简中词形，权威）
+    dict/mioeu-terms.tsv 吸收自 MIOEU 的术语/物品表（只补缺口）
+    src/vendor/translations.zh-CN.json  上游 UI 词库
+    dict/fixes.tsv       上游机翻修正
+    dict/extra-*.tsv     人工补充/覆盖（最后生效）
+
+产物：
+    bin/alecaframe-zh-cn.js   注入页面的运行时（词典 + 翻译层 + 中文搜索）
+    bin/ocr/afzh-items.js     OCR 服务端用的英文->中文映射（同 source，供 vm 加载）
 """
 import argparse
 import glob
@@ -20,7 +29,9 @@ PKG = os.path.dirname(BASE)
 DICT_DIR = os.path.join(PKG, "dict")
 UPSTREAM = os.path.join(BASE, "vendor", "translations.zh-CN.json")
 ENGINE = os.path.join(BASE, "engine.js")
+SEARCH = os.path.join(BASE, "search.js")
 OUT = os.path.join(PKG, "bin", "alecaframe-zh-cn.js")
+OCR_ITEMS = os.path.join(PKG, "bin", "ocr", "afzh-items.js")
 UNMATCHED = os.path.join(PKG, "build-unmatched.txt")
 
 APP_ID = "afmcagbpgggkpdkokjhjkllpegnadmkignlonpjm"
@@ -78,14 +89,16 @@ def main():
 
     upstream = json.load(open(UPSTREAM, encoding="utf-8"))
     items = load_tsv(os.path.join(DICT_DIR, "items.tsv"))
+    mioeu = load_tsv(os.path.join(DICT_DIR, "mioeu-terms.tsv"))
     fixes = load_tsv(os.path.join(DICT_DIR, "fixes.tsv"))
     extras = {}
     for p in sorted(glob.glob(os.path.join(DICT_DIR, "extra-*.tsv"))):
         extras.update(load_tsv(p))
 
-    # 优先级：items 先铺底，再由 UI 词条覆盖同名条目
+    # 优先级：游戏数据物品名 -> MIOEU 术语补缺 -> 上游 UI -> 机翻修正 -> 人工覆盖
     merged = {}
     merged.update(items)
+    merged.update(mioeu)
     merged.update(upstream)
     merged.update(fixes)
     merged.update(extras)
@@ -98,38 +111,66 @@ def main():
         blob_parts = []
         for root, _dirs, files in os.walk(app_dir):
             for f in files:
+                # 跳过本项目自己注入的脚本，避免“词典里有的都算已存在”的假阴性
+                if f == "alecaframe-zh-cn.js" or f.startswith("afzh-"):
+                    continue
                 if f.endswith((".html", ".js", ".css")):
                     try:
                         blob_parts.append(open(os.path.join(root, f), encoding="utf-8", errors="replace").read())
                     except OSError:
                         pass
         blob = "\n".join(blob_parts)
+        # 源码里的引号/撇号是转义形式（\' \"），先还原再做包含判断，减少假阴性
+        blob_unescaped = blob.replace("\\'", "'").replace('\\"', '"')
         notfound = []
         for k in merged:
             if k not in ui_keys:
                 continue
-            if k in blob:
+            if k in blob or k in blob_unescaped:
                 continue
             esc = k.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
-            if esc in blob:
+            if esc in blob or esc in blob_unescaped:
                 continue
             notfound.append(k)
         with open(UNMATCHED, "w", encoding="utf-8") as f:
             f.write("\n".join(sorted(notfound)))
         print(f"validate: app={app_dir}")
-        print(f"validate: UI keys not found in app source: {len(notfound)} (see build-unmatched.txt)")
+        print(f"validate: UI keys not found in app source: {len(notfound)}（旧版本残留/转义差异，见 build-unmatched.txt）")
     else:
         print("validate: skipped (未找到本地 AlecaFrame 安装)")
 
     engine = open(ENGINE, encoding="utf-8").read()
-    dict_js = "window.__AFCN_DICT__ = " + json.dumps(merged, ensure_ascii=False, separators=(",", ":")) + ";\n"
-    content = "/* AlecaFrame-ZH: 自动生成，请勿手改（改 src/engine.js 与 dict/*.tsv） */\n" + dict_js + engine
+    search = open(SEARCH, encoding="utf-8").read() if os.path.exists(SEARCH) else ""
+    dict_js = (
+        "/* AlecaFrame-ZH: 自动生成，请勿手改（改 src/engine.js、src/search.js 与 dict/*.tsv） */\n"
+        "window.__AFCN_DICT__ = "
+        + json.dumps(merged, ensure_ascii=False, separators=(",", ":"))
+        + ";\n"
+        # 兼容 MIOEU 的遗物/裂罅 OCR 脚本：它们读取 __ALECAFRAME_ZH_CN_ITEMS__
+        "window.__ALECAFRAME_ZH_CN_ITEMS__ = window.__AFCN_DICT__;\n"
+    )
+    content = dict_js + engine + ("\n" + search if search else "")
     os.makedirs(os.path.dirname(OUT), exist_ok=True)
     with open(OUT, "w", encoding="utf-8", newline="\n") as f:
         f.write(content)
 
-    print(f"upstream={len(upstream)} fixes={len(fixes)} extras={len(extras)} items={len(items)} merged={len(merged)}")
+    # OCR 服务端用 vm 加载这个文件来建英文->中文映射（见 bin/ocr/relic-ocr-server.js）
+    os.makedirs(os.path.dirname(OCR_ITEMS), exist_ok=True)
+    with open(OCR_ITEMS, "w", encoding="utf-8", newline="\n") as f:
+        f.write(
+            "/* 自动生成：供 OCR 服务 vm 加载，勿手改 */\n"
+            "window.__ALECAFRAME_ZH_CN_ITEMS__ = "
+            + json.dumps(merged, ensure_ascii=False, separators=(",", ":"))
+            + ";\n"
+        )
+
+    print(
+        f"layers: items={len(items)} mioeu={len(mioeu)} upstream={len(upstream)} "
+        f"fixes={len(fixes)} extras={len(extras)}"
+    )
+    print(f"merged={len(merged)} search={'yes' if search else 'no'} engine={len(engine)}B")
     print(f"wrote {OUT} ({os.path.getsize(OUT)} bytes)")
+    print(f"wrote {OCR_ITEMS} ({os.path.getsize(OCR_ITEMS)} bytes)")
 
 
 if __name__ == "__main__":

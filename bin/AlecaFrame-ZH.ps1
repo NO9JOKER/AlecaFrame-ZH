@@ -1,4 +1,4 @@
-﻿#requires -Version 5.1
+#requires -Version 5.1
 <#
   AlecaFrame 简体中文补丁 - 启动器
   用法：
@@ -82,6 +82,13 @@ New-Item -ItemType Directory -Force -Path $script:LogDir | Out-Null
 function Write-Log {
     param([string]$Message)
     $line = "[{0}] {1}" -f (Get-Date -Format "yyyy-MM-dd HH:mm:ss"), $Message
+    try {
+        # 防止长期使用后日志无限增长（诊断包只取尾部，无需保留全部历史）
+        if ((Test-Path -LiteralPath $script:LogFile) -and ((Get-Item -LiteralPath $script:LogFile).Length -gt 2MB)) {
+            $keep = @(Get-Content -LiteralPath $script:LogFile -Tail 2000 -Encoding UTF8)
+            [System.IO.File]::WriteAllLines($script:LogFile, $keep, (New-Object System.Text.UTF8Encoding($false)))
+        }
+    } catch { }
     Add-Content -LiteralPath $script:LogFile -Value $line -Encoding UTF8
     Write-Host $line
 }

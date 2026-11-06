@@ -1,5 +1,23 @@
 # Changelog
 
+## v1.1.7 (2026-11-07)
+
+新增一键诊断包（跨机器排障）与日志滚动。
+
+### 新增
+
+- **`导出诊断包.cmd` + `scripts/Export-Diagnostics.ps1`**：把出问题机器上的
+  环境、版本、注入状态、charset 状态、OCR 组件、桌面快捷方式、启动器状态、各日志尾部
+  打包成 `桌面\AlecaFrame-ZH-Diagnostics-<时间>.zip`，直接发给维护者即可定位。
+  - 只读收集，不修改任何状态；token/密码/邮箱做粗粒度打码
+  - 打包前会提示日志中可能包含 Warframe / Warframe.Market 用户名
+- `launcher.log` 超过 2 MB 自动裁剪为最近 2000 行，避免长期使用后无限增长
+- README 新增「出问题时怎么报」；维护手册新增第 9 节「诊断包」
+
+### 变更
+
+- `scripts/package.py` 发布包包含 `导出诊断包.cmd`
+
 ## v1.1.6 (2026-11-07)
 
 修复库存/遗物中文搜索失效（根因：background.html 缺 UTF-8 声明）。

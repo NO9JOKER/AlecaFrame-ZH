@@ -15,7 +15,7 @@ DIST = os.path.join(PKG, "dist")
 ROOT_FILES = [
     "Start-Chinese.cmd", "Restore-English.cmd", "Toggle-Chinese.cmd",
     "Refresh-Chinese.cmd", "Status.cmd", "Install-Shortcuts.cmd",
-    "安装OCR前置组件.cmd", "启用中文遗物OCR.cmd", "关闭中文遗物OCR.cmd",
+    "安装OCR前置组件.cmd", "启用中文遗物OCR.cmd", "关闭中文遗物OCR.cmd", "导出诊断包.cmd",
     "README.md", "LICENSE", "NOTICE.md", "CHANGELOG.md", "VERSION",
 ]
 DIRS = ["bin", "dict", "src", "docs", "scripts"]

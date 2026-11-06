@@ -111,13 +111,14 @@ AlecaFrame-ZH/
 ├─ Start-Chinese.cmd / Restore-English.cmd / Toggle-Chinese.cmd
 ├─ Refresh-Chinese.cmd / Status.cmd / Install-Shortcuts.cmd
 ├─ 安装OCR前置组件.cmd / 启用中文遗物OCR.cmd / 关闭中文遗物OCR.cmd
+├─ 导出诊断包.cmd               一键打包日志/环境/状态，出问题直接发 zip
 ├─ bin/
 │  ├─ AlecaFrame-ZH.ps1          启动器（还原官方文件 -> 带参启动 -> 注入 -> 重载）
 │  └─ ocr/                       可选：中文 OCR 子系统（服务端 + 页面注入脚本 + 安装器）
 ├─ dict/
 │  ├─ items.tsv                  物品名对照（自动生成，18,778 条）
 │  ├─ mioeu-terms.tsv            吸收自 MIOEU 的术语补缺
-│  ├─ extra-1..8.tsv             UI 文案词库（人工维护）
+│  ├─ extra-1..9.tsv             UI 文案词库（人工维护）
 │  └─ fixes.tsv                  覆盖上游机翻错误
 ├─ src/
 │  ├─ engine.js                  运行时翻译层（DOM 遍历 + MutationObserver + 规则）
@@ -135,7 +136,7 @@ AlecaFrame-ZH/
 │  ├─ 可行性评估.md              早期技术调研存档
 │  └─ images/                    截图
 ├─ tests/                        搜索模块单元测试
-├─ scripts/build.ps1 / package.py / test-inject.ps1
+├─ scripts/build.ps1 / package.py / test-inject.ps1 / Export-Diagnostics.ps1
 └─ .github/workflows/            CI：构建校验 + 语法检查 + 测试 + tag 发布
 ```
 
@@ -177,6 +178,24 @@ Start-Chinese.cmd
 
 > 仓库里只有源码与词典；`bin/alecaframe-zh-cn.js`、`bin/ocr/afzh-items.js` 是构建产物，Release zip 内已包含。
 > 仓库**不含任何本机路径、账号或环境变量**；`bin/ocr/.tools`（OCR 运行期依赖）只在执行 `安装OCR前置组件.cmd` 时下载，不入库。
+
+---
+
+## 🐞 出问题时怎么报（其他电脑同样适用）
+
+双击 **`导出诊断包.cmd`**，会在桌面生成 `AlecaFrame-ZH-Diagnostics-<时间>.zip`，把这个 zip 发给维护者即可。它只**读取**不修改，包含：
+
+| 内容 | 说明 |
+|---|---|
+| `env.txt` | 系统版本、Overwolf/AlecaFrame 版本、注入状态、charset 是否补上、OCR 组件与模型、快捷方式 |
+| `status.txt` | `Status.cmd` 的输出（汉化状态 / 会话参数 / OCR 开关） |
+| `injection.txt` | 10 个页面各自注入了哪些脚本、是否声明 UTF-8 |
+| `logs/` | `launcher.log`、`ocr-install.log`、OCR 运行日志、上次会话状态 |
+| `overwolf/` | Overwolf 自己的窗口日志尾部（含扩展加载/校验信息） |
+
+> 日志里可能含 Warframe 用户名、Warframe.Market 用户名；token/密码/邮箱已做粗略打码，回传前可自行检查。
+
+常见故障的排查顺序：`Status.cmd` → `logs\launcher.log` → `导出诊断包.cmd`。
 
 ---
 

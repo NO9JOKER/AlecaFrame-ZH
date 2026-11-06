@@ -1,5 +1,19 @@
 # Changelog
 
+## v1.1.2 (2026-11-07)
+
+修复 OCR 前置组件安装"假失败"（模型其实已装好，但校验报不完整）。
+
+### 修复
+
+- **`Test-PaddleModels` 找错目录**：PaddleOCR 2.9.1 把模型放 `~/.paddleocr`，运行时
+  （`relic-ocr-server.js`）把 `HOME/USERPROFILE` 设为 `<tools>\paddleocr-home`，而安装器把
+  `HOME/USERPROFILE` 设成 `.tools`，模型落到 `.tools\.paddleocr`，校验却在 `paddleocr-home` 下找，
+  于是永远报"模型文件仍不完整"。
+  - 安装器改为 `HOME/USERPROFILE = paddleocr-home`，与运行时一致；
+  - 校验同时检查两处目录；
+  - 已按旧逻辑下载过模型的机器，安装器会自动把 `.tools\.paddleocr` 迁移过去，不重复下载。
+
 ## v1.1.1 (2026-11-07)
 
 修复 OCR 前置组件安装失败（退出码 1）。

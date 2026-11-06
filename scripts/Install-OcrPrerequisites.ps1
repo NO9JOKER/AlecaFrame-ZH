@@ -109,16 +109,25 @@ assert PIL.__version__ == "12.3.0", PIL.__version__
 }
 
 function Test-PaddleModels {
-    $modelFiles = @(
-        (Join-Path $cacheRoot ".paddleocr\whl\det\ch\ch_PP-OCRv4_det_infer\inference.pdmodel"),
-        (Join-Path $cacheRoot ".paddleocr\whl\det\ch\ch_PP-OCRv4_det_infer\inference.pdiparams"),
-        (Join-Path $cacheRoot ".paddleocr\whl\rec\ch\ch_PP-OCRv4_rec_infer\inference.pdmodel"),
-        (Join-Path $cacheRoot ".paddleocr\whl\rec\ch\ch_PP-OCRv4_rec_infer\inference.pdiparams"),
-        (Join-Path $cacheRoot ".paddleocr\whl\cls\ch_ppocr_mobile_v2.0_cls_infer\inference.pdmodel"),
-        (Join-Path $cacheRoot ".paddleocr\whl\cls\ch_ppocr_mobile_v2.0_cls_infer\inference.pdiparams")
+    # PaddleOCR 2.9.1 把模型放在 ~/.paddleocr；本项目把 HOME/USERPROFILE 指到 .tools，
+    # 所以实际落在 <toolsRoot>\.paddleocr（旧版本/其它环境也可能在 paddleocr-home 下）。
+    $roots = @(
+        (Join-Path $toolsRoot ".paddleocr"),
+        (Join-Path $cacheRoot ".paddleocr")
     )
-
-    return ($modelFiles | Where-Object { -not (Test-Path -LiteralPath $_) }).Count -eq 0
+    $relFiles = @(
+        "whl\det\ch\ch_PP-OCRv4_det_infer\inference.pdmodel",
+        "whl\det\ch\ch_PP-OCRv4_det_infer\inference.pdiparams",
+        "whl\rec\ch\ch_PP-OCRv4_rec_infer\inference.pdmodel",
+        "whl\rec\ch\ch_PP-OCRv4_rec_infer\inference.pdiparams",
+        "whl\cls\ch_ppocr_mobile_v2.0_cls_infer\inference.pdmodel",
+        "whl\cls\ch_ppocr_mobile_v2.0_cls_infer\inference.pdiparams"
+    )
+    foreach ($root in $roots) {
+        $missing = @($relFiles | Where-Object { -not (Test-Path -LiteralPath (Join-Path $root $_)) })
+        if ($missing.Count -eq 0) { return $true }
+    }
+    return $false
 }
 
 function Ensure-PortablePython {
@@ -173,8 +182,19 @@ function Ensure-PortableNode {
 New-Item -ItemType Directory -Path $toolsRoot,$downloadRoot,$cacheRoot -Force | Out-Null
 $env:PADDLE_HOME = $cacheRoot
 $env:XDG_CACHE_HOME = $cacheRoot
-$env:HOME = $toolsRoot
-$env:USERPROFILE = $toolsRoot
+# 必须与运行时一致：bin\ocr\relic-ocr-server.js 启动 Python worker 时把 HOME/USERPROFILE
+# 设成 <tools>\.tools\paddleocr-home，PaddleOCR 的 ~/.paddleocr 就落在那里。
+# 早期版本这里写成 $toolsRoot，导致模型装到 .tools\.paddleocr、运行时要重新下载。
+$env:HOME = $cacheRoot
+$env:USERPROFILE = $cacheRoot
+
+# 兼容早期安装：把模型目录搬到运行时真正读取的位置，避免重复下载
+$legacyModelDir = Join-Path $toolsRoot ".paddleocr"
+$modelDir = Join-Path $cacheRoot ".paddleocr"
+if ((Test-Path -LiteralPath $legacyModelDir) -and -not (Test-Path -LiteralPath $modelDir)) {
+    Write-Step "迁移已下载的模型到运行时目录：$modelDir"
+    Move-Item -LiteralPath $legacyModelDir -Destination $modelDir -Force
+}
 
 Write-Step "准备便携 Python $pythonVersion"
 Ensure-PortablePython

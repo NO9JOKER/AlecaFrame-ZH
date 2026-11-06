@@ -101,6 +101,11 @@ foreach ($p in $pages) {
     if (-not $c.Contains("assets/js/alecaframe-zh-cn.js")) { $allTagged = $false; Write-Host "    缺少标签: $p" }
 }
 Check $allTagged "10 个页面全部注入脚本标签"
+$bg = Get-Content (Join-Path $web "background.html") -Raw
+$metaPos = $bg.IndexOf('<meta charset="utf-8">')
+$firstScript = $bg.IndexOf("<script")
+Check ($metaPos -ge 0) "background.html 补了 <meta charset=utf-8>"
+Check ($metaPos -ge 0 -and $metaPos -lt $firstScript) "charset 声明位于第一个 <script> 之前（浏览器据此按 UTF-8 解码注入脚本）"
 
 Write-Host "`n[2] 重复注入的幂等性"
 $before = (Get-Content (Join-Path $web "main.html") -Raw).Split("alecaframe-zh-cn.js").Count

@@ -1,5 +1,24 @@
 # Changelog
 
+## v1.1.6 (2026-11-07)
+
+修复库存/遗物中文搜索失效（根因：background.html 缺 UTF-8 声明）。
+
+### 修复
+
+- **根因（运行时自检实证）**：`background.html` 没有 `<meta charset>`，浏览器按 Windows-1252 解码
+  注入的脚本，脚本里所有中文字面量（整份词典、`hasChinese` 的判断对象）都变成乱码
+  （`膛线` 被读成 `U+00E8 U+2020 U+203A ...`）。于是：
+  - `hasChinese("膛线")` 返回 false → 中文查询被当成英文放过；
+  - 反向索引的键也是乱码 → 查不到 `膛线 -> Serration`。
+  main.html 有 charset，所以界面显示正常，只有 background 里的插件级搜索钩子失效。
+- **启动器修复**：注入前检查页面是否声明 charset，缺失则在 `<!DOCTYPE>`/`<head>` 之后（所有 `<script>` 之前）
+  插入 `<meta charset="utf-8">`。目前只有 `background.html` 需要补。
+- 中文查询解析改为**直接查运行时反向索引 Map**（`index.reverse`），不再依赖包装函数；
+  另加零宽字符清理与 CJK-only 兜底。
+- 新增运行期自检日志：启动时打印 `膛线→Serration`、`hasChinese`、字符码点，便于以后一眼定位编码问题。
+- `scripts/test-inject.ps1` 增加断言：background.html 必须补 charset 且位于第一个 `<script>` 之前。
+
 ## v1.1.5 (2026-11-07)
 
 中文搜索改为「中文 -> 英文查询改写」，修复库存/遗物里中文搜不到的问题。

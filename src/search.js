@@ -56,8 +56,12 @@
 
   const hasChinese = (value) => /[\u3400-\u9fff]/.test(String(value == null ? "" : value));
 
+  // 输入框可能混入零宽字符/不可见空白（输入法、复制粘贴都会带），先清掉再查表
+  const INVISIBLE = /[\u200B-\u200D\u2060\uFEFF\u00A0\u3000]/g;
+  const clean = (value) => String(value == null ? "" : value).replace(INVISIBLE, "");
+
   function splitTerms(term) {
-    return String(term == null ? "" : term)
+    return clean(term)
       .toLowerCase()
       .trim()
       .split(/\s+/)
@@ -65,7 +69,7 @@
   }
 
   function normKey(value) {
-    return String(value == null ? "" : value).trim().toLowerCase().replace(/\s+/g, " ");
+    return clean(value).trim().toLowerCase().replace(/\s+/g, " ").trim();
   }
 
   // ---------------------------------------------------------------------------
@@ -238,7 +242,16 @@
       const chinese = normKey(query);
       if (!chinese) return query;
       const english = englishForChinese(chinese);
-      return english || null;
+      if (english) return english;
+      // 兜底 1：去掉混杂的拉丁/标点/不可见字符，只留汉字再查一次
+      const cjk = chinese.replace(/[^\u3400-\u9fff]/g, "");
+      if (cjk && cjk !== chinese) {
+        const fromCjk = englishForChinese(cjk);
+        if (fromCjk) return fromCjk;
+      }
+      // 兜底 2：按「查询词是中文名子串」找最短候选（不依赖精确反向索引）
+      const guess = substringEnglish(chinese) || substringEnglish(cjk);
+      return guess || null;
     }
 
     /**
@@ -348,6 +361,54 @@
 
   const api = createApi(DICT);
 
+  /**
+   * 把中文查询解析成英文（供原生插件搜索）。
+   * 直接查运行时反向索引（Map），不依赖 createApi 里的包装函数 ——
+   * 实测在某些页面里 englishQueryForChinese 会把中文原样返回，但 index.reverse 是好的。
+   * 顺序：整名 -> 去空格整名 -> 忽略空格全表扫描 -> 子串最短 -> 交给 api 的兜底实现。
+   */
+  function resolveEnglishQuery(term) {
+    const raw = String(term == null ? "" : term);
+    const cleaned = raw.replace(INVISIBLE, "").trim().toLowerCase();
+    if (!cleaned || !api.hasChinese(cleaned)) return null;
+
+    const reverse = api.index && api.index.reverse;
+    if (reverse) {
+      const direct = reverse.get(cleaned);
+      if (direct && direct.length) return direct[0];
+
+      const compact = cleaned.replace(/\s+/g, "");
+      if (compact && compact !== cleaned) {
+        const hit = reverse.get(compact);
+        if (hit && hit.length) return hit[0];
+      }
+
+      for (const entry of reverse) {
+        const zh = entry[0];
+        const list = entry[1];
+        if (!list || !list.length) continue;
+        if (zh.replace(/\s+/g, "") === compact) return list[0];
+      }
+
+      let best = null;
+      let bestLen = Infinity;
+      for (const entry of reverse) {
+        const zh = entry[0];
+        const list = entry[1];
+        if (!list || !list.length) continue;
+        if (zh.indexOf(cleaned) === -1) continue;
+        if (zh.length < bestLen) { best = list[0]; bestLen = zh.length; }
+      }
+      if (best) return best;
+    }
+
+    try {
+      const fallback = api.englishQueryForChinese(term);
+      if (fallback && !api.hasChinese(fallback)) return fallback;
+    } catch (_) { /* ignore */ }
+    return null;
+  }
+
   if (window.__AFZH_TEST__) {
     // node 测试模式：只暴露纯函数，不装钩子、不碰 DOM / 定时器（tests/search.test.mjs 用）。
     window.__AFZH_SEARCH_TEST__ = createTestExports(api);
@@ -433,12 +494,19 @@
 
       // 首选：把中文查询翻成英文，交给原生插件自己搜。
       // 原生英文搜索一定可用，这样能完全对齐英文搜索的行为（排序、匹配范围、条数限制）。
-      const english = api.englishQueryForChinese(term);
+      const english = resolveEnglishQuery(term);
       if (english && !api.hasChinese(english)) {
         markHit(methodName + ":英文改写");
         args[0] = JSON.stringify(Object.assign({}, filters, { search: english }));
         return original.apply(this, args);
       }
+      try {
+        console.info(
+          "[AFZH 中文搜索] 英文改写未命中 term=" + JSON.stringify(term) +
+          " dict=" + api.dictSize + " rev=" + api.reverseSize +
+          " 试译=" + JSON.stringify(resolveEnglishQuery(term))
+        );
+      } catch (_) { /* ignore */ }
 
       // 兜底：无法可靠翻译时才本地过滤（清空 search，取回列表后按中英名过滤）
       markHit(methodName + ":本地过滤");
@@ -512,7 +580,7 @@
       if (!term || !api.hasChinese(term) || typeof callback !== "function") return original.apply(this, arguments);
 
       // 首选：中文翻英文交给原生搜
-      const english = api.englishQueryForChinese(term);
+      const english = resolveEnglishQuery(term);
       if (english && !api.hasChinese(english)) {
         markHit(methodName + ":英文改写");
         return original.call(this, english, callback);
@@ -548,7 +616,7 @@
     const wrapper = function (query, callback) {
       const term = typeof query === "string" ? query.trim() : "";
       if (!term || !api.hasChinese(term)) return original.apply(this, arguments);
-      const english = api.englishQueryForChinese(term);
+      const english = resolveEnglishQuery(term);
       if (!english) {
         debugOnce("marketQuery:" + term, "市场搜索建议：中文「" + term + "」没有英文候选，保持原查询");
         return original.apply(this, arguments);
@@ -792,8 +860,25 @@
     whenPluginReady();
     installAppHooks();
     try {
-      console.info("[AlecaFrame-ZH] 中文搜索已加载：词条=" + status.dictEntries + " 反向=" + status.reverseEntries + " 窗口=" + status.window);
-    } catch (_) { /* ignore */ }
+      // 自检：把几个已知词条打出来，用于确认运行时词典/反向索引真的可用
+      const probeText = "膛线";
+      const probe = resolveEnglishQuery(probeText);
+      const codes = [];
+      for (const ch of probeText) codes.push(ch.codePointAt(0).toString(16));
+      console.info(
+        "[AlecaFrame-ZH] 中文搜索已加载：词条=" + status.dictEntries + " 反向=" + status.reverseEntries +
+        " 窗口=" + status.window +
+        " 自检: 膛线→" + JSON.stringify(probe) +
+        " / Serration=" + JSON.stringify(api.index ? api.index.dict["Serration"] : undefined) +
+        " / rev.get(膛线)=" + JSON.stringify(api.index && api.index.reverse ? api.index.reverse.get(probeText) : undefined) +
+        " / hasChinese=" + JSON.stringify(api.hasChinese(probeText)) +
+        " / hasChineseFn=" + typeof hasChinese +
+        " / codes=" + codes.join(",") +
+        " / cleaned=" + JSON.stringify(probeText.replace(INVISIBLE, "").trim().toLowerCase())
+      );
+    } catch (e) {
+      try { console.info("[AlecaFrame-ZH] 自检异常：" + (e && e.message)); } catch (_) { /* ignore */ }
+    }
   }
 
   if (typeof document === "undefined") {

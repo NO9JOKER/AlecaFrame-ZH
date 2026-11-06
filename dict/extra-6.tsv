@@ -1,0 +1,107 @@
+No preferences set	未设置偏好
+Filter by mission, node, or favorites	按任务、节点或收藏筛选
+Configure	配置
+Search nodes, planets, or mission types	搜索节点、星球或任务类型
+All relics	全部遗物
+Values for opening one relic	开启单个遗物的价值
+All resources	全部资源
+Search resources by name	按名称搜索资源
+Not needed	不需要
+All unlocks	全部解锁
+to keep	保留
+Recorded activity	已记录活动
+Days recorded	记录天数
+Total trades	交易总数
+Choose a graph	选择图表
+All mods	全部 MOD
+Not maxed	未满级
+Owned, not maxed	已拥有，未满级
+Not owned	未拥有
+Max rank owned	已拥有满级
+Endo owned / needed	内融核心 已拥有 / 需要
+Credits owned / needed	星币 已拥有 / 需要
+extra to spare	额外可用
+Search mods	搜索 MOD
+Perfect	完美
+still needed	仍需
+Collection tracking	收藏追踪
+Progress unavailable	进度不可用
+Ready to max	可升至满级
+copies remaining	剩余数量
+Owned / mastered	已拥有 / 已精通
+Not owned or mastered	未拥有或未精通
+Balance history	余额历史
+Totals in selected range	所选范围合计
+No record	无记录
+Recorded	已记录
+Show more sources	显示更多来源
+Ownership unavailable	拥有情况不可用
+Search missions, enemies, or relics	搜索任务、敌人或遗物
+Relic ownership	遗物拥有情况
+Ready to upgrade	可升级
+Saving up	积攒中
+Acquire this mod	获取该 MOD
+Needs rank or inventory data	需要等级或仓库数据
+All alerts	全部提醒
+Any price	任意价格
+Any rerolls	任意洗练次数
+Any	任意
+Finish	完成
+Next	下一个
+Next 10	后 10 条
+Today	今天
+Tomorrow	明天
+Mon	周一
+Tue	周二
+Wed	周三
+Thu	周四
+Fri	周五
+Sat	周六
+Sun	周日
+Jan	一月
+Feb	二月
+Mar	三月
+Apr	四月
+May	五月
+Jun	六月
+Jul	七月
+Aug	八月
+Sep	九月
+Oct	十月
+Nov	十一月
+Dec	十二月
+AlecaFrame automatically detects your account, inventory and progress as you play	AlecaFrame 会在你游玩时自动识别账户、仓库与进度
+AlecaFrame receives inventory updates regularly while you play, keeping your collection up to date	AlecaFrame 会在你游玩时定期接收仓库更新，保持收藏数据最新
+AlecaFrame receives inventory updates through Overwolf's Warframe integration while you play	AlecaFrame 会在你游玩时通过 Overwolf 的 Warframe 集成获取仓库更新
+Add an email and password in your warframe.market account settings, then use them here	请先在 warframe.market 账户设置中添加邮箱与密码，然后在此使用
+AlecaFrame prices make updates faster and safer, with better protection against price manipulation. Choose warframe.market to check live prices instead. Orders stay unchanged if no matching price is found.	AlecaFrame 定价更快更安全，并能更好地防止价格操纵。也可以选择 warframe.market 查看实时价格。未匹配到价格时订单保持不变。
+Automatic checks are temporarily unavailable. You can review these requirements yourself while we try again.	自动检查暂时不可用。我们重试期间你可以自行核对这些要求。
+Changes include gains and spending. Dates show the available comparison; a dash means insufficient records.	变化包含收入与支出。日期显示可对比范围；短横线表示记录不足。
+Enable Windows notifications or Discord delivery in Settings. AlecaFrame must be running to send alerts.	请在设置中启用 Windows 通知或 Discord 推送。AlecaFrame 需保持运行才能发送提醒。
+Enter a relay, then leave and return to your Orbiter. You can repeat this whenever you need an update.	进入中继站，然后离开并返回轨道飞行器。需要更新时可重复此操作。
+Loops are average attempts at a reward table, rotation, stage, or enemy drop. Each rate is estimated separately.	循环次数是奖励表、轮次、阶段或敌人掉落的平均尝试次数，各项掉率分别估算。
+Most Tauforged	最多 Tauforged
+Notify me when a new fissure matches any rule below. These rules are separate from the view filters.	当新的虚空裂缝符合以下任一规则时通知我。这些规则与视图筛选器相互独立。
+Open Warframe and return to your Orbiter to load your inventory. Your craftable favorites still appear here.	打开 Warframe 并返回轨道飞行器以加载仓库。可制作收藏仍会显示在这里。
+Open your account panel in the left sidebar and choose Troubleshoot data for guided checks	在左侧栏打开账户面板，选择“排查数据问题”进行引导检查
+Playback uses the current inventory and all normal app handlers, including overlays, trade/stat recording, and Arbitration history. Real game messages continue arriving. Restart replays actions; it does not undo them.	回放使用当前仓库和所有正常处理逻辑（包括叠加层、交易/统计记录与仲裁历史）。真实游戏消息仍会继续到达。重新开始只是重放操作，不会撤销这些操作。
+Progenitor bonus	Progenitor 加成
+Relic estimates are per relic. Drops are random, and sources may have access or event requirements.	遗物估算按单个遗物计算。掉落是随机的，来源可能有进入条件或活动限制。
+Reminders use your saved advance notice. Keep AlecaFrame running and notification delivery enabled.	提醒使用你保存的提前通知设置。请保持 AlecaFrame 运行并开启通知推送。
+Select any number of choices in each group. Empty groups include everything. Changes save automatically	每组可任意多选。留空表示包含全部。更改会自动保存。
+Some recipes are unavailable or incomplete. The list below is a partial estimate; check the marked goals.	部分配方不可用或不完整。下方列表为部分估算，请检查标记的目标。
+Star a node on the schedule. The favorite applies to every occurrence of that node.	在日程中给节点加星。收藏对该节点的每次出现都生效。
+Use the bell beside a future rotation to save a reminder. Recurring alerts can stay off.	点击未来轮次旁的铃铛保存提醒。定期提醒可以保持关闭。
+When you join a squad, you are responsible for making sure you can complete the tasks listed in the title/requirements. Multiple offences will result in a ban. If you are close to meeting the requirements, it is allowed to join the squad and ask in the chat if everyone is ok with your situation.	加入小队后，你有责任确保能完成标题/要求中列出的任务，多次违规会被封禁。若你接近满足要求，也可以加入并在聊天中询问大家是否接受你的情况。
+You don't need to enter your Warframe password in AlecaFrame. Signing in to warframe.market is separate and optional	你无需在 AlecaFrame 中输入 Warframe 密码。登录 warframe.market 是独立且可选的。
+Your inventory is not available yet. Launch Warframe and refresh your inventory to see ranks and upgrade budgets.	你的仓库尚不可用。请启动 Warframe 并刷新仓库以查看等级与升级预算。
+covers all recorded trades. Net platinum is received minus spent, including purchases you still own. It does not track resale profit.	覆盖所有已记录交易。净白金为收入减支出（包含仍持有的购买），不追踪转售利润。
+include up to 35 sales or purchase items, or 50 market items or partners. Sorting reloads the ranking; search filters those results.	最多包含 35 个出售/购买物品，或 50 个市场物品/伙伴。排序会重新加载排行，搜索会筛选这些结果。
+uses current prices and average volume from the latest 7 daily records. Estimated daily value is price × volume.	使用当前价格与最近 7 天日均交易量。每日估算价值 = 价格 × 交易量。
+All owned parts	全部已拥有部件
+Safe to list	可安全上架
+More to list	还可上架
+Ducats each	每个杜卡德
+Overview	概览
+warframe.market Riven URL or ID	warframe.market 裂罅 URL 或 ID
+All	全部

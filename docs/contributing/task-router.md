@@ -66,7 +66,7 @@
 | 必读 | AGENTS → runtime AGENTS → 搜索原理 → 目标 hook 文件 → 对应页面卡（目标） |
 | 可改 | `src/runtime/features/search/` 或其 hooks 子模块；C 阶段前按现行 `src/search.js` |
 | 注意 | 插件级 hook 只在 background 有效、应用级只在 main；参数形态不同；失败只能 debugOnce，不能抛异常 |
-| 验证 | 49 项搜索测试、hook 安装计数、真机仓库/铸造厂/赋能/遗物规划器/裂罅等界面 |
+| 验证 | 现有搜索测试全过（数量以测试输出为准）、hook 安装计数、真机仓库/铸造厂/赋能/遗物规划器/裂罅等界面 |
 
 ## 6. 页面适配器
 
@@ -99,7 +99,7 @@
 | 当前等价 | [docs/OCR集成说明.md](../OCR集成说明.md)、`bin/ocr/`（现行路径） |
 | 必读 | AGENTS → OCR AGENTS → OCR 集成说明 → manifest |
 | 可改 | 仅 manifest/路径/文档；OCR 逻辑、端口、全局名、官方补丁点禁改 |
-| 验证 | 静态检查 + 合成注入 9/9 + server 启动冒烟 + （可选）真实 OCR 识别 |
+| 验证 | 静态检查 + 合成注入全过（脚本清单以 OCR manifest/launcher 为准）+ server 启动冒烟 + （可选）真实 OCR 识别 |
 | 注意 | 部署后的脚本名/flat 路径保持 `assets/js/afzh-*.js`，不要改注入契约 |
 
 ## 9. 构建 / CI / 发布

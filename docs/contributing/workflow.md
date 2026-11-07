@@ -42,7 +42,7 @@ node tests\search.test.mjs
 | Tier | 开发者必须做 |
 |---|---|
 | T0 | 改词典/文档：build + Refresh，截图受影响界面；改文档无需真机 |
-| T1 | 改引擎/规则/搜索：49+ 测试、规则 golden、受影响界面前后截图、日志 `[AlecaFrame-ZH] loaded translated=...` |
+| T1 | 改引擎/规则/搜索：现有搜索/规则测试全过（数量以测试输出为准）、规则 golden、受影响界面前后截图、日志 `[AlecaFrame-ZH] loaded translated=...` |
 | T2 | 改 launcher/注入/OCR/CI：完整 `Start / Restore / Refresh / Toggle / Status`，保存日志、截图、bundle hash；验证回滚 |
 
 具体证据字段见 [evidence.md](evidence.md)。没有真机证据的 T1/T2 PR 不进入合并讨论。

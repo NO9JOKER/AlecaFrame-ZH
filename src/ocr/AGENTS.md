@@ -40,7 +40,7 @@ bin/ocr/
 
 - 端口 `127.0.0.1:38147`；HTTP endpoint 与 `docs/OCR集成说明.md` 一致。
 - 全局名：`__ALECAFRAME_ZH_CN_ITEMS__` 等与 MIOEU 兼容的名字；具体清单见 `CONTRACT.md`。
-- 9 个页面脚本 → 5 个页面的映射；不要重命名部署文件名。
+- 页面脚本与页面映射以 `manifest.json` 为准；不要依赖文档里的数量。不要重命名部署文件名。
 - 官方文件补丁点：`relicOverlay/main.js` 奖励回退、`rivenOverlay.html` 的 `:key`；必须可还原。
 - launcher 只通过 `manifest.json` 读取清单；不要再新增第二份 OCR 脚本/页面清单。
 
@@ -75,7 +75,7 @@ powershell -ExecutionPolicy Bypass -File scripts\verify.ps1
 powershell -ExecutionPolicy Bypass -File scripts\test-inject.ps1
 ```
 
-- 断言 9/9 页面脚本能从新源路径复制到合成页面树并注入。
+- 断言 manifest 中每个页面脚本都能从新源路径复制到合成页面树并注入。
 - 启动 server（不加载 Paddle 模型）确认能读 `bin/ocr/afzh-items.js`、监听 38147；随后停止。
 - 真实 OCR：如果本机有 `.tools/` 与游戏环境，按 [docs/OCR集成说明.md](../../docs/OCR集成说明.md) 跑一次遗物/叠加层；否则在 PR 证据里写“实际识别未验证”。
 

@@ -39,7 +39,7 @@ src/runtime/
 
 - 现有实现：[src/engine.js](../../src/engine.js)、[src/search.js](../../src/search.js)、[src/relic-reward-fallback.js](../../src/relic-reward-fallback.js)。
 - C/D 阶段先补测试，再拆分；拆分顺序：engine 纯函数/规则 → search index/query/filters → hooks → adapters。
-- 现有测试：`tests/search.test.mjs`（49 项）；engine 规则目前无测试，拆分前必须补 golden/单测。
+- 现有测试：`tests/search.test.mjs`（数量以测试输出为准）；engine 规则目前无测试，拆分前必须补 golden/单测。
 - 页面注册表 `pages.json` 在 E 阶段创建，launcher 读取它。当前页面清单仍在 launcher 常量中。
 
 ## 5. 验证

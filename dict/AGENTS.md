@@ -33,7 +33,7 @@
 
 ## 4. 当前（A 阶段）的特殊说明
 
-- 现在仍是 `items.tsv`、`mioeu-terms.tsv`、`vendor/translations.zh-CN.json`、`fixes.tsv`、`extra-1..12.tsv`；`extra` 数字升序覆盖。
+- 现在仍是 `items.tsv`、`mioeu-terms.tsv`、`vendor/translations.zh-CN.json`、`fixes.tsv` 和现有 `extra-*.tsv` 分层；`extra` 数字升序覆盖（数量/编号以实际文件为准）。
 - B 阶段会一次性迁移到新布局；迁移要求 0 行为变化，见 [docs/refactor/dict-migration-acceptance.md](../docs/refactor/dict-migration-acceptance.md)。
 - 迁移前加词条按现行约定（优先加编号最大的 extra），但要在 PR 中说明这是过渡写法。
 

@@ -15,15 +15,17 @@ T0 通常只需 `SIM` + 截图；T1 至少 `SIM` + 受影响页面 `REAL`；T2 �
 
 ## 2. 必填字段（PR 模板里有对应栏位）
 
+> 下面的版本号/数量只是示例，不是当前事实；实际填写以本机环境、`VERSION`、命令输出为准。把尖括号占位符替换为实际值。
+
 ```yaml
 environment:
-  os: Windows 11 23H2
-  alecaframe: 3.0.6
-  overwolf: 0.311.1.6
+  os: Windows <版本>
+  alecaframe: <本机实际版本>
+  overwolf: <本机实际版本>
   repo_commit: <head SHA>
-  version: 1.1.11 或 1.2.0-rc
+  version: <VERSION 或待发布版本>
   bundle_sha256: <bin/alecaframe-zh-cn.js 的前 16 位或完整值>
-  ocr_enabled: false
+  ocr_enabled: <true/false>
 commands:
   - cmd: python src\build.py
     exit: 0

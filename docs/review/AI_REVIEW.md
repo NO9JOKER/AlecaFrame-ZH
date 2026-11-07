@@ -51,7 +51,7 @@ node tests\search.test.mjs
 - 词典 PR：检查 `dict`/`scan_missing` 报告、合并键数、覆盖是否被静默改变。
 - 运行时 PR：规则/fixture 单测、hook 安装计数、`__AFZH_SEARCH_TEST__` 纯函数导出。
 - launcher PR：在本机跑 `scripts/test-inject.ps1`（合成页面树）；不要在没有备份的情况下直接对真实安装做破坏性测试。
-- OCR PR：只允许 manifest/路径/文档；检查 9 个脚本清单、部署名不变、端口/全局名不变；server 冒烟。
+- OCR PR：只允许 manifest/路径/文档；检查 manifest 中的页面脚本清单、部署名不变、端口/全局名不变；server 冒烟。
 
 ## 5. 代码/契约复核清单
 

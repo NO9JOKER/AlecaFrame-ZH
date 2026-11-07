@@ -42,8 +42,8 @@ src/launcher/
 
 ## 4. 当前（A 阶段）说明
 
-- 现有实现：[bin/AlecaFrame-ZH.ps1](../../bin/AlecaFrame-ZH.ps1)（911 行，44 个函数），页面清单/OCR 清单/flag 都在文件顶部。
-- 现有测试：`scripts/test-inject.ps1`（27 项，合成页面树）尚未接入 `verify`/CI；E 阶段先接入，再拆模块。
+- 现有实现：[bin/AlecaFrame-ZH.ps1](../../bin/AlecaFrame-ZH.ps1)（当前为单文件；行数/函数数以实际为准），页面清单/OCR 清单/flag 都在文件顶部。
+- 现有测试：`scripts/test-inject.ps1`（合成页面树；检查项数量以脚本输出为准）尚未接入 `verify`/CI；E 阶段先接入，再拆模块。
 - 拆分顺序：先 Snapshot/Patch，再 Overwolf/State，最后 Ocr/Cli；每步保存行为等价证据。
 - `test-inject.ps1` 目前通过文本切片加载 PS1；拆分时要同步改为 dot-source 模块，否则测试会失效。
 

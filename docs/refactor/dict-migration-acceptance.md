@@ -12,7 +12,7 @@
 - 引擎可见映射：`norm` 空白折叠后的 first-wins map；
 - 引擎的纯拉丁小写索引 `lowerMap` 的键集合与值一致；
 - `translateValue()` 对全部键 + 固定语料的输出一致；
-- 搜索测试 49 项、`scan_missing` 的 known 集合（或显式允许的差异清单）一致；
+- 现有 search 测试全过（数量以测试文件/输出为准）、`scan_missing` 的 known 集合（或显式允许的差异清单）一致；
 - 构建产物仍包含必需标记，生成路径不变。
 
 ### 不要求
@@ -71,7 +71,7 @@ const sandbox = {
 
 ### 2.3 搜索层
 
-- `tests/search.test.mjs` 继续跑（49 项）；
+- `tests/search.test.mjs` 继续跑（数量以测试文件为准）；
 - B 阶段额外加一个轻量对照：用旧/新 dict 分别构建 `search` 的反向索引，抽样 200 个中文查询，比较 `englishForChinese` 输出；
 - 不要求合并后的 `search.js` 行为完全不变（结构迁移不应改 search 源码；若有改动，必须显式说明）。
 
@@ -89,6 +89,8 @@ python tools/dict_verify.py compare-dicts --old <old.json> --new <new.json> [--j
 
 - 在**迁移前**的干净 base commit 上运行；
 - 按旧 `build.py` 逻辑加载，输出：
+
+> 下面 JSON 里的 `18778` / `25310` / `25309` 只是示例值，不是验收期望；实际以脚本输出为准。
 
 ```json
 {
@@ -153,6 +155,8 @@ python tools/dict_verify.py compare-dicts --old <old.json> --new <new.json> [--j
 }
 ```
 
+> 以上 `counts` 是示例值；实际以 `snapshot`/`verify` 输出为准。
+
 ## 5. 验收标准
 
 结构迁移 PR（B）必须全部满足：
@@ -161,7 +165,7 @@ python tools/dict_verify.py compare-dicts --old <old.json> --new <new.json> [--j
 2. `normalized` 的键集合与值完全相等；
 3. `lower` 的键集合与值完全相等；
 4. `translate()` 对全部键 + 语料输出一致；
-5. `tests/search.test.mjs` 49 项全过；
+5. 现有 search 测试全过（数量以测试文件为准）；
 6. `scan_missing` 的 known 集合一致，或差异逐条列出并说明（不可静默变）；
 7. `python src/build.py` 成功；产物含 `__AFCN_DICT__` / `__ALECAFRAME_ZH_CN_ITEMS__`；
 8. 构建两次，合并 dict 的 sha256 一致；

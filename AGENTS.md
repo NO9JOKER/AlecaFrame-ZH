@@ -13,10 +13,11 @@
 ## 1. 项目是什么
 
 - 这是 Overwolf 应用 AlecaFrame 的**非官方简体中文补丁**，不是 AlecaFrame 源码分支。
-- 运行方式：启动器带 Overwolf 校验绕过参数启动，向 10 个页面注入一个 JS bundle（词典 + 翻译引擎 + 中文搜索）；OCR 是可选子系统。
-- 基线：AlecaFrame `3.0.6` / Overwolf `0.311.1.6`；当前发布 `v1.1.11`，重构目标 `v1.2.0`。
+- 运行方式：启动器带 Overwolf 校验绕过参数启动，向 AlecaFrame 中需要汉化的页面注入一个 JS bundle（词典 + 翻译引擎 + 中文搜索）；具体页面清单以 launcher / `pages.json` / 生成矩阵为准，不要依赖文档里的数字。
+- 兼容性基线（2026-11-08 核对）：AlecaFrame `3.0.6` / Overwolf `0.311.1.6`；当时发布 `v1.1.11`，重构目标 `v1.2.0`。
+- **这些是基线快照，不是永久事实**：升级 AlecaFrame/Overwolf、发版或改页面清单时，必须同 PR 更新本节及 `docs/refactor/v1.2.0-report.md`；AI 发现它们与 `VERSION`、本机安装目录或命令输出不一致时，以实际为准并指出文档过期。
 - 不要修改官方安装包的签名/DLL；唯一允许的官方文件原地补丁是 OCR 相关文件，且必须可还原。
-- 规模会变，以下只作方向感，不作验收数字：词典约 2.5 万键；bundle 约 95% 是词典数据；运行时主链路约 3 千行；OCR 约 6 千行且本轮只搬家、不重写。
+- 规模会变：词典是数据主体，bundle 大部分是词典数据；运行时主链路是少量代码；OCR 是独立可选子系统，且本轮只搬家、不重写。具体数字以构建/报告输出为准，不要写死。
 
 ## 2. 先读什么
 
@@ -33,7 +34,7 @@
 - 启动器/注入：`src/launcher/AGENTS.md`、[docs/维护手册.md](docs/维护手册.md)；
 - OCR：`src/ocr/AGENTS.md`、[docs/OCR集成说明.md](docs/OCR集成说明.md)。
 
-不要读：`bin/` 生成物、全部 2.5 万条词条、旧 771 行架构说明中与任务无关的章节、`dist/`、`state/`、`logs/`。
+不要读：`bin/` 生成物、全部词条、旧架构说明中与任务无关的章节、`dist/`、`state/`、`logs/`。
 
 ## 3. 稳定命令（当前可用）
 
@@ -155,3 +156,24 @@ launcher / tools / tests 可以读所有层，但不能被运行时依赖
 - [docs/decisions/0001-capability-first-architecture.md](docs/decisions/0001-capability-first-architecture.md)
 - [docs/decisions/0002-contribution-and-review-model.md](docs/decisions/0002-contribution-and-review-model.md)
 - [docs/refactor/v1.2.0-report.md](docs/refactor/v1.2.0-report.md)
+
+## 13. 事实来源与文档维护
+
+以下事实会变。本文件只写“截至 2026-11-08”的基线，不承担永久正确性；需要当前值时查唯一来源：
+
+| 事实 | 唯一来源 | 写死规则 |
+|---|---|---|
+| 当前发布版本 | 根 `VERSION` + `CHANGELOG.md` | 发版提交必须同步 §1 与报告 |
+| 宿主版本 | 本机安装目录/诊断包 | 升级后更新 §1 基线；旧值不能当现状 |
+| 页面清单/注入数量 | `pages.json`（E 阶段后）/ launcher 当前常量；`PAGE_MATRIX.md` 生成 | 不在代码/文档里另写一份 |
+| 词典条数/冲突/覆盖 | `tools/dict.py report` / 构建输出 / `DICT_REPORT.md` | 不把数字写进正文 |
+| 测试数量 | 测试命令输出 | 只写“现有测试全过”，不写死条数 |
+| OCR 页面脚本与映射 | `src/ocr/manifest.json`（E 阶段后）/ 当前 launcher 常量 | 不从文档抄数量 |
+| bundle 内容与路径 | `build.py` + `modules.json` + 生成产物 | 以产物/构建报告为准 |
+
+规则：
+
+1. 文中出现“当前/最新/基线”时，必须带日期或指向来源；否则视为可能过期。
+2. 修改上述事实（版本、页面、词典结构、测试、OCR 映射）必须同 PR 更新引用它的文档；CI/复核检查链接与生成索引，不靠记忆。
+3. AI 发现文档与 `VERSION`、安装目录、命令输出不一致：以实际为准，不按旧文档推断；在 PR/报告中指出过期文档。
+4. 可推导的数字优先由脚本生成（`MODULE_MAP`/`PAGE_MATRIX`/`DICT_REPORT`），散文只写判断与坑。

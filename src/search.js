@@ -28,6 +28,8 @@
   if (window.__AFZH_SEARCH__) return;
 
   const DICT = (window.__AFCN_DICT__ && typeof window.__AFCN_DICT__ === "object") ? window.__AFCN_DICT__ : null;
+  // 遗物基础名 -> 奖励中文名（空格分隔）。由 src/build_relic_rewards.py 生成、build.py 注入。
+  const RELIC_REWARDS = (window.__AFCN_RELIC_REWARDS__ && typeof window.__AFCN_RELIC_REWARDS__ === "object") ? window.__AFCN_RELIC_REWARDS__ : null;
 
   // ---------------------------------------------------------------------------
   // 词形表：与 src/build_items.py 的 PART_ZH / REFINE_EN / REFINE_ZH 保持一致
@@ -254,9 +256,27 @@
       return guess || null;
     }
 
+    /** 遗物奖励中文名：去掉精炼后缀后查 __AFCN_RELIC_REWARDS__；没有就返回空串。 */
+    function relicRewardText(item) {
+      if (!RELIC_REWARDS || !item) return "";
+      const name = typeof item.name === "string" ? item.name : "";
+      if (!name) return "";
+      let text = RELIC_REWARDS[name];
+      if (!text) {
+        for (const suffix of REFINE_EN) {
+          if (name.length > suffix.length && name.endsWith(suffix)) {
+            text = RELIC_REWARDS[name.slice(0, -suffix.length)];
+            break;
+          }
+        }
+      }
+      return typeof text === "string" ? text.toLowerCase() : "";
+    }
+
     /**
      * 本地过滤：按空格拆词后 **每个词都必须命中**（AND）。
      * 每个字段的可搜索文本 = 中文字幕名 + 英文原名（都小写），所以中英文混输也能过滤。
+     * 遗物额外拼上奖励中文名（库存遗物列表只带遗物名，奖励由 __AFCN_RELIC_REWARDS__ 提供）。
      */
     function filterItems(items, term, nameFields) {
       if (!Array.isArray(items)) return items;
@@ -271,6 +291,8 @@
           const value = item[field];
           if (typeof value === "string" && value) chunks.push(searchableName(value));
         }
+        const relicText = relicRewardText(item);
+        if (relicText) chunks.push(relicText);
         if (!chunks.length) return false;
         const haystack = chunks.join(" ");
         return terms.every((single) => haystack.indexOf(single) !== -1);
@@ -304,8 +326,7 @@
     }
 
     /** 市场建议项：urlName 用标记前缀携带英文名，点击时再向插件换取真实 slug。 */
-    function marketSuggestions(term, limit) {
-      return suggestions(term, limit).map((hit) => ({
+    function marketSuggestions(term, limit) {      return suggestions(term, limit).map((hit) => ({
         name: hit.chinese,
         english: hit.english,
         urlName: MARKET_MARKER + encodeURIComponent(hit.english),

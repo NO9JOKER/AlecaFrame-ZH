@@ -57,9 +57,9 @@ function buildSampledDict({ pick = [], sampleEvery = 500 } = {}) {
   return dict;
 }
 
-/** 用假 window 执行 search.js，返回测试 API。 */
-function loadSearchModule(dict) {
-  const fakeWindow = { __AFZH_TEST__: true, __AFCN_DICT__: dict };
+/** 用假 window 执行 search.js，返回测试 API。extra 用于注入 __AFCN_RELIC_REWARDS__ 等。 */
+function loadSearchModule(dict, extra) {
+  const fakeWindow = Object.assign({ __AFZH_TEST__: true, __AFCN_DICT__: dict }, extra || {});
   const run = new Function("window", "console", SEARCH_SRC); // eslint-disable-line no-new-func
   run(fakeWindow, console);
   const api = fakeWindow.__AFZH_SEARCH_TEST__;
@@ -515,6 +515,31 @@ test("赋能页：英文查询原样交给原方法", () => {
   assert.ok(mod.hookArcaneApp(app));
   app.receiveArcaneProgress(1, true, "{}", false, false);
   assert.equal(called, 1);
+});
+
+// ---------------------------------------------------------------------------
+console.log("\n[12] 遗物模糊搜索（奖励中文名参与匹配）");
+// ---------------------------------------------------------------------------
+
+const RELIC_REWARDS = {
+  "Axi I1": "死亡魔方 prime 系统 猎豹 prime 蓝图",
+  "Neo N1": "forma 蓝图 kavasa prime kubrow collar blueprint"
+};
+
+test("遗物：部分中文按奖励中文名命中（死亡 → 含「死亡魔方」奖励的遗物）", () => {
+  const mod = loadSearchModule(HOOK_DICT, { __AFCN_RELIC_REWARDS__: RELIC_REWARDS });
+  const api = mod.defaultApi;
+  const items = [{ name: "Axi I1" }, { name: "Neo N1" }];
+  assert.deepEqual(api.filterItems(items, "死亡", ["name"]).map((x) => x.name), ["Axi I1"]);
+  assert.deepEqual(api.filterItems(items, "魔方", ["name"]).map((x) => x.name), ["Axi I1"]);
+  assert.deepEqual(api.filterItems(items, "Forma", ["name"]).map((x) => x.name), ["Neo N1"]);
+});
+
+test("遗物：精炼后缀（Radiant 等）不影响奖励匹配", () => {
+  const mod = loadSearchModule(HOOK_DICT, { __AFCN_RELIC_REWARDS__: RELIC_REWARDS });
+  const api = mod.defaultApi;
+  const items = [{ name: "Axi I1 Radiant" }, { name: "Neo N1" }];
+  assert.deepEqual(api.filterItems(items, "死亡", ["name"]).map((x) => x.name), ["Axi I1 Radiant"]);
 });
 
 // ---------------------------------------------------------------------------

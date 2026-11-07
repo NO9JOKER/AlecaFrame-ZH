@@ -141,10 +141,27 @@ def main():
 
     engine = open(ENGINE, encoding="utf-8").read()
     search = open(SEARCH, encoding="utf-8").read() if os.path.exists(SEARCH) else ""
+
+    # 遗物奖励索引：库存「遗物」列表只带遗物名，中文模糊搜索（如「死亡」→ 含「死亡魔方」奖励的遗物）
+    # 需要奖励中文名一起参与匹配。数据由 src/build_relic_rewards.py 生成后入库（CI 无需 cachedData）。
+    relic_rewards = {}
+    relic_path = os.path.join(DICT_DIR, "relic-rewards.tsv")
+    if os.path.exists(relic_path):
+        for line in open(relic_path, encoding="utf-8"):
+            line = line.rstrip("\r\n")
+            if "\t" not in line:
+                continue
+            key, value = line.split("\t", 1)
+            if key and value:
+                relic_rewards[key] = value
+
     dict_js = (
         "/* AlecaFrame-ZH: 自动生成，请勿手改（改 src/engine.js、src/search.js 与 dict/*.tsv） */\n"
         "window.__AFCN_DICT__ = "
         + json.dumps(merged, ensure_ascii=False, separators=(",", ":"))
+        + ";\n"
+        + "window.__AFCN_RELIC_REWARDS__ = "
+        + json.dumps(relic_rewards, ensure_ascii=False, separators=(",", ":"))
         + ";\n"
         # 兼容 MIOEU 的遗物/裂罅 OCR 脚本：它们读取 __ALECAFRAME_ZH_CN_ITEMS__
         "window.__ALECAFRAME_ZH_CN_ITEMS__ = window.__AFCN_DICT__;\n"

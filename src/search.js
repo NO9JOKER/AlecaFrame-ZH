@@ -938,15 +938,66 @@
     return hookArcaneApp(window.inventoryApp);
   }
 
+  /**
+   * 裂罅上架 WFM 的诊断：
+   *  - 把 WFM 报错 toast 的完整文本写进控制台（toast 原本不进日志，出错时无从查）；
+   *  - 上架前记录武器名、属性描述与三档价格，便于定位是哪个词条导致 400（如熔接词条）。
+   */
+  function installRivenListingDiagnostics() {
+    let ok = false;
+    const toast = window.showErrorToast;
+    if (typeof toast === "function" && !window.__afzhToastHook) {
+      window.showErrorToast = function (message) {
+        try {
+          if (typeof message === "string" && /listing riven|WFM/i.test(message)) {
+            console.info("[AFZH 诊断] WFM 报错：" + message);
+          }
+        } catch (_) { /* ignore */ }
+        return toast.apply(this, arguments);
+      };
+      window.__afzhToastHook = true;
+    }
+    const app = window.rivenDetailsApp;
+    if (app && typeof app.listOnWFM === "function" && !app.__afzhListHook) {
+      const original = app.listOnWFM.bind(app);
+      app.listOnWFM = function () {
+        try {
+          const riven = this.riven || {};
+          const traits = [];
+          for (const weapon of riven.statsPerWeapon || []) {
+            for (const level of (weapon && weapon.byLevel) || []) {
+              for (const trait of (level.positiveTraits || []).concat(level.negativeTraits || [])) {
+                if (trait) traits.push(trait.description || trait.name || trait);
+              }
+            }
+          }
+          const summary = traits.length ? traits : riven.traits || [];
+          console.info(
+            "[AFZH 诊断] WFM 上架尝试：武器=" + JSON.stringify(riven.weaponName || "") +
+            " 属性=" + JSON.stringify(summary).slice(0, 1200) +
+            " 价格=" + [this.WFMsellingPrice, this.WFMstartingPrice, this.WFMbuyoutPrice].join("/") +
+            " 类型=" + JSON.stringify(this.listType) + " 可见性=" + JSON.stringify(this.listVisibility)
+          );
+        } catch (_) { /* ignore */ }
+        return original.apply(this, arguments);
+      };
+      app.__afzhListHook = true;
+      ok = true;
+    }
+    return ok;
+  }
+
   function installAppHooks() {
     let attempts = 0;
     const tick = () => {
       const relic = safeCall(installRelicPlannerHook, false);
       const market = safeCall(installMarketPanelHook, false);
       const arcane = safeCall(installInventoryArcaneHook, false);
+      const rivenDiag = safeCall(installRivenListingDiagnostics, false);
       status.hooks.relicPlanner = !!relic;
       status.hooks.marketPanel = !!market;
       status.hooks.inventoryArcane = !!arcane;
+      status.hooks.rivenListing = !!rivenDiag;
       if (relic && market && arcane) return;
       attempts++;
       if (attempts >= 40) {

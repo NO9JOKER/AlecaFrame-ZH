@@ -9,13 +9,17 @@
 
   const DICT = window.__AFCN_DICT__ || {};
   const SKIP_TAGS = new Set(["SCRIPT", "STYLE", "TEXTAREA", "CODE", "PRE", "NOSCRIPT", "OPTION"]);
-  const ATTRS = ["placeholder", "title", "aria-label", "data-tooltip"];
+  const ATTRS = ["placeholder", "title", "aria-label", "data-tooltip", "data-tippy-content"];
 
   const norm = (s) => String(s).replace(/\s+/g, " ").trim();
+  const hasCjk = (s) => /[\u3400-\u9fff]/.test(s);
   const map = new Map();
+  const lowerMap = new Map(); // 纯拉丁键的小写索引：WFM 等外部数据大小写不固定（Status damage / Status Damage）
   for (const k of Object.keys(DICT)) {
     const nk = norm(k);
-    if (nk && !map.has(nk)) map.set(nk, DICT[k]);
+    if (!nk || map.has(nk)) continue;
+    map.set(nk, DICT[k]);
+    if (!hasCjk(nk) && !lowerMap.has(nk.toLowerCase())) lowerMap.set(nk.toLowerCase(), DICT[k]);
   }
   window.__AFCN_DICT__ = DICT;
 
@@ -61,6 +65,7 @@
   const RULES = [
     // 裂罅属性（已揭示裂罅/裂罅探索器卡片）：插件把「数值+属性名」拼成一个文本节点，
     // 如 `+109.9% Critical Damage` / `x1.5 Damage to Corpus`；属性名本身翻不出来整串就不动。
+    [/^(\d+(?:\.\d+)?)% match$/, (m) => m[1] + "% 匹配"],
     [/^([+-]?\d[\d,]*(?:\.\d+)?%)\s+(.+)$/, (m) => {
       const raw = m[2].trim();
       const translated = translateValue(raw);
@@ -72,6 +77,13 @@
     [/^x(\d+(?:\.\d+)?)\s+(.+)$/, (m) => {
       const label = translateValue(m[2]);
       return label === null ? null : "x" + m[1] + " " + label;
+    }],
+    // WFM 相似裂罅卡片：属性名不带数值，只有正负号（`+Multishot`、`-Zoom`、`+Crit. chance`）。
+    [/^([+\-\u2212\u2013\u2014\uFF0D])\s*([A-Za-z][^\d].*)$/, (m) => {
+      const label = translateValue(m[2]);
+      if (label === null) return null;
+      const sign = "+-\u2212\u2013\u2014\uFF0D".indexOf(m[1]) === 0 ? "+" : "-";
+      return sign + label;
     }],
     [/^Last record: (.+)$/, (m, rec) => "最后记录：" + (rec || m[1])],
     [/^Today, (.+)$/, (m, rec) => "今天，" + (rec || m[1])],
@@ -115,6 +127,10 @@
     if (!key || !/[A-Za-z]/.test(key)) return null;
     const hit = map.get(key);
     if (hit !== undefined) return hit;
+    if (!hasCjk(key)) {
+      const lowerHit = lowerMap.get(key.toLowerCase());
+      if (lowerHit !== undefined) return lowerHit;
+    }
     const composite = translateComposite(key);
     if (composite !== null) return composite;
     return applyRule(key);
@@ -124,14 +140,24 @@
   function translateTextNode(node) {
     const raw = node.nodeValue;
     if (!raw || raw.length > 400) return;
-    const hit = translateValue(raw);
-    let next = hit;
-    // 裂罅卡片里的伤害类型要显示成「冰冻伤害 / 火焰伤害」（图标由 app 自己渲染；
-    // 名字可能是独立文本节点，走不到百分比规则，所以按祖先 class 判定上下文）。
+    let next = translateValue(raw);
+    // 裂罅卡片里的伤害类型要显示成「冰冻伤害 / 火焰伤害」（图标由 app 自己渲染）；
+    // 属性名可能是独立文本节点、也可能带纯数字前缀（`+0.3 Range`），都要按上下文处理。
     if (inRivenContext(node)) {
       const trimmed = norm(raw);
-      if (next === null && DAMAGE_LABELS.has(trimmed)) next = trimmed;
-      if (next !== null && DAMAGE_LABELS.has(next)) next = next + "伤害";
+      if (next === null) {
+        // 纯数值 / 带秒单位（`+0.3 Range`、`6s Combo Duration`）加属性名
+        const flat = trimmed.match(/^([+-]?\d[\d,]*(?:\.\d+)?)(s?)\s+([A-Za-z][^\d].*)$/);
+        if (flat) {
+          const translated = translateValue(flat[3]);
+          if (translated !== null) {
+            next = flat[1] + (flat[2] ? " 秒" : " ") + rivenLabel(translated);
+          }
+        }
+      } else {
+        next = rivenLabel(next);
+      }
+      if (next === null && DAMAGE_LABELS.has(trimmed)) next = rivenLabel(trimmed);
     }
     if (next === null) return;
     const m = raw.match(/^(\s*)([\s\S]*?)(\s*)$/);
@@ -139,6 +165,13 @@
     const tail = m ? m[3] : "";
     const text = lead + next + tail;
     if (text !== raw) { node.nodeValue = text; translated++; stats.text++; }
+  }
+
+  /** 裂罅上下文里的伤害类型补「伤害」后缀；`寒冷` 按游戏词形改为「冰冻」。 */
+  function rivenLabel(label) {
+    if (label.indexOf("伤害") !== -1) return label;
+    const fixed = label === "寒冷" ? "冰冻" : label;
+    return DAMAGE_LABELS.has(fixed) ? fixed + "伤害" : label;
   }
 
   /** 文本节点是否位于裂罅卡片内（祖先 class 含 riven）。 */

@@ -47,6 +47,7 @@ powershell -ExecutionPolicy Bypass -File tools\verify.ps1
 node tests\search.test.mjs
 node tests\runtime.test.mjs
 node tests\rules.test.mjs
+node tests\search-feature.test.mjs
 ```
 
 真机操作仅 Windows：

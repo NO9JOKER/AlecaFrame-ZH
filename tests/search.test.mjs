@@ -5,8 +5,9 @@
  * 运行：node tests/search.test.mjs
  *
  * 做法：用假 window（__AFZH_TEST__ + __AFCN_DICT__）执行 src/search.js，
- * 从 repo/dict/items.tsv 抽样 + 精选真实词条构造 __AFCN_DICT__，
+ * 从 build/generated/dictionary.json 抽样 + 精选真实词条构造 __AFCN_DICT__，
  * 只测可注入的纯函数；不装钩子、不碰 DOM、不需要 AlecaFrame 运行。
+ * 前置：先运行 python tools\build.py 生成字典产物。
  */
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
@@ -15,7 +16,7 @@ import { fileURLToPath } from "node:url";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const SEARCH_SRC = readFileSync(path.join(ROOT, "src", "search.js"), "utf8");
-const ITEMS_TSV = readFileSync(path.join(ROOT, "dict", "items.tsv"), "utf8");
+const DICT_JSON = JSON.parse(readFileSync(path.join(ROOT, "build", "generated", "dictionary.json"), "utf8"));
 
 let passed = 0;
 const failures = [];
@@ -32,26 +33,15 @@ function test(name, fn) {
   }
 }
 
-/** 从 items.tsv 读成 {英文: 中文}；pick 里的名字必须存在，其余按步长抽样。 */
+/** 从当前构建字典读成 {英文: 中文}；pick 里的名字必须存在，其余按步长抽样。 */
 function buildSampledDict({ pick = [], sampleEvery = 500 } = {}) {
   const dict = {};
-  const lines = ITEMS_TSV.split(/\r?\n/);
-  const byEnglish = new Map();
-  for (const line of lines) {
-    if (!line) continue;
-    const tab = line.indexOf("\t");
-    if (tab <= 0) continue;
-    const english = line.slice(0, tab);
-    const chinese = line.slice(tab + 1);
-    if (!english || !chinese) continue;
-    byEnglish.set(english, chinese);
-  }
   for (const english of pick) {
-    assert.ok(byEnglish.has(english), "dict/items.tsv 里缺少测试词条：" + english);
-    dict[english] = byEnglish.get(english);
+    assert.ok(english in DICT_JSON, "构建字典里缺少测试词条：" + english);
+    dict[english] = DICT_JSON[english];
   }
   let index = 0;
-  for (const [english, chinese] of byEnglish) {
+  for (const [english, chinese] of Object.entries(DICT_JSON)) {
     if (index++ % sampleEvery === 0 && !(english in dict)) dict[english] = chinese;
   }
   return dict;

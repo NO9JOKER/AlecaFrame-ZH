@@ -50,10 +50,26 @@
       "notes": "DOM 文本/属性翻译、观察器、裂罅上下文"
     },
     {
+      "id": "features.search.api",
+      "file": "features/search/api.js",
+      "layer": "features",
+      "deps": [],
+      "risk": "T1",
+      "notes": "中文搜索纯索引/查询 API"
+    },
+    {
+      "id": "features.search.runtime",
+      "file": "features/search/runtime.js",
+      "layer": "features",
+      "deps": ["features.search.api"],
+      "risk": "T1",
+      "notes": "中文搜索插件/应用 hook、诊断与启动"
+    },
+    {
       "id": "entry",
       "file": "entry.js",
       "layer": "entry",
-      "deps": ["core.normalize", "core.dict-index", "core.composite", "rules.index", "core.translate", "dom.index"],
+      "deps": ["core.normalize", "core.dict-index", "core.composite", "rules.index", "core.translate", "dom.index", "features.search.api", "features.search.runtime"],
       "risk": "T1",
       "notes": "组合根：构建 translator、暴露兼容全局、启动 DOM"
     }

@@ -19,7 +19,7 @@ dict/
 1. `python tools\dict.py lookup "<英文>"` 查是否已存在；
 2. 在 `entries/common` 或 `entries/screens` 选目标文件（跨屏 → common；功能专属 → screens）；
 3. 追加 `英文<TAB>中文`；确保与界面文本逐字符一致；
-4. `python tools\dict.py check`（初始数据有大小写/no-CJK 告警；W1b 清理后再用 `--strict`）；
+4. `python tools\dict.py check --strict`；
 5. `python tools\build.py`；真机 `Refresh-Chinese.cmd` 截图。
 
 ## 改已有译文

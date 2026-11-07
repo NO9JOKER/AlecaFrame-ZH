@@ -36,11 +36,9 @@ python tools\dict.py lookup "No preferences set" --json
 加完：
 
 ```powershell
-python tools\dict.py check
+python tools\dict.py check --strict
 python tools\build.py
 ```
-
-> 初始数据存在大小写/no-CJK 告警；W1b 清理后再启用 `--strict`。
 
 真机：`Refresh-Chinese.cmd`，到受影响界面截图；T0 不需要完整 Start/Restore。
 

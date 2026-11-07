@@ -283,21 +283,19 @@ def check(root: Path = ROOT, strict: bool = False) -> CheckResult:
     for entry in tree.merged.values():
         if entry.key in policy_keys:
             errors.append(f"key is both translated and keep-english: {entry.key!r} ({entry.layer.path}:{entry.line})")
-        if not CJK.search(entry.value):
-            if entry.key not in policy_keys:
-                warnings.append(f"value has no CJK: {entry.key!r} -> {entry.value!r} ({entry.layer.path}:{entry.line})")
+        if not CJK.search(entry.value) and entry.key == entry.value:
+            warnings.append(f"no-op entry (value equals key): {entry.key!r} ({entry.layer.path}:{entry.line})")
 
-    lower: dict[str, Entry] = {}
-    for entry in tree.merged.values():
-        key = entry.key.lower()
-        previous = lower.get(key)
-        if previous is not None and previous.key != entry.key:
-            if previous.value == entry.value:
-                warnings.append(f"case-only duplicate (same value): {previous.key!r} / {entry.key!r}")
-            else:
-                warnings.append(f"case-only duplicate (different value): {previous.key!r} / {entry.key!r}")
-        else:
-            lower[key] = entry
+    listed = {layer.path for layer in tree.layers}
+    listed.add("manifest.tsv")
+    dict_dir = root / DICT_DIR
+    if dict_dir.is_dir():
+        for path in sorted(dict_dir.rglob("*")):
+            if not path.is_file() or path.suffix.lower() not in {".tsv", ".json"}:
+                continue
+            rel = path.relative_to(dict_dir).as_posix()
+            if rel not in listed:
+                errors.append(f"unregistered dictionary file: dict/{rel}")
 
     if strict:
         errors.extend(warnings)

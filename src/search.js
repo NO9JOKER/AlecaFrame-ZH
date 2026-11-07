@@ -28,6 +28,8 @@
   if (window.__AFZH_SEARCH__) return;
 
   const DICT = (window.__AFCN_DICT__ && typeof window.__AFCN_DICT__ === "object") ? window.__AFCN_DICT__ : null;
+  // 遗物基础名 -> 奖励中文名（空格分隔）。由 src/build_relic_rewards.py 生成、build.py 注入。
+  const RELIC_REWARDS = (window.__AFCN_RELIC_REWARDS__ && typeof window.__AFCN_RELIC_REWARDS__ === "object") ? window.__AFCN_RELIC_REWARDS__ : null;
 
   // ---------------------------------------------------------------------------
   // 词形表：与 src/build_items.py 的 PART_ZH / REFINE_EN / REFINE_ZH 保持一致
@@ -254,9 +256,27 @@
       return guess || null;
     }
 
+    /** 遗物奖励中文名：去掉精炼后缀后查 __AFCN_RELIC_REWARDS__；没有就返回空串。 */
+    function relicRewardText(item) {
+      if (!RELIC_REWARDS || !item) return "";
+      const name = typeof item.name === "string" ? item.name : "";
+      if (!name) return "";
+      let text = RELIC_REWARDS[name];
+      if (!text) {
+        for (const suffix of REFINE_EN) {
+          if (name.length > suffix.length && name.endsWith(suffix)) {
+            text = RELIC_REWARDS[name.slice(0, -suffix.length)];
+            break;
+          }
+        }
+      }
+      return typeof text === "string" ? text.toLowerCase() : "";
+    }
+
     /**
      * 本地过滤：按空格拆词后 **每个词都必须命中**（AND）。
      * 每个字段的可搜索文本 = 中文字幕名 + 英文原名（都小写），所以中英文混输也能过滤。
+     * 遗物额外拼上奖励中文名（库存遗物列表只带遗物名，奖励由 __AFCN_RELIC_REWARDS__ 提供）。
      */
     function filterItems(items, term, nameFields) {
       if (!Array.isArray(items)) return items;
@@ -271,6 +291,8 @@
           const value = item[field];
           if (typeof value === "string" && value) chunks.push(searchableName(value));
         }
+        const relicText = relicRewardText(item);
+        if (relicText) chunks.push(relicText);
         if (!chunks.length) return false;
         const haystack = chunks.join(" ");
         return terms.every((single) => haystack.indexOf(single) !== -1);
@@ -304,8 +326,7 @@
     }
 
     /** 市场建议项：urlName 用标记前缀携带英文名，点击时再向插件换取真实 slug。 */
-    function marketSuggestions(term, limit) {
-      return suggestions(term, limit).map((hit) => ({
+    function marketSuggestions(term, limit) {      return suggestions(term, limit).map((hit) => ({
         name: hit.chinese,
         english: hit.english,
         urlName: MARKET_MARKER + encodeURIComponent(hit.english),
@@ -355,6 +376,7 @@
       REFINE_ZH,
       MARKET_MARKER,
       filterRelicPlannerPayload,
+      hookArcaneApp,
       defaultApi
     };
   }
@@ -409,12 +431,6 @@
     return null;
   }
 
-  if (window.__AFZH_TEST__) {
-    // node 测试模式：只暴露纯函数，不装钩子、不碰 DOM / 定时器（tests/search.test.mjs 用）。
-    window.__AFZH_SEARCH_TEST__ = createTestExports(api);
-    return;
-  }
-
   // ---------------------------------------------------------------------------
   // 运行状态 / 诊断（浏览器控制台里 __AFZH_SEARCH__ 可看到钩子是否生效）
   // ---------------------------------------------------------------------------
@@ -453,6 +469,16 @@
     }
   }
 
+  if (window.__AFZH_TEST__) {
+    // node 测试模式：只暴露纯函数与钩子工厂（不装钩子、不碰 DOM / 定时器），tests/search.test.mjs 用。
+    const testExports = createTestExports(api);
+    testExports.resolveEnglishQuery = resolveEnglishQuery;
+    testExports.hookJsonSearchMethod = hookJsonSearchMethod;
+    testExports.hookRivenWeapons = hookRivenWeapons;
+    window.__AFZH_SEARCH_TEST__ = testExports;
+    return;
+  }
+
   function getNativePlugin() {
     const plugin = window.plugin;
     if (!plugin || typeof plugin.get !== "function") return null;
@@ -465,9 +491,21 @@
   // ---------------------------------------------------------------------------
 
   /**
-   * 通用「JSON 查询里带中文 search」的钩子：
-   *   - 把 query JSON 里的 search 清空，让原生插件按其它过滤条件返回完整列表；
-   *   - 拿到 JSON 数组后用自己的索引过滤，再交回原回调（回调参数原样透传）。
+   * 通用「JSON 查询里带中文 search」的钩子。
+   *
+   * v1.1.8 起顺序改为「**本地过滤优先**」（v1.1.5~1.1.7 是英文改写优先）：
+   *   1) 中文查询不送原生：把 query JSON 里的 search 清空，让插件按其它过滤条件（分类/筛选）
+   *      返回该页面的完整列表，再用中文/英文双向索引在本地过滤 —— 因此支持**部分中文**
+   *      （输入「死亡」能命中「死亡使徒」「死亡魔方」等），且只在当前分类/筛选范围内匹配；
+   *   2) 本地过滤 0 命中时，若有可靠的英文候选，再退回一次「英文查询改写」交原生搜
+   *      （覆盖「列表里的物品名在词典里翻不出来」的情况）；
+   *   3) 英文/空查询完全不干预。
+   *
+   * 为什么不能优先做英文改写（v1.1.5 的做法）：反向索引里混着 UI 术语，部分中文会被查成
+   * 一个无关的英文名。实测 2026-11-07：`dict/mioeu-terms.tsv` 有 `Death -> 死亡`，
+   * 用户输入「死亡」被改写成 `Death`，原生在铸造厂里一个都搜不到 → 空列表；
+   * 而同一份词典里「死亡使徒」= Kaszas 本来是能本地匹配上的。
+   *
    * @param {string[]|null} nameFields 过滤用的字段；null 表示只清空 search（数据由事件异步回来）。
    * @param {{forceTrueIndex?: number}} options forceTrueIndex：把该下标的实参强制为 true。
    *        「库存」用它把 includeAll（mainInventory.js:318 的第 2 个实参）置 true ——
@@ -482,80 +520,103 @@
     if (original.__afzhWrapped) return true;
 
     const opts = options || {};
+
     const wrapper = function (query) {
+      const nativeThis = this;
       let filters = null;
       safeCall(() => { filters = JSON.parse(query); }, null);
-      if (!filters || typeof filters !== "object") return original.apply(this, arguments);
+      if (!filters || typeof filters !== "object") return original.apply(nativeThis, arguments);
 
       const term = typeof filters.search === "string" ? filters.search.trim() : "";
-      if (!term || !api.hasChinese(term)) return original.apply(this, arguments);
+      if (!term || !api.hasChinese(term)) return original.apply(nativeThis, arguments);
 
       const args = Array.prototype.slice.call(arguments);
 
-      // 首选：把中文查询翻成英文，交给原生插件自己搜。
-      // 原生英文搜索一定可用，这样能完全对齐英文搜索的行为（排序、匹配范围、条数限制）。
-      const english = resolveEnglishQuery(term);
-      if (english && !api.hasChinese(english)) {
-        markHit(methodName + ":英文改写");
-        args[0] = JSON.stringify(Object.assign({}, filters, { search: english }));
-        return original.apply(this, args);
-      }
-      try {
-        console.info(
-          "[AFZH 中文搜索] 英文改写未命中 term=" + JSON.stringify(term) +
-          " dict=" + api.dictSize + " rev=" + api.reverseSize +
-          " 试译=" + JSON.stringify(resolveEnglishQuery(term))
-        );
-      } catch (_) { /* ignore */ }
-
-      // 兜底：无法可靠翻译时才本地过滤（清空 search，取回列表后按中英名过滤）
-      markHit(methodName + ":本地过滤");
-      const nextFilters = Object.assign({}, filters, { search: "" });
-      args[0] = JSON.stringify(nextFilters);
-
-      if (typeof opts.forceTrueIndex === "number" && opts.forceTrueIndex > 0 && opts.forceTrueIndex < args.length) {
-        args[opts.forceTrueIndex] = true;
-      }
+      // 只作为「本地过滤 0 命中」时的兜底：中文 -> 最可能的英文名
+      let english = null;
+      safeCall(() => {
+        const candidate = resolveEnglishQuery(term);
+        if (candidate && !api.hasChinese(candidate)) english = candidate;
+      }, null);
 
       let callbackIndex = -1;
       for (let i = args.length - 1; i >= 1; i--) {
         if (typeof args[i] === "function") { callbackIndex = i; break; }
       }
-      if (nameFields === null || callbackIndex < 0) return original.apply(this, args);
+
+      // 只清空 search 的钩子（遗物规划：数据走 onRelicPlannerUpdate 事件）
+      if (nameFields === null || callbackIndex < 0) {
+        const next = args.slice();
+        if (english) {
+          markHit(methodName + ":英文改写");
+          next[0] = JSON.stringify(Object.assign({}, filters, { search: english }));
+        } else {
+          markHit(methodName + ":清空搜索");
+          next[0] = JSON.stringify(Object.assign({}, filters, { search: "" }));
+        }
+        return original.apply(nativeThis, next);
+      }
 
       const callback = args[callbackIndex];
-      args[callbackIndex] = function (success, data) {
+      const localArgs = args.slice();
+      localArgs[0] = JSON.stringify(Object.assign({}, filters, { search: "" }));
+      if (typeof opts.forceTrueIndex === "number" && opts.forceTrueIndex > 0 && opts.forceTrueIndex < localArgs.length) {
+        localArgs[opts.forceTrueIndex] = true;
+      }
+
+      localArgs[callbackIndex] = function (success, data) {
         const pass = Array.prototype.slice.call(arguments);
         if (!success) return callback.apply(this, pass);
-        let parsed = null;
-        safeCall(() => { parsed = JSON.parse(data); }, null);
-        const filtered = Array.isArray(parsed) ? api.filterItems(parsed, term, nameFields) : null;
-        if (!Array.isArray(filtered)) return callback.apply(this, pass);
-        // 0 命中时留一条诊断：能区分「该分类本来就没有这个物品」和「过滤逻辑没匹配上」
-        if (filtered.length === 0) {
+        const parsed = safeCall(() => JSON.parse(data), null);
+        if (!Array.isArray(parsed)) return callback.apply(this, pass);
+
+        const filtered = safeCall(() => api.filterItems(parsed, term, nameFields), null);
+        if (Array.isArray(filtered) && filtered.length > 0) {
+          markHit(methodName + ":本地过滤");
+          pass[1] = JSON.stringify(filtered);
+          return callback.apply(this, pass);
+        }
+
+        // 本地 0 命中：有可靠英文候选就退回原生英文搜索（物品名没中文/词典缺译时仍能搜到）
+        if (english) {
+          markHit(methodName + ":本地0命中→英文改写");
           try {
-            const ctx = {};
-            for (const key of ["type", "search", "onlyOwned"]) {
-              if (filters[key] !== undefined) ctx[key] = filters[key];
-            }
-            let sample = "";
-            if (Array.isArray(parsed) && parsed.length) {
-              const first = parsed[0];
-              if (first && typeof first === "object") {
-                sample = " 首条字段=" + Object.keys(first).slice(0, 12).join("/") +
-                  " name=" + JSON.stringify(first.name);
-              }
-            }
+            const first = parsed.length && parsed[0] && typeof parsed[0] === "object" ? parsed[0] : null;
             console.info(
-              "[AFZH 中文搜索] " + methodName + ' 中文="' + term + '" 未命中：原生 ' +
-              parsed.length + " 条，过滤条件 " + JSON.stringify(ctx) + sample
+              "[AFZH 中文搜索] " + methodName + ' 中文="' + term + '" 本地 0 命中：原生 ' +
+              parsed.length + " 条" +
+              (first ? "，首条 name=" + JSON.stringify(first.name) + " 字段=" + Object.keys(first).slice(0, 8).join("/") : "") +
+              "，退回英文改写=" + JSON.stringify(english)
             );
           } catch (_) { /* ignore */ }
+          const retryArgs = args.slice();
+          retryArgs[0] = JSON.stringify(Object.assign({}, filters, { search: english }));
+          return original.apply(nativeThis, retryArgs);
         }
-        pass[1] = JSON.stringify(filtered);
+
+        // 真的没有：留一条诊断，能区分「该分类本来就没有这个物品」和「过滤逻辑没匹配上」
+        try {
+          const ctx = {};
+          for (const key of ["type", "search", "onlyOwned"]) {
+            if (filters[key] !== undefined) ctx[key] = filters[key];
+          }
+          let sample = "";
+          if (parsed.length) {
+            const first = parsed[0];
+            if (first && typeof first === "object") {
+              sample = " 首条字段=" + Object.keys(first).slice(0, 12).join("/") +
+                " name=" + JSON.stringify(first.name);
+            }
+          }
+          console.info(
+            "[AFZH 中文搜索] " + methodName + ' 中文="' + term + '" 未命中：原生 ' +
+            parsed.length + " 条，过滤条件 " + JSON.stringify(ctx) + sample
+          );
+        } catch (_) { /* ignore */ }
+        pass[1] = JSON.stringify(Array.isArray(filtered) ? filtered : []);
         return callback.apply(this, pass);
       };
-      return original.apply(this, args);
+      return original.apply(nativeThis, localArgs);
     };
     wrapper.__afzhWrapped = true;
     native[methodName] = wrapper;
@@ -563,8 +624,8 @@
   }
 
   /**
-   * GetRivenWeapons(search, callback)：第一个参数是纯字符串（不是 JSON），
-   * 中文时先取全量武器再本地过滤。
+   * GetRivenWeapons(search, callback)：第一个参数是纯字符串（不是 JSON）。
+   * 与 JSON 搜索钩子一致：中文优先取全量再本地过滤（支持部分中文），0 命中时再退回英文改写。
    */
   function hookRivenWeapons(native) {
     const methodName = "GetRivenWeapons";
@@ -576,23 +637,33 @@
     if (original.__afzhWrapped) return true;
 
     const wrapper = function (search, callback) {
+      const nativeThis = this;
       const term = typeof search === "string" ? search.trim() : "";
-      if (!term || !api.hasChinese(term) || typeof callback !== "function") return original.apply(this, arguments);
-
-      // 首选：中文翻英文交给原生搜
-      const english = resolveEnglishQuery(term);
-      if (english && !api.hasChinese(english)) {
-        markHit(methodName + ":英文改写");
-        return original.call(this, english, callback);
+      if (!term || !api.hasChinese(term) || typeof callback !== "function") {
+        return original.apply(nativeThis, arguments);
       }
 
-      // 兜底：取全量再本地过滤
-      markHit(methodName + ":本地过滤");
-      return original.call(this, "", (success, data) => {
+      let english = null;
+      safeCall(() => {
+        const candidate = resolveEnglishQuery(term);
+        if (candidate && !api.hasChinese(candidate)) english = candidate;
+      }, null);
+
+      return original.call(nativeThis, "", (success, data) => {
         if (!success) return callback(success, data);
-        const filtered = safeCall(() => api.filterItems(JSON.parse(data), term, ["name"]), null);
-        if (!Array.isArray(filtered)) return callback(success, data);
-        return callback(true, JSON.stringify(filtered));
+        const parsed = safeCall(() => JSON.parse(data), null);
+        const filtered = Array.isArray(parsed)
+          ? safeCall(() => api.filterItems(parsed, term, ["name"]), null)
+          : null;
+        if (Array.isArray(filtered) && filtered.length > 0) {
+          markHit(methodName + ":本地过滤");
+          return callback(true, JSON.stringify(filtered));
+        }
+        if (english) {
+          markHit(methodName + ":本地0命中→英文改写");
+          return original.call(nativeThis, english, callback);
+        }
+        return callback(success, data);
       });
     };
     wrapper.__afzhWrapped = true;
@@ -652,7 +723,9 @@
     // forceTrueIndex=1：中文过滤需要完整列表，把 includeAll 强制为 true（插件否则最多返回 100 条）
     (native) => hookJsonSearchMethod(native, "getFilteredInventory", ["name"], { forceTrueIndex: 1 }),
     // 铸造：mainFoundry.js:249 `getFilteredFoundry(JSON.stringify(filterSettings), showAll, receive)`
-    (native) => hookJsonSearchMethod(native, "getFilteredFoundry", ["name"]),
+    // forceTrueIndex=1：中文过滤需要完整列表，把 showAll 强制为 true（实测 search 为空时原生只回 100 条，
+    // 「死亡」「极速」这类中文名在按字母序排到 100 之外的物品会被漏掉）
+    (native) => hookJsonSearchMethod(native, "getFilteredFoundry", ["name"], { forceTrueIndex: 1 }),
     // 遗物规划：mainRelicPlanner.js:92；结果走 onRelicPlannerUpdate 事件，这里只负责清空 search
     (native) => hookJsonSearchMethod(native, "getFilteredRelicPlanner", null),
     // WFM 订单/合同：ordersAndContracts.js:92 `plugin.get()[orders?'GetWFMOrders':'GetWFMContracts'](...)`
@@ -823,18 +896,63 @@
     if (!started) finish(null);
   }
 
+  /**
+   * 库存「赋能」页：不调用 getFilteredInventory，而是在 mainInventory.js:173 receiveArcaneProgress()
+   * 里用 this.search 对 `item.name + ' ' + item.category` 做英文子串过滤（Vue 侧过滤），
+   * 插件钩子根本看不到这个查询。这里改为：临时清空 search 让原方法只做其它筛选/排序，
+   * 再用中文索引过滤 this.items。
+   */
+  function hookArcaneApp(app) {
+    if (!app || typeof app.receiveArcaneProgress !== "function") return false;
+    if (app.__afzhArcaneHook) return true;
+
+    const original = app.receiveArcaneProgress.bind(app);
+    app.receiveArcaneProgress = function (requestId, success, data, includeAll, queryChanged) {
+      const term = this && typeof this.search === "string" ? this.search.trim() : "";
+      if (!term || !api.hasChinese(term)) return original(requestId, success, data, includeAll, queryChanged);
+
+      markHit("inventoryApp.receiveArcaneProgress:本地过滤");
+      const saved = this.search;
+      this.search = "";
+      try {
+        // includeAll 传 true：原方法默认把 rows 截断到 100 条，中文过滤需要全量
+        original(requestId, success, data, true, queryChanged);
+      } finally {
+        this.search = saved;
+      }
+      const filtered = safeCall(() => api.filterItems(this.items, term, ["name"]), null);
+      if (Array.isArray(filtered)) {
+        try {
+          console.info("[AFZH 诊断] 赋能 中文=" + JSON.stringify(term) + " 全量=" + (Array.isArray(this.items) ? this.items.length : "?") + " 过滤后=" + filtered.length);
+        } catch (_) { /* ignore */ }
+        this.items = filtered;
+        this.noItems = !filtered.length;
+        this.resultsLimited = false;
+      }
+    };
+    app.__afzhArcaneHook = true;
+    return true;
+  }
+
+  function installInventoryArcaneHook() {
+    return hookArcaneApp(window.inventoryApp);
+  }
+
   function installAppHooks() {
     let attempts = 0;
     const tick = () => {
       const relic = safeCall(installRelicPlannerHook, false);
       const market = safeCall(installMarketPanelHook, false);
+      const arcane = safeCall(installInventoryArcaneHook, false);
       status.hooks.relicPlanner = !!relic;
       status.hooks.marketPanel = !!market;
-      if (relic && market) return;
+      status.hooks.inventoryArcane = !!arcane;
+      if (relic && market && arcane) return;
       attempts++;
       if (attempts >= 40) {
         if (!relic) debugOnce("relicPlannerApp", "relicPlannerApp.receiveUpdate 不可用，跳过遗物规划中文过滤");
         if (!market) debugOnce("buySellPanelApp", "buySellPanelApp.updateSearchSuggestions/suggestionClicked 不可用，跳过市场建议中文列表");
+        if (!arcane) debugOnce("inventoryApp", "inventoryApp.receiveArcaneProgress 不可用，跳过赋能页中文过滤");
         return;
       }
       setTimeout(tick, 250);

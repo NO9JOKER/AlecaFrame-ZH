@@ -34,6 +34,7 @@ python src\build.py          # 合并词典 -> bin/alecaframe-zh-cn.js
 
 ## 提交前检查
 
+- [ ] `powershell -ExecutionPolicy Bypass -File scripts\verify.ps1` 全绿（等价于 CI 检查）
 - [ ] `python src/build.py` 成功
 - [ ] 词条 TSV 每行都有 Tab
 - [ ] 没有提交 `bin/alecaframe-zh-cn.js`、`state/`、`logs/`、`dist/`、`backup/`
@@ -42,5 +43,7 @@ python src\build.py          # 合并词典 -> bin/alecaframe-zh-cn.js
 
 ## 版本与发布
 
+- 所有改动先在 `dev`（或 `feature/*`）分支上做，验证通过后再合入 `main`；
+  完整流程见 [分支与发布流程](docs/分支与发布流程.md)；
 - 版本号在 `VERSION`，更新记录在 `CHANGELOG.md`；
 - 维护者打 tag（如 `v1.0.1`）并推送后，GitHub Actions 会自动构建并发布 zip 到 Releases。

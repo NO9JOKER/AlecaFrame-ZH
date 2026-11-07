@@ -31,9 +31,48 @@
   const MONTH_RE = "(Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)";
   const NUM = "(\\d[\\d,]*(?:\\.\\d+)?)";
 
+  // 「节点, 星球」复合文本（如仲裁/入侵里显示的 `Lares, Mercury`）：
+  // 游戏中文客户端里节点名保持英文，只有星球名是中文，所以只翻逗号后半段。
+  const PLANET_NAMES = new Set([
+    "Earth", "Venus", "Mercury", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune", "Pluto",
+    "Phobos", "Deimos", "Ceres", "Europa", "Eris", "Sedna", "Lua", "Void",
+    "Kuva Fortress", "Zariman", "Duviri", "Orb Vallis", "Cambion Drift", "Plains of Eidolon",
+    "Cetus", "Necralisk", "Hollvania", "Höllvania"
+  ]);
+
+  // 伤害类型中文名：裂罅卡片里要显示成「冰冻伤害 / 火焰伤害」这种（图标由 app 自己渲染）。
+  const DAMAGE_LABELS = new Set([
+    "火焰", "冰冻", "寒冷", "毒素", "电击", "切割", "冲击", "穿刺",
+    "爆炸", "磁力", "毒气", "病毒", "腐蚀", "辐射"
+  ]);
+
+  function translateComposite(text) {
+    const m = text.match(/^(.+?),\s*([^,]+)$/);
+    if (!m) return null;
+    const planet = norm(m[2]);
+    if (!PLANET_NAMES.has(planet)) return null;
+    const hit = map.get(planet);
+    if (hit === undefined) return null;
+    return m[1] + "，" + hit;
+  }
+
   function fmtMonth(m) { return MONTHS[m] + " 月"; }
 
   const RULES = [
+    // 裂罅属性（已揭示裂罅/裂罅探索器卡片）：插件把「数值+属性名」拼成一个文本节点，
+    // 如 `+109.9% Critical Damage` / `x1.5 Damage to Corpus`；属性名本身翻不出来整串就不动。
+    [/^([+-]?\d[\d,]*(?:\.\d+)?%)\s+(.+)$/, (m) => {
+      const raw = m[2].trim();
+      const translated = translateValue(raw);
+      const label = translated === null ? raw : translated;
+      const damage = DAMAGE_LABELS.has(label);
+      if (translated === null && !damage) return null;
+      return m[1] + " " + label + (damage ? "伤害" : "");
+    }],
+    [/^x(\d+(?:\.\d+)?)\s+(.+)$/, (m) => {
+      const label = translateValue(m[2]);
+      return label === null ? null : "x" + m[1] + " " + label;
+    }],
     [/^Last record: (.+)$/, (m, rec) => "最后记录：" + (rec || m[1])],
     [/^Today, (.+)$/, (m, rec) => "今天，" + (rec || m[1])],
     [/^Tomorrow, (.+)$/, (m, rec) => "明天，" + (rec || m[1])],
@@ -76,6 +115,8 @@
     if (!key || !/[A-Za-z]/.test(key)) return null;
     const hit = map.get(key);
     if (hit !== undefined) return hit;
+    const composite = translateComposite(key);
+    if (composite !== null) return composite;
     return applyRule(key);
   }
 
@@ -84,12 +125,31 @@
     const raw = node.nodeValue;
     if (!raw || raw.length > 400) return;
     const hit = translateValue(raw);
-    if (hit === null) return;
+    let next = hit;
+    // 裂罅卡片里的伤害类型要显示成「冰冻伤害 / 火焰伤害」（图标由 app 自己渲染；
+    // 名字可能是独立文本节点，走不到百分比规则，所以按祖先 class 判定上下文）。
+    if (inRivenContext(node)) {
+      const trimmed = norm(raw);
+      if (next === null && DAMAGE_LABELS.has(trimmed)) next = trimmed;
+      if (next !== null && DAMAGE_LABELS.has(next)) next = next + "伤害";
+    }
+    if (next === null) return;
     const m = raw.match(/^(\s*)([\s\S]*?)(\s*)$/);
     const lead = m ? m[1] : "";
     const tail = m ? m[3] : "";
-    const next = lead + hit + tail;
-    if (next !== raw) { node.nodeValue = next; translated++; stats.text++; }
+    const text = lead + next + tail;
+    if (text !== raw) { node.nodeValue = text; translated++; stats.text++; }
+  }
+
+  /** 文本节点是否位于裂罅卡片内（祖先 class 含 riven）。 */
+  function inRivenContext(node) {
+    let el = node ? node.parentNode : null;
+    for (let depth = 0; el && depth < 8; depth++) {
+      const cls = typeof el.className === "string" ? el.className : "";
+      if (cls && cls.indexOf("riven") !== -1) return true;
+      el = el.parentNode;
+    }
+    return false;
   }
 
   function translateAttrs(el) {

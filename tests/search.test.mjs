@@ -57,9 +57,9 @@ function buildSampledDict({ pick = [], sampleEvery = 500 } = {}) {
   return dict;
 }
 
-/** 用假 window 执行 search.js，返回测试 API。 */
-function loadSearchModule(dict) {
-  const fakeWindow = { __AFZH_TEST__: true, __AFCN_DICT__: dict };
+/** 用假 window 执行 search.js，返回测试 API。extra 用于注入 __AFCN_RELIC_REWARDS__ 等。 */
+function loadSearchModule(dict, extra) {
+  const fakeWindow = Object.assign({ __AFZH_TEST__: true, __AFCN_DICT__: dict }, extra || {});
   const run = new Function("window", "console", SEARCH_SRC); // eslint-disable-line no-new-func
   run(fakeWindow, console);
   const api = fakeWindow.__AFZH_SEARCH_TEST__;
@@ -368,6 +368,178 @@ test("同一部词典多次 createApi 结果一致（确定性）", () => {
   for (const query of ["杀格 Prime 枪管蓝图", "入侵者", "月神 Prime", "杀格 枪管"]) {
     assert.equal(first.englishForChinese(query), second.englishForChinese(query), query);
   }
+});
+
+// ---------------------------------------------------------------------------
+console.log("\n[11] 插件钩子：中文优先本地过滤（部分中文，v1.1.8 回归）");
+// ---------------------------------------------------------------------------
+
+/** 模拟原生 getFilteredFoundry(query, showAll, cb)：按英文 name 子串过滤，空 search 返回全量。 */
+function makeFoundryNative(items, calls) {
+  return {
+    getFilteredFoundry(query, showAll, cb) {
+      const filters = JSON.parse(query);
+      calls.push(filters);
+      const term = String(filters.search || "").toLowerCase();
+      const matched = term
+        ? items.filter((item) => item.name.toLowerCase().indexOf(term) !== -1)
+        : items.slice();
+      cb(true, JSON.stringify(matched));
+    }
+  };
+}
+
+// 关键：词典里同时有 UI 术语 Death -> 死亡（mioeu-terms.tsv:769）和物品 死亡使徒 -> Kaszas
+const HOOK_DICT = {
+  "Death": "死亡",
+  "Dethcube": "死亡魔方",
+  "Kaszas": "死亡使徒",
+  "Braton": "布莱顿",
+  "Serration": "膛线",
+  "Arcane Energize": "赋能·充沛",
+  "Arcane Grace": "赋能·优雅"
+};
+
+test("铸造厂输入部分中文「死亡」：本地过滤出所有匹配项，不被 UI 术语 Death 劫持", () => {
+  const mod = loadSearchModule(HOOK_DICT);
+  const calls = [];
+  const native = makeFoundryNative([{ name: "Kaszas" }, { name: "Dethcube" }, { name: "Braton" }], calls);
+  assert.ok(mod.hookJsonSearchMethod(native, "getFilteredFoundry", ["name"]));
+  let result = null;
+  native.getFilteredFoundry(JSON.stringify({ type: "archwing", search: "死亡" }), false, (ok, data) => {
+    result = JSON.parse(data);
+  });
+  assert.deepEqual(result.map((x) => x.name), ["Kaszas", "Dethcube"], "应命中所有中文名含「死亡」的物品");
+  assert.equal(calls[0].search, "", "中文查询应先清空 search 走本地过滤");
+  assert.ok(!calls.some((c) => c.search === "Death"), "不应把「死亡」改写成 UI 术语 Death");
+});
+
+test("铸造厂中文查询强制 showAll=true（原生 search 为空时只回 100 条，不全量会漏）", () => {
+  const mod = loadSearchModule(HOOK_DICT);
+  const calls = [];
+  const native = {
+    getFilteredFoundry(query, showAll, cb) {
+      calls.push({ filters: JSON.parse(query), showAll });
+      cb(true, JSON.stringify([{ name: "Kaszas" }]));
+    }
+  };
+  assert.ok(mod.hookJsonSearchMethod(native, "getFilteredFoundry", ["name"], { forceTrueIndex: 1 }));
+  let result = null;
+  native.getFilteredFoundry(JSON.stringify({ search: "死亡" }), false, (ok, data) => {
+    result = JSON.parse(data);
+  });
+  assert.equal(calls[0].showAll, true, "中文查询应强制 showAll=true");
+  assert.equal(calls[0].filters.search, "");
+  assert.deepEqual(result.map((x) => x.name), ["Kaszas"]);
+});
+
+test("英文查询原样交给原生，不做本地过滤", () => {
+  const mod = loadSearchModule(HOOK_DICT);
+  const calls = [];
+  const native = makeFoundryNative([{ name: "Kaszas" }, { name: "Braton" }], calls);
+  assert.ok(mod.hookJsonSearchMethod(native, "getFilteredFoundry", ["name"]));
+  let result = null;
+  native.getFilteredFoundry(JSON.stringify({ search: "Braton" }), false, (ok, data) => {
+    result = JSON.parse(data);
+  });
+  assert.equal(calls.length, 1);
+  assert.equal(calls[0].search, "Braton", "英文查询必须原样透传");
+  assert.deepEqual(result.map((x) => x.name), ["Braton"]);
+});
+
+test("本地过滤 0 命中时退回英文改写（词典缺译也不丢结果）", () => {
+  const mod = loadSearchModule({ "Alpha": "阿尔法" });
+  const calls = [];
+  const native = makeFoundryNative([{ name: "AlphaX" }], calls);
+  assert.ok(mod.hookJsonSearchMethod(native, "getFilteredFoundry", ["name"]));
+  let result = null;
+  native.getFilteredFoundry(JSON.stringify({ search: "阿尔法" }), false, (ok, data) => {
+    result = JSON.parse(data);
+  });
+  assert.deepEqual(calls.map((c) => c.search), ["", "Alpha"], "先本地过滤（search 清空），0 命中后按英文重试");
+  assert.deepEqual(result.map((x) => x.name), ["AlphaX"]);
+});
+
+test("裂罅武器搜索：部分中文同样先本地过滤", () => {
+  const mod = loadSearchModule(HOOK_DICT);
+  const calls = [];
+  const all = [{ name: "Kaszas" }, { name: "Braton" }];
+  const native = {
+    GetRivenWeapons(search, cb) {
+      calls.push(search);
+      const term = String(search || "").toLowerCase();
+      cb(true, JSON.stringify(term ? all.filter((x) => x.name.toLowerCase().indexOf(term) !== -1) : all));
+    }
+  };
+  assert.ok(mod.hookRivenWeapons(native));
+  let result = null;
+  native.GetRivenWeapons("死亡", (ok, data) => { result = JSON.parse(data); });
+  assert.deepEqual(result.map((x) => x.name), ["Kaszas"]);
+  assert.equal(calls[0], "", "中文应先用空查询取全量");
+});
+
+test("赋能页：中文查询走 Vue 侧过滤（receiveArcaneProgress 钩子）", () => {
+  const mod = loadSearchModule(HOOK_DICT);
+  const app = {
+    search: "充沛",
+    items: [],
+    noItems: true,
+    resultsLimited: true,
+    requestId: 7,
+    receiveArcaneProgress(requestId, success, data, includeAll) {
+      if (requestId !== this.requestId) return;
+      const parsed = JSON.parse(data);
+      const query = this.search.trim().toLowerCase();
+      const rows = parsed.items.filter((it) => !query || (it.name + " " + it.category).toLowerCase().includes(query));
+      this.items = includeAll ? rows : rows.slice(0, 100);
+      this.noItems = !this.items.length;
+      this.resultsLimited = !includeAll && rows.length > 100;
+    }
+  };
+  assert.ok(mod.hookArcaneApp(app));
+  app.receiveArcaneProgress(7, true, JSON.stringify({ items: [
+    { name: "Arcane Energize", category: "Arcane" },
+    { name: "Arcane Grace", category: "Arcane" },
+    { name: "Braton", category: "Weapon" }
+  ] }), false, true);
+  assert.deepEqual(app.items.map((x) => x.name), ["Arcane Energize"], "应只留下中文名含「充沛」的赋能");
+  assert.equal(app.noItems, false);
+  assert.equal(app.search, "充沛", "search 必须还原，不能把搜索框清空");
+  assert.equal(app.resultsLimited, false);
+});
+
+test("赋能页：英文查询原样交给原方法", () => {
+  const mod = loadSearchModule(HOOK_DICT);
+  let called = 0;
+  const app = { search: "Braton", receiveArcaneProgress() { called++; } };
+  assert.ok(mod.hookArcaneApp(app));
+  app.receiveArcaneProgress(1, true, "{}", false, false);
+  assert.equal(called, 1);
+});
+
+// ---------------------------------------------------------------------------
+console.log("\n[12] 遗物模糊搜索（奖励中文名参与匹配）");
+// ---------------------------------------------------------------------------
+
+const RELIC_REWARDS = {
+  "Axi I1": "死亡魔方 prime 系统 猎豹 prime 蓝图",
+  "Neo N1": "forma 蓝图 kavasa prime kubrow collar blueprint"
+};
+
+test("遗物：部分中文按奖励中文名命中（死亡 → 含「死亡魔方」奖励的遗物）", () => {
+  const mod = loadSearchModule(HOOK_DICT, { __AFCN_RELIC_REWARDS__: RELIC_REWARDS });
+  const api = mod.defaultApi;
+  const items = [{ name: "Axi I1" }, { name: "Neo N1" }];
+  assert.deepEqual(api.filterItems(items, "死亡", ["name"]).map((x) => x.name), ["Axi I1"]);
+  assert.deepEqual(api.filterItems(items, "魔方", ["name"]).map((x) => x.name), ["Axi I1"]);
+  assert.deepEqual(api.filterItems(items, "Forma", ["name"]).map((x) => x.name), ["Neo N1"]);
+});
+
+test("遗物：精炼后缀（Radiant 等）不影响奖励匹配", () => {
+  const mod = loadSearchModule(HOOK_DICT, { __AFCN_RELIC_REWARDS__: RELIC_REWARDS });
+  const api = mod.defaultApi;
+  const items = [{ name: "Axi I1 Radiant" }, { name: "Neo N1" }];
+  assert.deepEqual(api.filterItems(items, "死亡", ["name"]).map((x) => x.name), ["Axi I1 Radiant"]);
 });
 
 // ---------------------------------------------------------------------------

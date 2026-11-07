@@ -1,5 +1,62 @@
 # Changelog
 
+## v1.1.8 (2026-11-07)
+
+修复 v1.1.7 的两个回归，并把「合并前验证」固化成脚本与流程。
+
+### 修复
+
+- **中文搜索恢复「本地过滤优先」**（v1.1.5~v1.1.7 是「中文→英文改写优先」）：
+  反向索引是词典全量建的，混着 UI 术语。实测词典 `dict/mioeu-terms.tsv:769` 有 `Death -> 死亡`，
+  用户输入「死亡」被精确命中并改写成英文 `Death` 交给原生搜，而铸造厂里没有英文名含 `Death` 的物品
+  → 原生 0 条 → 界面「无匹配物品」；同一份词典里「死亡使徒」= Kaszas 本来能本地命中（含「死亡」的键有 39 个）。
+  - 中文查询改为：清空 `search` → 取当前分类/筛选的完整列表 → 按中英双向索引本地过滤（支持**部分中文**，如「死亡」）；
+  - 只有**本地 0 命中**且有可靠英文候选时，才退回一次原生英文搜索（物品名缺中文/词典缺译时不丢结果）；
+  - 铸造厂钩子强制 `showAll=true`：实测（2026-11-07 12:56）`type=all` 时 `showAll=false` 只回 **100 条**
+    （Acrid/Ack & Brunt/Acceltra…），`showAll=true` 回 **813 条** ——「全部」分类下的中文搜索因此才完整，
+    否则排在 100 条之后的物品（如「死亡使徒」）永远搜不到；
+  - 裂罅武器搜索（`GetRivenWeapons`）同样改为本地优先；
+  - 本地 0 命中退回英文改写时输出诊断日志（中文词、原生条数、首条 name/字段）。
+- **赋能（Arcane）页中文搜索**：库存「赋能」页不走 `getFilteredInventory`，而是在
+  `mainInventory.js:173 receiveArcaneProgress()` 里用 `this.search` 对英文字段做子串过滤。
+  新增应用级钩子：中文时临时清空 `search`、取全量后用中英索引过滤 `this.items`，结束后还原搜索框内容。
+- **节点/星球名**：仲裁、入侵、裂缝里的 `Lares, Mercury` 这类「节点, 星球」复合文本，之前整串匹配不到词典；
+  新增 `translateComposite()` 只翻逗号后的星球名（`Lares，水星`），节点名保持英文——与游戏中文客户端一致。
+- **启动器丢失 UTF-8 BOM**：v1.1.7 的提交把 `bin/AlecaFrame-ZH.ps1`（41 KB）的 BOM 弄丢了，
+  CI 的 `Check PowerShell UTF-8 BOM` 从 v1.1.7 起必然失败；PowerShell 5.1 下
+  Start / Restore / Refresh / Status 快捷方式还会因中文乱码直接解析报错。已补回 BOM，脚本内容零改动。
+
+### 新增
+
+- **`scripts/verify.ps1`**：合并到 main 前的统一门槛。覆盖 CI 全部检查（构建/产物标记/TSV/BOM/JS 语法/单测），
+  并新增 PowerShell 语法解析、`VERSION` 与 `CHANGELOG` 一致性、生成物未入库、`-Package` 发布包自检。
+- **`docs/分支与发布流程.md`**：main 只接受来自 `dev` / `feature/*` 的合并提交；改动先在分支验证，
+  全绿并手动回归后再合入 main、打 tag、推送。
+- 中文搜索单元测试从 40 项增加到 **47 项**（部分中文、英文透传、0 命中兜底、裂罅武器、强制 showAll、赋能页钩子）。
+- **词库补漏 `dict/extra-10.tsv`（12 条）**：裂罅属性名（`Beam Length`、`Headshot Critical Chance`、
+  `Maximum Ammo`、`Melee Status Chance`、`Slam Attack Damage`、`Slide Critical Chance`、`Self Damage Reduction`）
+  与 `Ascent`/`Coalescent`/`Points`/`Veil`/`Volatile`；未覆盖界面串 **166 → 20 条**。
+- **修掉 `scan_missing.py` 的 141 条误报**：之前没排除补丁自己注入的 `afzh-*.js`（OCR 桥/图片映射），
+  把补丁内部字符串当成了界面缺口；现按 `afzh-` 前缀排除。
+- **裂罅属性（已揭示裂罅/探索器卡片）**：插件把「数值+属性名」拼成一个文本节点（`+109.9% Critical Damage`、
+  `x1.5 Damage to Corpus`），整串匹配不到词典，之前只有带颜色 span 的伤害类型能翻。`src/engine.js` 新增两条规则：
+  百分比前缀与 `xN` 倍率前缀先拆开，只翻后半段属性名；属性名翻不出来时整串保持原样。
+- **遗物中文模糊搜索**：库存「遗物」列表的条目只带遗物名（`Axi I1`），没有奖励字段，所以之前
+  输入「死亡」（想找含「死亡魔方」奖励的遗物）搜不到；输入「死亡魔方」/「魔方」能命中是因为退回了
+  英文改写（`Dethcube`）而原生搜索会匹配奖励。
+  新增 `dict/relic-rewards.tsv`（800 个遗物 → 奖励中文名，`src/build_relic_rewards.py` 从本机游戏数据
+  生成、随仓库分发）+ 构建时注入 `window.__AFCN_RELIC_REWARDS__`，本地过滤把奖励中文名一起参与匹配，
+  精炼后缀（`Radiant` 等）自动剥离。
+- **裂罅伤害类型显示**：裂罅卡片里的伤害类型现在显示为「冰冻伤害 / 火焰伤害 / 毒素伤害…」
+  （原为「冰冻 / 火焰 / 毒素」），按卡片上下文（祖先 class 含 `riven`）判定，图标保持不动；
+  百分比属性规则同步支持该后缀。
+- 同轮词形修正：`Coalescent` 统一为官方「联结」、`Kuva Fort.` 修正为「赤毒要塞」（vendor 层多了句号）、
+  `Ammo Maximum` 统一为「最大弹药量」。
+
+### 变更
+
+- 《维护手册》便携目录路径与打包示例改为 `$local` 变量（本机已从 `D:\AlecaFrame-ZH` 迁入工作区 `AlecaFrame-ZH\`）。
+
 ## v1.1.7 (2026-11-07)
 
 新增一键诊断包（跨机器排障）与日志滚动。

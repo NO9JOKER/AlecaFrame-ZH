@@ -901,6 +901,9 @@
       }
       const filtered = safeCall(() => api.filterItems(this.items, term, ["name"]), null);
       if (Array.isArray(filtered)) {
+        try {
+          console.info("[AFZH 诊断] 赋能 中文=" + JSON.stringify(term) + " 全量=" + (Array.isArray(this.items) ? this.items.length : "?") + " 过滤后=" + filtered.length);
+        } catch (_) { /* ignore */ }
         this.items = filtered;
         this.noItems = !filtered.length;
         this.resultsLimited = false;

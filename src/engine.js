@@ -53,6 +53,16 @@
   function fmtMonth(m) { return MONTHS[m] + " 月"; }
 
   const RULES = [
+    // 裂罅属性（已揭示裂罅/裂罅探索器卡片）：插件把「数值+属性名」拼成一个文本节点，
+    // 如 `+109.9% Critical Damage` / `x1.5 Damage to Corpus`；属性名本身翻不出来整串就不动。
+    [/^([+-]?\d[\d,]*(?:\.\d+)?%)\s+(.+)$/, (m) => {
+      const label = translateValue(m[2]);
+      return label === null ? null : m[1] + " " + label;
+    }],
+    [/^x(\d+(?:\.\d+)?)\s+(.+)$/, (m) => {
+      const label = translateValue(m[2]);
+      return label === null ? null : "x" + m[1] + " " + label;
+    }],
     [/^Last record: (.+)$/, (m, rec) => "最后记录：" + (rec || m[1])],
     [/^Today, (.+)$/, (m, rec) => "今天，" + (rec || m[1])],
     [/^Tomorrow, (.+)$/, (m, rec) => "明天，" + (rec || m[1])],

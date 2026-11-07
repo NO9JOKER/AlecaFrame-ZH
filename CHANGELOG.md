@@ -38,6 +38,9 @@
   与 `Ascent`/`Coalescent`/`Points`/`Veil`/`Volatile`；未覆盖界面串 **166 → 20 条**。
 - **修掉 `scan_missing.py` 的 141 条误报**：之前没排除补丁自己注入的 `afzh-*.js`（OCR 桥/图片映射），
   把补丁内部字符串当成了界面缺口；现按 `afzh-` 前缀排除。
+- **裂罅属性（已揭示裂罅/探索器卡片）**：插件把「数值+属性名」拼成一个文本节点（`+109.9% Critical Damage`、
+  `x1.5 Damage to Corpus`），整串匹配不到词典，之前只有带颜色 span 的伤害类型能翻。`src/engine.js` 新增两条规则：
+  百分比前缀与 `xN` 倍率前缀先拆开，只翻后半段属性名；属性名翻不出来时整串保持原样。
 - 同轮词形修正：`Coalescent` 统一为官方「联结」、`Kuva Fort.` 修正为「赤毒要塞」（vendor 层多了句号）、
   `Ammo Maximum` 统一为「最大弹药量」。
 

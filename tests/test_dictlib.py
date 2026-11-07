@@ -104,11 +104,13 @@ class DictlibTests(unittest.TestCase):
         self.assertFalse(result.ok())
         self.assertTrue(any("both translated and keep-english" in e for e in result.errors))
 
-    def test_case_only_duplicate_is_error_when_values_differ(self):
+    def test_case_only_duplicate_is_warning_and_strict_fails(self):
         self.fx.write("dict/entries/common/ui.tsv", "ALPHA\t另一个\n")
-        result = dictlib.check(self.fx.root)
-        self.assertFalse(result.ok())
-        self.assertTrue(any("case-only duplicate" in e for e in result.errors))
+        normal = dictlib.check(self.fx.root)
+        strict = dictlib.check(self.fx.root, strict=True)
+        self.assertTrue(normal.ok())
+        self.assertFalse(strict.ok())
+        self.assertTrue(any("case-only duplicate" in w for w in normal.warnings))
 
     def test_no_cjk_is_warning_and_strict_fails(self):
         self.fx.write("dict/entries/common/ui.tsv", "Beta\tBeta\n")

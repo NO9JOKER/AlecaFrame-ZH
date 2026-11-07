@@ -5,7 +5,7 @@
 | `pages.schema.json` | 根 `pages.json`：页面注册表 | 已提供 schema；`pages.json` 已建立初始数据 |
 | `modules.schema.json` | `src/runtime/modules.json`：运行时模块装配 | 已提供 schema；清单待运行时实现时创建 |
 | `ocr-manifest.schema.json` | `src/ocr/manifest.json`：OCR 注册表 | 已提供 schema；清单待 OCR 边界实现时创建 |
-| `dict-manifest.spec.md` | `dict/manifest.tsv`：词典加载清单 | 规范已提供；TSV 待词典工作流实现时创建 |
+| `dict-manifest.spec.md` | `dict/manifest.tsv`：词典加载清单 | 规范已提供；初始 manifest 已建立 |
 
 ## 校验
 

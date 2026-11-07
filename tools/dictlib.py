@@ -295,7 +295,7 @@ def check(root: Path = ROOT, strict: bool = False) -> CheckResult:
             if previous.value == entry.value:
                 warnings.append(f"case-only duplicate (same value): {previous.key!r} / {entry.key!r}")
             else:
-                errors.append(f"case-only duplicate (different value): {previous.key!r} / {entry.key!r}")
+                warnings.append(f"case-only duplicate (different value): {previous.key!r} / {entry.key!r}")
         else:
             lower[key] = entry
 

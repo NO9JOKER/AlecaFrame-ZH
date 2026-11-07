@@ -4,6 +4,7 @@ logs/
 backup/
 dist/
 verify/
+build/
 build-unmatched.txt
 
 # 构建产物（由 python src/build.py 生成）

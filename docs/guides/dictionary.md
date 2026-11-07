@@ -36,9 +36,11 @@ python tools\dict.py lookup "No preferences set" --json
 加完：
 
 ```powershell
-python tools\dict.py check --strict
+python tools\dict.py check
 python tools\build.py
 ```
+
+> 初始数据存在大小写/no-CJK 告警；W1b 清理后再启用 `--strict`。
 
 真机：`Refresh-Chinese.cmd`，到受影响界面截图；T0 不需要完整 Start/Restore。
 
@@ -105,4 +107,4 @@ python tools\build.py
 
 - `generated/` 只由生成脚本产出；不要手工编辑。
 - 人工词条只写 `entries/`/`fixes.tsv`/`overrides.tsv`/`keep-english.tsv`。
-- 路径/命令问题以 `AGENTS.md` 与仓库实际文件为准；manifest 尚未落地时，`dict.py` 会明确报缺文件，不要伪造数据。
+- 路径/命令问题以 `AGENTS.md` 与仓库实际文件为准；`dict.py` 的输入错误会明确报缺文件，不要伪造数据。

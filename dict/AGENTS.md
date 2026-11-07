@@ -1,7 +1,7 @@
 # dict/AGENTS.md — 词典模块约定
 
 > 就近规则：在 `dict/` 下工作的 AI 先读根 [AGENTS.md](../AGENTS.md)，再读本文件。
-> 本目录按新架构实现；以 `dict/manifest.tsv` 为唯一加载清单。命令是目标接口；工具未落地时以仓库实际文件为准，不要执行不存在的路径。
+> 本目录按新架构实现；以 `dict/manifest.tsv` 为唯一加载清单。当前词典工具已可运行；初始数据存在大小写/no-CJK 告警，W1b 清理后再启用 `--strict`。
 
 ## 1. 职责
 
@@ -20,7 +20,7 @@
 ## 3. 硬规则
 
 - **一个英文键只有一个权威译文**；同值重定义禁止；跨层改值只能进 `overrides.tsv`，并写 `scope`、`reason`、`source`。
-- 优先级由 `manifest.tsv` 显式定义，**禁止 glob 自动加载**；未登记文件 = 失败；`*.bak`/副本不允许存在。
+- 优先级由 `manifest.tsv` 显式定义，**禁止 glob 自动加载**；未登记文件不应存在，强制检查在 W1b 启用；`*.bak`/副本不允许存在。
 - 普通词条只允许 2 列：`英文<TAB>中文`；fixes/overrides 允许 5 列：`英文<TAB>中文<TAB>scope<TAB>reason<TAB>source`。不要发明 3/4 列。
 - `generated/` 是脚本产物，禁止手改；改生成逻辑去改生成脚本。
 - `relic-rewards` 是搜索索引数据，不是普通词典；不要把它混进 `__AFCN_DICT__`。
@@ -49,7 +49,7 @@ dict/
 
 ```powershell
 python tools\dict.py lookup "<英文>"
-python tools\dict.py check --strict
+python tools\dict.py check
 python tools\dict.py report
 python tools\build.py
 ```

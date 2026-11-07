@@ -12,10 +12,16 @@
   → 原生 0 条 → 界面「无匹配物品」；同一份词典里「死亡使徒」= Kaszas 本来能本地命中（含「死亡」的键有 39 个）。
   - 中文查询改为：清空 `search` → 取当前分类/筛选的完整列表 → 按中英双向索引本地过滤（支持**部分中文**，如「死亡」）；
   - 只有**本地 0 命中**且有可靠英文候选时，才退回一次原生英文搜索（物品名缺中文/词典缺译时不丢结果）；
-  - 铸造厂钩子强制 `showAll=true`：实测 search 为空时原生只返回 **100 条**（Acrid/Ack & Brunt/Acceltra…），
-    按字母序排在 100 之后的中文名会被漏掉；
+  - 铸造厂钩子强制 `showAll=true`：实测（2026-11-07 12:56）`type=all` 时 `showAll=false` 只回 **100 条**
+    （Acrid/Ack & Brunt/Acceltra…），`showAll=true` 回 **813 条** ——「全部」分类下的中文搜索因此才完整，
+    否则排在 100 条之后的物品（如「死亡使徒」）永远搜不到；
   - 裂罅武器搜索（`GetRivenWeapons`）同样改为本地优先；
   - 本地 0 命中退回英文改写时输出诊断日志（中文词、原生条数、首条 name/字段）。
+- **赋能（Arcane）页中文搜索**：库存「赋能」页不走 `getFilteredInventory`，而是在
+  `mainInventory.js:173 receiveArcaneProgress()` 里用 `this.search` 对英文字段做子串过滤。
+  新增应用级钩子：中文时临时清空 `search`、取全量后用中英索引过滤 `this.items`，结束后还原搜索框内容。
+- **节点/星球名**：仲裁、入侵、裂缝里的 `Lares, Mercury` 这类「节点, 星球」复合文本，之前整串匹配不到词典；
+  新增 `translateComposite()` 只翻逗号后的星球名（`Lares，水星`），节点名保持英文——与游戏中文客户端一致。
 - **启动器丢失 UTF-8 BOM**：v1.1.7 的提交把 `bin/AlecaFrame-ZH.ps1`（41 KB）的 BOM 弄丢了，
   CI 的 `Check PowerShell UTF-8 BOM` 从 v1.1.7 起必然失败；PowerShell 5.1 下
   Start / Restore / Refresh / Status 快捷方式还会因中文乱码直接解析报错。已补回 BOM，脚本内容零改动。
@@ -26,7 +32,7 @@
   并新增 PowerShell 语法解析、`VERSION` 与 `CHANGELOG` 一致性、生成物未入库、`-Package` 发布包自检。
 - **`docs/分支与发布流程.md`**：main 只接受来自 `dev` / `feature/*` 的合并提交；改动先在分支验证，
   全绿并手动回归后再合入 main、打 tag、推送。
-- 中文搜索单元测试从 40 项增加到 **45 项**（部分中文、英文透传、0 命中兜底、裂罅武器、强制 showAll）。
+- 中文搜索单元测试从 40 项增加到 **47 项**（部分中文、英文透传、0 命中兜底、裂罅武器、强制 showAll、赋能页钩子）。
 
 ### 变更
 

@@ -31,6 +31,25 @@
   const MONTH_RE = "(Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)";
   const NUM = "(\\d[\\d,]*(?:\\.\\d+)?)";
 
+  // 「节点, 星球」复合文本（如仲裁/入侵里显示的 `Lares, Mercury`）：
+  // 游戏中文客户端里节点名保持英文，只有星球名是中文，所以只翻逗号后半段。
+  const PLANET_NAMES = new Set([
+    "Earth", "Venus", "Mercury", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune", "Pluto",
+    "Phobos", "Deimos", "Ceres", "Europa", "Eris", "Sedna", "Lua", "Void",
+    "Kuva Fortress", "Zariman", "Duviri", "Orb Vallis", "Cambion Drift", "Plains of Eidolon",
+    "Cetus", "Necralisk", "Hollvania", "Höllvania"
+  ]);
+
+  function translateComposite(text) {
+    const m = text.match(/^(.+?),\s*([^,]+)$/);
+    if (!m) return null;
+    const planet = norm(m[2]);
+    if (!PLANET_NAMES.has(planet)) return null;
+    const hit = map.get(planet);
+    if (hit === undefined) return null;
+    return m[1] + "，" + hit;
+  }
+
   function fmtMonth(m) { return MONTHS[m] + " 月"; }
 
   const RULES = [
@@ -76,6 +95,8 @@
     if (!key || !/[A-Za-z]/.test(key)) return null;
     const hit = map.get(key);
     if (hit !== undefined) return hit;
+    const composite = translateComposite(key);
+    if (composite !== null) return composite;
     return applyRule(key);
   }
 

@@ -355,6 +355,7 @@
       REFINE_ZH,
       MARKET_MARKER,
       filterRelicPlannerPayload,
+      hookArcaneApp,
       defaultApi
     };
   }
@@ -874,18 +875,60 @@
     if (!started) finish(null);
   }
 
+  /**
+   * 库存「赋能」页：不调用 getFilteredInventory，而是在 mainInventory.js:173 receiveArcaneProgress()
+   * 里用 this.search 对 `item.name + ' ' + item.category` 做英文子串过滤（Vue 侧过滤），
+   * 插件钩子根本看不到这个查询。这里改为：临时清空 search 让原方法只做其它筛选/排序，
+   * 再用中文索引过滤 this.items。
+   */
+  function hookArcaneApp(app) {
+    if (!app || typeof app.receiveArcaneProgress !== "function") return false;
+    if (app.__afzhArcaneHook) return true;
+
+    const original = app.receiveArcaneProgress.bind(app);
+    app.receiveArcaneProgress = function (requestId, success, data, includeAll, queryChanged) {
+      const term = this && typeof this.search === "string" ? this.search.trim() : "";
+      if (!term || !api.hasChinese(term)) return original(requestId, success, data, includeAll, queryChanged);
+
+      markHit("inventoryApp.receiveArcaneProgress:本地过滤");
+      const saved = this.search;
+      this.search = "";
+      try {
+        // includeAll 传 true：原方法默认把 rows 截断到 100 条，中文过滤需要全量
+        original(requestId, success, data, true, queryChanged);
+      } finally {
+        this.search = saved;
+      }
+      const filtered = safeCall(() => api.filterItems(this.items, term, ["name"]), null);
+      if (Array.isArray(filtered)) {
+        this.items = filtered;
+        this.noItems = !filtered.length;
+        this.resultsLimited = false;
+      }
+    };
+    app.__afzhArcaneHook = true;
+    return true;
+  }
+
+  function installInventoryArcaneHook() {
+    return hookArcaneApp(window.inventoryApp);
+  }
+
   function installAppHooks() {
     let attempts = 0;
     const tick = () => {
       const relic = safeCall(installRelicPlannerHook, false);
       const market = safeCall(installMarketPanelHook, false);
+      const arcane = safeCall(installInventoryArcaneHook, false);
       status.hooks.relicPlanner = !!relic;
       status.hooks.marketPanel = !!market;
-      if (relic && market) return;
+      status.hooks.inventoryArcane = !!arcane;
+      if (relic && market && arcane) return;
       attempts++;
       if (attempts >= 40) {
         if (!relic) debugOnce("relicPlannerApp", "relicPlannerApp.receiveUpdate 不可用，跳过遗物规划中文过滤");
         if (!market) debugOnce("buySellPanelApp", "buySellPanelApp.updateSearchSuggestions/suggestionClicked 不可用，跳过市场建议中文列表");
+        if (!arcane) debugOnce("inventoryApp", "inventoryApp.receiveArcaneProgress 不可用，跳过赋能页中文过滤");
         return;
       }
       setTimeout(tick, 250);

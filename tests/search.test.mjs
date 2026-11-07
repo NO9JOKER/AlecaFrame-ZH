@@ -395,7 +395,9 @@ const HOOK_DICT = {
   "Dethcube": "死亡魔方",
   "Kaszas": "死亡使徒",
   "Braton": "布莱顿",
-  "Serration": "膛线"
+  "Serration": "膛线",
+  "Arcane Energize": "赋能·充沛",
+  "Arcane Grace": "赋能·优雅"
 };
 
 test("铸造厂输入部分中文「死亡」：本地过滤出所有匹配项，不被 UI 术语 Death 劫持", () => {
@@ -474,6 +476,45 @@ test("裂罅武器搜索：部分中文同样先本地过滤", () => {
   native.GetRivenWeapons("死亡", (ok, data) => { result = JSON.parse(data); });
   assert.deepEqual(result.map((x) => x.name), ["Kaszas"]);
   assert.equal(calls[0], "", "中文应先用空查询取全量");
+});
+
+test("赋能页：中文查询走 Vue 侧过滤（receiveArcaneProgress 钩子）", () => {
+  const mod = loadSearchModule(HOOK_DICT);
+  const app = {
+    search: "充沛",
+    items: [],
+    noItems: true,
+    resultsLimited: true,
+    requestId: 7,
+    receiveArcaneProgress(requestId, success, data, includeAll) {
+      if (requestId !== this.requestId) return;
+      const parsed = JSON.parse(data);
+      const query = this.search.trim().toLowerCase();
+      const rows = parsed.items.filter((it) => !query || (it.name + " " + it.category).toLowerCase().includes(query));
+      this.items = includeAll ? rows : rows.slice(0, 100);
+      this.noItems = !this.items.length;
+      this.resultsLimited = !includeAll && rows.length > 100;
+    }
+  };
+  assert.ok(mod.hookArcaneApp(app));
+  app.receiveArcaneProgress(7, true, JSON.stringify({ items: [
+    { name: "Arcane Energize", category: "Arcane" },
+    { name: "Arcane Grace", category: "Arcane" },
+    { name: "Braton", category: "Weapon" }
+  ] }), false, true);
+  assert.deepEqual(app.items.map((x) => x.name), ["Arcane Energize"], "应只留下中文名含「充沛」的赋能");
+  assert.equal(app.noItems, false);
+  assert.equal(app.search, "充沛", "search 必须还原，不能把搜索框清空");
+  assert.equal(app.resultsLimited, false);
+});
+
+test("赋能页：英文查询原样交给原方法", () => {
+  const mod = loadSearchModule(HOOK_DICT);
+  let called = 0;
+  const app = { search: "Braton", receiveArcaneProgress() { called++; } };
+  assert.ok(mod.hookArcaneApp(app));
+  app.receiveArcaneProgress(1, true, "{}", false, false);
+  assert.equal(called, 1);
 });
 
 // ---------------------------------------------------------------------------

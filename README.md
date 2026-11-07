@@ -129,7 +129,7 @@ AlecaFrame-ZH/
 │  ├─ import_mioeu.py            从 MIOEU 提取术语生成 dict/mioeu-terms.tsv
 │  └─ vendor/translations.zh-CN.json  上游词库（MIT，见 NOTICE）
 ├─ docs/
-│  ├─ 项目架构与实现说明.md      重构/交接文档：逐文件说明、数据流、坑与重构建议
+│  ├─ 项目架构与实现说明.md      宿主/现有实现参考：逐文件说明、数据流、坑（新架构见 AGENTS/ADR）
 │  ├─ 维护手册.md                完整维护文档（强烈建议维护者阅读）
 │  ├─ OCR集成说明.md             OCR 集成契约（注入页面/启动参数/协议/排障）
 │  ├─ 中文搜索原理.md            中文搜索的宿主判定与实现说明

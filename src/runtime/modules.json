@@ -66,10 +66,18 @@
       "notes": "中文搜索插件/应用 hook、诊断与启动"
     },
     {
+      "id": "adapters.index",
+      "file": "adapters/index.js",
+      "layer": "adapters",
+      "deps": [],
+      "risk": "T1",
+      "notes": "当前页面上下文：按 pages.json 注入的 __AFCN_PAGES__ 解析"
+    },
+    {
       "id": "entry",
       "file": "entry.js",
       "layer": "entry",
-      "deps": ["core.normalize", "core.dict-index", "core.composite", "rules.index", "core.translate", "dom.index", "features.search.api", "features.search.runtime"],
+      "deps": ["core.normalize", "core.dict-index", "core.composite", "rules.index", "core.translate", "dom.index", "features.search.api", "features.search.runtime", "adapters.index"],
       "risk": "T1",
       "notes": "组合根：构建 translator、暴露兼容全局、启动 DOM"
     }

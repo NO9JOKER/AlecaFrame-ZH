@@ -20,11 +20,15 @@
   root.__AFCN_TRANSLATE__ = translator.translate;
   runtime.translator = translator;
   runtime.entries = index.map.size;
+  const page = runtime.adapters ? runtime.adapters.current() : null;
+  root.__AFCN_PAGE__ = page;
+  const pageFeatures = page && Array.isArray(page.features) ? page.features : ["translate"];
 
+  const ARCHON_SKIP = ".archonEffectRow p, .archonRecipeCard p, .archonDetailSlot p, .archonFrameCard small, .archonFrameEffects span, .archonFrameEffects small";
   const dom = runtime.dom.create({
     translate: translator.translate,
     entries: index.map.size,
-    skipSelector: ".archonEffectRow p, .archonRecipeCard p, .archonDetailSlot p, .archonFrameCard small, .archonFrameEffects span, .archonFrameEffects small",
+    skipSelector: pageFeatures.indexOf("archon") !== -1 ? ARCHON_SKIP : "",
   });
 
   if (typeof document === "undefined") {

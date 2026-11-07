@@ -105,7 +105,7 @@ bin/                  只放生成物；源码不要放这里
 3. 生成物不入库：`bin/alecaframe-zh-cn.js`、`bin/ocr/afzh-items.js`、报告文件等。
 4. 翻译是**精确匹配**；不做模糊/词形变化。规则必须全串锚定，禁止宽泛正则（如 `^(\d+) (.+)$`），且要有防循环守卫。
 5. 运行时不得联网（OCR 仅 `127.0.0.1:38147`）、不得访问文件系统、不得写 secrets。
-6. 以下全局名是与宿主/OCR 的硬契约，不要改名：`__AFCN__`、`__AFCN_DICT__`、`__AFCN_RELIC_REWARDS__`、`__AFCN_TRANSLATE__`、`__AFZH_SEARCH__`、`__AFZH_SEARCH_API__`、`__AFZH_SEARCH_TEST__`、`__ALECAFRAME_ZH_CN_ITEMS__`，以及 `src/ocr/CONTRACT.md` 列出的 OCR 全局名。
+6. 以下全局名是与宿主/OCR 的硬契约，不要改名：`__AFCN__`、`__AFCN_DICT__`、`__AFCN_RELIC_REWARDS__`、`__AFCN_TRANSLATE__`、`__AFCN_PAGES__`、`__AFCN_PAGE__`、`__AFZH_SEARCH__`、`__AFZH_SEARCH_API__`、`__AFZH_SEARCH_TEST__`、`__ALECAFRAME_ZH_CN_ITEMS__`，以及 `src/ocr/CONTRACT.md` 列出的 OCR 全局名。
 7. `status.last-session.json`、settings 等状态文件要加 `schemaVersion`；读取时能处理无版本/缺省值，否则给出明确错误。
 8. 页面/宿主版本升级后，hook 方法与选择器可能失效；失败必须可诊断，不能静默吞掉。
 

@@ -13,7 +13,13 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const RUNTIME = path.join(ROOT, "src", "runtime");
 const MANIFEST = JSON.parse(readFileSync(path.join(RUNTIME, "modules.json"), "utf8"));
 
-const sandbox = { console };
+const sandbox = {
+  console,
+  location: { pathname: "/web/main.html" },
+  __AFCN_PAGES__: [
+    { id: "main", file: "main.html", adapter: "main", features: ["translate", "search", "archon"] },
+  ],
+};
 vm.createContext(sandbox);
 for (const module of MANIFEST.modules) {
   const file = path.join(RUNTIME, module.file);
@@ -39,6 +45,18 @@ test("modules load in manifest order", () => {
   assert.ok(runtime.normalize);
   assert.ok(runtime.dictIndex);
   assert.ok(runtime.translate);
+});
+
+test("adapter resolves current page from injected registry", () => {
+  const page = runtime.adapters.current();
+  assert.equal(page.id, "main");
+  assert.equal(page.file, "main.html");
+  assert.equal(page.adapter, "main");
+  assert.equal(page.features.join(","), "translate,search,archon");
+});
+
+test("entry exposes resolved page context", () => {
+  assert.equal(sandbox.__AFCN_PAGE__.id, "main");
 });
 
 test("normalize collapses whitespace and trims", () => {

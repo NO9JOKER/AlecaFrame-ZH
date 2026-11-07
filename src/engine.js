@@ -66,6 +66,18 @@
     // 裂罅属性（已揭示裂罅/裂罅探索器卡片）：插件把「数值+属性名」拼成一个文本节点，
     // 如 `+109.9% Critical Damage` / `x1.5 Damage to Corpus`；属性名本身翻不出来整串就不动。
     [/^(\d+(?:\.\d+)?)% match$/, (m) => m[1] + "% 匹配"],
+    [/^View (.+) shards$/, (m) => "查看" + (translateValue(m[1]) ?? m[1]) + "源力石"],
+    [/^(\d+) Stela, (\d+) possible now$/, (m) => m[1] + " 虚空石块，当前可用 " + m[2] + " 次"],
+    [/^(\d+) Stela, (\d+) regular, (\d+) Tauforged$/, (m) => m[1] + " 虚空石块，" + m[2] + " 普通，" + m[3] + " TAU源力石"],
+    [/^(\d+) Stela, (\d+) Tauforged$/, (m) => m[1] + " 虚空石块，" + m[2] + " TAU源力石"],
+    [/^(.+) effects$/, (m) => (translateValue(m[1]) ?? m[1]) + "效果"],
+    [/^Find Warframes using (.+)$/, (m) => "查找使用「" + (translateValue(m[1]) ?? m[1]) + "」的战甲"],
+    [/^\+(\d+) more effects$/, (m) => "另有 " + m[1] + " 种效果"],
+    [/^(\d+) \/ 5 installed(?:, (\d+) Tauforged)?$/, (m) => m[1] + " / 5 已安装" + (m[2] ? "，" + m[2] + " TAU源力石" : "")],
+    [/^(\d+) \/ 5 slots(?:, (\d+) Tauforged)?$/, (m) => m[1] + " / 5 槽位" + (m[2] ? "，" + m[2] + " TAU源力石" : "")],
+    [/^Tauforged (.+)$/, (m) => (translateValue(m[1]) ?? m[1]) + " TAU源力石"],
+    [/^Installed on (\d+) Warframes$/, (m) => "已安装在 " + m[1] + " 个战甲上"],
+    [/^Copy (\d+)$/, (m) => "复制 " + m[1]],
     [/^([+-]?\d[\d,]*(?:\.\d+)?%)\s+(.+)$/, (m) => {
       const raw = m[2].trim();
       const translated = translateValue(raw);
@@ -137,8 +149,18 @@
   }
 
 
+  window.__AFCN_TRANSLATE__ = translateValue;
+
   function translateTextNode(node) {
     const raw = node.nodeValue;
+    // 源力石效果指南/融合配方的单元格是 v-html（文字被伤害图标切开），
+    // 交给 search.js 的整段翻译处理；这里跳过，避免先把元素名翻成中文导致整句匹配不上。
+    try {
+      const host = node.parentElement && node.parentElement.closest
+        ? node.parentElement.closest(".archonEffectRow p, .archonRecipeCard p, .archonDetailSlot p, .archonFrameCard small, .archonFrameEffects span, .archonFrameEffects small")
+        : null;
+      if (host) return;
+    } catch (_) { /* ignore */ }
     if (!raw || raw.length > 400) return;
     let next = translateValue(raw);
     // 裂罅卡片里的伤害类型要显示成「冰冻伤害 / 火焰伤害」（图标由 app 自己渲染）；

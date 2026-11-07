@@ -759,6 +759,7 @@
     return installed > 0;
   }
 
+
   function whenPluginReady() {
     // background.html 的插件对象是本地的（background.js:1）；main.html 是跨窗口引用。
     // 插件初始化是异步的（sharedOverwolfStuff.js:23-61），所以轮询最多 60 秒。
@@ -1014,6 +1015,82 @@
   // ---------------------------------------------------------------------------
   // 启动
   // ---------------------------------------------------------------------------
+  /**
+   * 源力石页面补译：效果指南/融合配方的单元格是 v-html（文字被伤害图标切成多个文本节点），
+   * 按整段还原（img 用 alt 还原元素英文名）后查词典/规则，命中就替换成完整中文。
+   */
+  function archonCellText(el) {
+    let out = "";
+    const walk = (wrapper) => {
+      for (const child of wrapper.childNodes || []) {
+        if (child.nodeType === 3) out += child.nodeValue;
+        else if (child.nodeType === 1) {
+          if (child.tagName === "IMG") {
+            out += " " + (child.getAttribute("alt") || child.getAttribute("title") || "") + " ";
+          } else {
+            walk(child);
+          }
+        }
+      }
+    };
+    walk(el);
+    return out.replace(/\s+/g, " ").trim();
+  }
+
+  function translateArchonComposite() {
+    const tr = window.__AFCN_TRANSLATE__;
+    if (typeof tr !== "function") return;
+    const selectors = [".archonFrameEffects span", ".archonEffectRow p", ".archonRecipeCard p", ".archonFrameCard small", ".archonDetails p", ".archonDetailSlot p", ".archonGuideHeading h3"];
+    for (const selector of selectors) {
+      let nodes;
+      try { nodes = document.querySelectorAll(selector); } catch (_) { continue; }
+      for (const el of nodes) {
+        const text = archonCellText(el);
+        if (!text || text.length > 300) continue;
+        // 已经是译文（不含拉丁字母）就不再处理，避免反复叠加
+        if (!/[A-Za-z]/.test(text)) continue;
+        // 战甲卡片的效果摘要形如「5 Casting speed」→「5 个 技能施放速度」；
+        // 只处理「数字 + 英文效果名」，避免把已有译文再拼一层。
+        const counted = text.match(/^(\d+) ([A-Za-z].*)$/);
+        if (counted) {
+          let label = null;
+          try { label = tr(counted[2]); } catch (_) { label = null; }
+          if (typeof label === "string" && label !== counted[2]) {
+            const translated = counted[1] + " 个 " + label;
+            if (el.textContent.trim() !== translated) el.textContent = translated;
+            continue;
+          }
+        }
+        let result = null;
+        try { result = tr(text); } catch (_) { result = null; }
+        if (typeof result === "string" && result !== text && el.textContent.trim() !== result) {
+          el.textContent = result;
+        }
+      }
+    }
+  }
+
+  let archonPassTimer = null;
+  function scheduleArchonPass() {
+    if (archonPassTimer) return;
+    archonPassTimer = setTimeout(() => {
+      archonPassTimer = null;
+      translateArchonComposite();
+    }, 80);
+  }
+
+  function installArchonTranslatePass() {
+    if (window.__afzhArchonPass) return;
+    window.__afzhArchonPass = true;
+    try {
+      const root = document.body || document.documentElement;
+      if (root && typeof MutationObserver === "function") {
+        new MutationObserver(scheduleArchonPass).observe(root, { childList: true, subtree: true, characterData: true });
+      }
+    } catch (_) { /* ignore */ }
+    setInterval(translateArchonComposite, 3000);
+  }
+
   function start() {
     if (status.started) return;
     status.started = true;
@@ -1028,6 +1105,7 @@
     }
     whenPluginReady();
     installAppHooks();
+    installArchonTranslatePass();
     try {
       // 自检：把几个已知词条打出来，用于确认运行时词典/反向索引真的可用
       const probeText = "膛线";

@@ -558,6 +558,15 @@
         // 本地 0 命中：有可靠英文候选就退回原生英文搜索（物品名没中文/词典缺译时仍能搜到）
         if (english) {
           markHit(methodName + ":本地0命中→英文改写");
+          try {
+            const first = parsed.length && parsed[0] && typeof parsed[0] === "object" ? parsed[0] : null;
+            console.info(
+              "[AFZH 中文搜索] " + methodName + ' 中文="' + term + '" 本地 0 命中：原生 ' +
+              parsed.length + " 条" +
+              (first ? "，首条 name=" + JSON.stringify(first.name) + " 字段=" + Object.keys(first).slice(0, 8).join("/") : "") +
+              "，退回英文改写=" + JSON.stringify(english)
+            );
+          } catch (_) { /* ignore */ }
           const retryArgs = args.slice();
           retryArgs[0] = JSON.stringify(Object.assign({}, filters, { search: english }));
           return original.apply(nativeThis, retryArgs);

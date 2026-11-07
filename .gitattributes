@@ -3,11 +3,13 @@
 # Windows 脚本保持 CRLF
 *.cmd text eol=crlf
 *.ps1 text eol=crlf
+*.psm1 text eol=crlf
 
 # 数据与代码使用 LF
 *.tsv text eol=lf
 *.json text eol=lf
 *.js text eol=lf
+*.mjs text eol=lf
 *.py text eol=lf
 *.md text eol=lf
 

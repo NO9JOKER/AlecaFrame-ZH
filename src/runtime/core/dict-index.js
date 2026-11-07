@@ -1,6 +1,6 @@
 /* AlecaFrame-ZH runtime · core.dict-index
  * Builds the exact-match map and the ASCII lowercase fallback index.
- * First definition wins, matching the historical translation engine.
+ * First definition wins; no DOM/host access.
  */
 (function (root) {
   "use strict";

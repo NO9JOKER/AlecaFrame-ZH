@@ -20,6 +20,7 @@
 """
 import argparse
 import glob
+import re
 import json
 import os
 import sys
@@ -35,6 +36,16 @@ OCR_ITEMS = os.path.join(PKG, "bin", "ocr", "afzh-items.js")
 UNMATCHED = os.path.join(PKG, "build-unmatched.txt")
 
 APP_ID = "afmcagbpgggkpdkokjhjkllpegnadmkignlonpjm"
+
+
+
+def extra_sort_key(path):
+    """extra-*.tsv 按数字顺序叠加（extra-9 之后才是 extra-10/11），保证新层能覆盖旧层。"""
+    name = os.path.basename(path)
+    hit = re.match(r"extra-(\d+)\.tsv$", name)
+    if hit:
+        return (0, int(hit.group(1)), name)
+    return (1, 0, name)
 
 
 def load_tsv(path):
@@ -92,7 +103,7 @@ def main():
     mioeu = load_tsv(os.path.join(DICT_DIR, "mioeu-terms.tsv"))
     fixes = load_tsv(os.path.join(DICT_DIR, "fixes.tsv"))
     extras = {}
-    for p in sorted(glob.glob(os.path.join(DICT_DIR, "extra-*.tsv"))):
+    for p in sorted(glob.glob(os.path.join(DICT_DIR, "extra-*.tsv")), key=extra_sort_key):
         extras.update(load_tsv(p))
 
     # 优先级：游戏数据物品名 -> MIOEU 术语补缺 -> 上游 UI -> 机翻修正 -> 人工覆盖

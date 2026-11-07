@@ -1,5 +1,46 @@
 # Changelog
 
+## v1.1.9 (2026-11-07)
+
+汉化补全 + 裂罅/WFM 适配 + 上架诊断。
+
+### 修复
+
+- **星图统计**：`Junctions:` 由「路口」改为「**枢纽**」，与「钢铁之路枢纽」统一（`fixes.tsv` 覆盖 vendor 层）。
+- **WFM 裂罅类型**：`Atragraph` → 「墨染」（Atragraph Mod 是游戏里的“艺术化”MOD 类型）。
+- **裂罅属性名（含熔接词条）**：按游戏数据补齐 54 条裂罅属性名，新增 `dict/extra-11.tsv`：
+  - 基础：`Zoom` 变焦、`Range` 攻击范围、`Status Damage` 异常状态伤害、`Finisher Damage` 处决伤害 等；
+  - 熔接（裂罅熔接器）结果：`Weak Point Damage` 弱点伤害、`Weak Point Critical Chance` 弱点暴击几率、
+    `Ammo Efficiency` 弹药效率、`Magazine Reloaded/s when Holstered` 收起武器时弹匣每秒自动装填、
+    `Melee Damage on Heavy Attack` 在重击时的近战伤害、`Heavy Attack Wind Up Speed` 重击准备速度、
+    `Parry Angle` 招架角度、`Slam Attack Damage` 震地攻击伤害、`Damage to Scaldra/Techrot/Orokin`；
+  - 特殊词条：`Critical Chance (x2 for Heavy Attacks)` 暴击几率（重击时 x2）、`Fire Rate (x2 for Bows)` 射速（弓类武器效果加倍）。
+- **相似裂罅（warframe.market 数据）**：补 WFM 短名映射（`Crit. chance`、`Crit. damage`、`Magazine size`、
+  `Heavy attack eff.`、`Crit % on slide`、`Melee damage`、`Initial combo` 等）；
+  `engine.js` 新增「正负号前缀」规则：`+Multishot` → `+多重射击`、`-Zoom` → `-变焦`。
+- **裂罅卡片纯数值词条**：新增「数字 + 属性名」规则，`+0.3 Range` → `+0.3 攻击范围`、`6s Combo Duration` → `6 秒连击持续时间`
+  （与游戏内熔接说明的「秒连击持续时间」写法一致）。
+- **`src/build.py` 词典叠加顺序**：`extra-*.tsv` 改为按数字排序（此前 `extra-10/11` 会被 `extra-2..9` 覆盖，
+  新词条不生效）。
+- **裂罅上架 WFM 诊断**：WFM 报错 toast 的完整文本会写入日志；上架前记录武器名、属性与三档价格，
+  用于定位 400 错误（例如熔接词条）。
+- **WFM 界面文案**：`List on warframe.market`（标题/按钮）、`Edit warframe.market listing`、`75% match`、
+  `Whisper`、`avail.`、`Orders`、`Invisible`、`Create alert`、`Compare live market listings`、
+  `Hide/Show`、`Filtered`、`Copied` 等；`data-tippy-content` 也纳入翻译属性，悬停提示同步中文。
+- **外部数据大小写回退**：WFM 返回的属性名大小写不固定（`Status damage` / `Status Damage`），
+  引擎在精确匹配未命中时按小写再查一次。
+- **星图统计**：`Duviri:` 由 vendor 层误译「杜维里：」改为「双衍王境：」。
+
+### 参考
+
+- 裂罅属性中译名参考 <https://github.com/wxhn1225/riven-roll> 的 `src/data/game.json`（游戏数据，简中词形）。
+
+### 已知限制
+
+- 带**熔接词条**的紫卡上架 WFM：v1.1.9 实测可正常上架（此前 400 判断为 WFM 连接瞬断，
+  非词条本身问题）；诊断日志保留备用。
+- 统计 → 交易历史在中文游戏语言下仍不可用（官方限制），可行性评估见 `docs/待改进清单.md`。
+
 ## v1.1.8 (2026-11-07)
 
 修复 v1.1.7 的两个回归，并把「合并前验证」固化成脚本与流程。

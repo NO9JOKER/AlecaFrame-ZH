@@ -1,6 +1,7 @@
 # AGENTS.md — AlecaFrame-ZH 的 AI 操作契约
 
 > 状态：架构规范（实现中）。部分目标目录/命令尚未落地；以实际代码和本文件为准。发现文档与代码不一致时先停下，在 PR/报告中说明，不要按猜测继续。
+> **目标接口说明**：本文中的 `tools/*`、`pages.json`、`dict/manifest.tsv`、`src/runtime/*`、`src/launcher/*`、`src/ocr/*` 等是新架构的目标路径，可能尚未创建。实现前不要假设它们存在；实际可执行文件以仓库现状为准，并在 PR 中记录实际命令。
 > 人类贡献者入口：[CONTRIBUTING.md](CONTRIBUTING.md)。贡献者 AI 路线：[docs/contributing/README.md](docs/contributing/README.md)。维护者复核 AI：[docs/review/AI_REVIEW.md](docs/review/AI_REVIEW.md)。
 
 ## 0. 你是什么角色
@@ -31,13 +32,13 @@
 - 词典任务：`dict/AGENTS.md`、目标词条文件头部；
 - 引擎/规则/搜索：`src/runtime/AGENTS.md`、对应模块 README、目标文件头；
 - 启动器/注入：`src/launcher/AGENTS.md`、`pages.json`；
-- OCR：`src/ocr/AGENTS.md`、`src/ocr/CONTRACT.md`。
+- OCR：`src/ocr/AGENTS.md`、`src/ocr/CONTRACT.md`（目标路径；实现前参考 `docs/OCR集成说明.md`）。
 
 不要读：`bin/` 生成物、全部词条、与本任务无关的参考文档、`dist/`、`state/`、`logs/`。
 
-## 3. 稳定命令
+## 3. 目标命令
 
-新架构的稳定命令（对应工具实现后）：
+新架构的目标命令（工具实现后）；在工具落地前不要假设它们可执行：
 
 ```powershell
 python tools\build.py                            # 合并词典，生成注入 bundle 与 OCR 词库
@@ -54,7 +55,7 @@ Restore-English.cmd     # 还原官方文件并正常启动
 Status.cmd              # 查看会话 flag / 注入状态 / OCR 状态
 ```
 
-工具尚未落地时，不要凭本文件猜命令；以仓库实际可执行文件为准，并在 PR 中记录实际运行的命令。
+工具尚未落地时，不要凭本文件猜命令；以仓库实际可执行文件为准，并在 PR 中记录实际运行的命令与结果。不要执行不存在的路径。
 
 ## 4. 目录与依赖
 

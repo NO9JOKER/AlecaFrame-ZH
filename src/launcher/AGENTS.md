@@ -1,7 +1,7 @@
 # src/launcher/AGENTS.md — 启动器模块约定
 
 > 就近规则：在 `src/launcher/` 下工作的 AI 先读根 [AGENTS.md](../../AGENTS.md)，再读本文件。
-> Tier：T2。改这里必须有真机 Start/Restore 证据。
+> Tier：T2。改这里必须有真机 Start/Restore 证据。命令是目标接口；工具未落地时以仓库实际文件为准，不要执行不存在的路径。
 
 ## 1. 职责
 

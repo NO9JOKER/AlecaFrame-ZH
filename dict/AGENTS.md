@@ -1,7 +1,7 @@
 # dict/AGENTS.md — 词典模块约定
 
 > 就近规则：在 `dict/` 下工作的 AI 先读根 [AGENTS.md](../AGENTS.md)，再读本文件。
-> 本目录按新架构实现；以 `dict/manifest.tsv` 为唯一加载清单。
+> 本目录按新架构实现；以 `dict/manifest.tsv` 为唯一加载清单。命令是目标接口；工具未落地时以仓库实际文件为准，不要执行不存在的路径。
 
 ## 1. 职责
 

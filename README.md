@@ -1,5 +1,7 @@
 # AlecaFrame 简体中文补丁（AlecaFrame-ZH）
 
+> 项目正在按新架构实现。本文描述当前可执行流程；目标架构/命令以 [AGENTS.md](AGENTS.md)、[docs/README.md](docs/README.md) 与项目计划为准。文中版本/数量是写作时快照，以 `VERSION` 和构建输出为准。
+
 给 Overwolf 应用 **AlecaFrame** 增加简体中文界面，并让物品名（武器 / MOD / 赋能 / 资源 / 遗物 / Prime 部件）按游戏官方简中显示。
 
 - 非官方、开源的本地化补丁；通过“运行时注入”实现，**不修改官方安装包、签名或 DLL**

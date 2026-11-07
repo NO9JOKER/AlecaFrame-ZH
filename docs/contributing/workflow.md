@@ -26,7 +26,7 @@ git switch -c feature/<scope> upstream/main
 
 ## 2. 本地检查
 
-在仓库根目录，使用仓库实际存在的命令（新架构工具落地后）：
+以下为目标命令（工具实现后）；工具尚未落地时，使用仓库实际存在的等价脚本，并在 PR 中记录实际命令。
 
 ```powershell
 python tools\build.py

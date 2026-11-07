@@ -38,11 +38,11 @@ git switch --detach pr-<PR号>
 5. 核对证据（见 §6）。
 6. 写报告（§7），给结论和建议。
 
-## 4. 机器检查（当前命令）
+## 4. 机器检查（目标命令；工具实现前以实际文件为准）
 
 ```powershell
-python src\build.py
-powershell -ExecutionPolicy Bypass -File scripts\verify.ps1
+python tools\build.py
+powershell -ExecutionPolicy Bypass -File tools\verify.ps1
 node tests\search.test.mjs
 ```
 
@@ -50,7 +50,7 @@ node tests\search.test.mjs
 - 检查构建两次 hash 是否一致、生成物是否被跟踪、bundle 是否包含必需全局名。
 - 词典 PR：检查 `dict`/`scan_missing` 报告、合并键数、覆盖是否被静默改变。
 - 运行时 PR：规则/fixture 单测、hook 安装计数、`__AFZH_SEARCH_TEST__` 纯函数导出。
-- launcher PR：在本机跑 `scripts/test-inject.ps1`（合成页面树）；不要在没有备份的情况下直接对真实安装做破坏性测试。
+- launcher PR：在本机跑 `tools/test-inject.ps1`（合成页面树；实现前用实际存在的等价脚本）；不要在没有备份的情况下直接对真实安装做破坏性测试。
 - OCR PR：只允许 manifest/路径/文档；检查 manifest 中的页面脚本清单、部署名不变、端口/全局名不变；server 冒烟。
 
 ## 5. 代码/契约复核清单

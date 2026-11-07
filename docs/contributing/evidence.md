@@ -15,7 +15,7 @@ T0 通常只需 `SIM` + 截图；T1 至少 `SIM` + 受影响页面 `REAL`；T2 �
 
 ## 2. 必填字段（PR 模板里有对应栏位）
 
-> 下面的版本号/数量只是示例，不是当前事实；实际填写以本机环境、`VERSION`、命令输出为准。把尖括号占位符替换为实际值。
+> 下面的版本号/数量只是示例，不是当前事实；实际填写以本机环境、`VERSION`、命令输出为准。把尖括号占位符替换为实际值。命令是架构目标命令；工具未落地时填写实际执行的等价命令。
 
 ```yaml
 environment:
@@ -27,10 +27,10 @@ environment:
   bundle_sha256: <bin/alecaframe-zh-cn.js 的前 16 位或完整值>
   ocr_enabled: <true/false>
 commands:
-  - cmd: python src\build.py
+  - cmd: python tools\build.py
     exit: 0
     output_tail: "merged=... / wrote ..."
-  - cmd: powershell -ExecutionPolicy Bypass -File scripts\verify.ps1
+  - cmd: powershell -ExecutionPolicy Bypass -File tools\verify.ps1
     exit: 0
     output_tail: "结果：通过 (PASS=...)"
 real_machine:

@@ -1,7 +1,7 @@
 # src/ocr/AGENTS.md — OCR 子系统边界
 
 > 就近规则：在 `src/ocr/` 下工作的 AI 先读根 [AGENTS.md](../../AGENTS.md)，再读本文件。
-> Tier：T2（路径/manifest 变更）；逻辑改动另立项目/ADR。
+> Tier：T2（路径/manifest 变更）；逻辑改动另立项目/ADR。命令是目标接口；工具未落地时以仓库实际文件为准，不要执行不存在的路径。
 
 ## 1. 职责
 

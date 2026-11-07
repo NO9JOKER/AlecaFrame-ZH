@@ -15,7 +15,7 @@
 3. [docs/contributing/task-router.md](../docs/contributing/task-router.md) 的「词典」行；
 4. `dict/manifest.tsv` 的目标文件行；
 5. 目标词条文件头部；
-6. `docs/guides/dictionary.md`（实现后）。
+6. `docs/guides/dictionary.md`。
 
 ## 3. 硬规则
 
@@ -50,7 +50,7 @@ dict/
 ```powershell
 python tools\dict.py lookup "<英文>"
 python tools\dict.py check --strict
-python tools\dict.py report --conflicts
+python tools\dict.py report
 python tools\build.py
 ```
 

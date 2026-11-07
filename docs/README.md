@@ -21,6 +21,7 @@
 |---|---|
 | 使用/安装 | [README.md](../README.md) |
 | 贡献 | [CONTRIBUTING.md](../CONTRIBUTING.md) |
+| 写/改词典词条 | [docs/guides/dictionary.md](guides/dictionary.md) |
 | 维护/排障 | [docs/维护手册.md](维护手册.md) |
 | 分支/发布 | [docs/分支与发布流程.md](分支与发布流程.md) |
 | OCR 集成参考 | [docs/OCR集成说明.md](OCR集成说明.md) |
@@ -45,7 +46,6 @@
 - `docs/MODULE_MAP.md`：生成式模块索引。
 - `docs/PAGE_MATRIX.md`：生成式页面矩阵（注入/适配器/OCR/覆盖/回归）。
 - `docs/DICT_REPORT.md`：生成式词典报告（层/条数/冲突/覆盖）。
-- `docs/guides/dictionary.md`：人类词条指南（唯一长文）。
 - `docs/guides/{rules,hooks,launcher,testing,release}.md`。
 - `docs/modules/<module>/README.md`、`docs/pages/<page>.md`（按模板创建）。
 

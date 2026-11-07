@@ -17,8 +17,7 @@
 |---|---|
 | Tier | T0 |
 | 必读 | [AGENTS.md](../../AGENTS.md) → 本表 → `dict/AGENTS.md` → `dict/manifest.tsv` 对应行 → 目标词条文件头部 |
-| 可改 | `dict/entries/common/*.tsv` 或 `dict/entries/screens/*.tsv`；不得改 `dict/generated/**` |
-| 不要改 | `bin/**`、生成报告、`dict/upstream/**` |
+| 可改 | `dict/entries/common/*.tsv` 或 `dict/entries/screens/*.tsv`；不得改 `dict/generated/**` || 不要改 | `bin/**`、生成报告、`dict/upstream/**` |
 | 验证 | `python tools\dict.py lookup/check` → `python tools\build.py` → `Refresh-Chinese.cmd`；受影响界面截图 |
 | 证据 | SIM 命令输出 + T0 截图；不需要 REAL |
 
@@ -37,7 +36,7 @@
 | 项 | 内容 |
 |---|---|
 | Tier | T1（若改 engine 上下文则 T2） |
-| 必读 | `docs/guides/dictionary.md`（实现后）→ 目标 scope 定义 → `src/runtime/AGENTS.md` → 相关 engine 规则/测试 |
+| 必读 | [docs/guides/dictionary.md](../guides/dictionary.md) → 目标 scope 定义 → `src/runtime/AGENTS.md` → 相关 engine 规则/测试 |
 | 可改 | 词典 scope 数据 + engine 的 context/translate 模块 + 测试 |
 | 验证 | golden 显式 diff；规则/engine 单测；受影响页面 REAL 截图（至少裂罅/天气/通用三组） |
 | 注意 | 不要和词典数据结构变更混在一个 PR；不要靠大小写模拟 scope |

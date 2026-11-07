@@ -51,7 +51,7 @@ dict/
 ```
 
 - 构建验收：[项目/词典验收设计](project/dictionary-acceptance.md)。
-- 人类指南：`docs/guides/dictionary.md`（实现后创建）。
+- 人类指南：[docs/guides/dictionary.md](guides/dictionary.md)。
 
 ## 5. OCR
 

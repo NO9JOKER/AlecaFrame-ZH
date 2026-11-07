@@ -7,7 +7,7 @@
 | 列 | 必填 | 说明 |
 |---|---|---|
 | `order` | 是 | 非负整数，升序加载；越小优先级越低；禁止重复 |
-| `path` | 是 | 相对仓库根目录的 TSV/JSON 路径；禁止绝对路径/`..` |
+| `path` | 是 | 相对 `dict/` 目录的 TSV/JSON 路径；禁止绝对路径/`..` |
 | `kind` | 是 | `generated` / `upstream` / `manual` / `override` / `policy` / `index` |
 | `scope` | 是 | `global` / `shared` / `screen:<id>` / `-` |
 | `schema` | 是 | `2` / `3` / `5` 列格式；见下 |

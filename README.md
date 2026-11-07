@@ -175,7 +175,7 @@ Start-Chinese.cmd
 
 | 场景 | 做法 | 需要 Python？ |
 |---|---|---|
-| 普通用户更新 | 下载新 Release zip 覆盖旧目录（保留自己的 `state/`、`logs/`） | 不需要 |
+| 普通用户更新 | 下载新 Release zip 覆盖已有目录（保留自己的 `state/`、`logs/`） | 不需要 |
 | 从 clone 更新 | `git pull` 后运行 `python src\build.py` 重新生成运行时脚本 | 需要 |
 | 换一台电脑 | 拷整个目录（或 Release zip），双击 `Install-Shortcuts.cmd`；`state/`、`logs/` 不必同步 | 不需要 |
 

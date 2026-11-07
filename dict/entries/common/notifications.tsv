@@ -1,0 +1,62 @@
+# notifications entries
+Added a compact Duviri row with the current Spiral, next Spiral and countdown	新增紧凑的双衍王境行，显示当前螺旋、下一个螺旋与倒计时
+Added bulk price updates with progress and cancellation, and clearer inventory warnings	新增批量价格更新，支持进度显示与取消，并让仓库警告更清晰
+Added Railjack Void Storms to the fissure panel, with mission details, countdowns and customizable notifications	在虚空裂缝面板中加入航道星舰虚空风暴，包含任务详情、倒计时与可自定义的通知
+Added rare invasion and event rewards to Timers & Events, with optional alerts for Catalysts, Reactors, Exilus adapters and selected weapon parts	在计时器与事件中加入稀有的入侵与活动奖励，并可选择对催化剂、反应堆、特殊功能适配器及选定武器部件发出提醒
+Added WFMarket message notifications	新增 WFMarket 消息通知
+All the overlays and the main window have a brand new design, with clearer navigation and many QoL improvements	所有叠加层与主窗口采用全新设计，导航更清晰，并带来大量体验优化
+Arcanes now show collection progress toward max rank, including copies already combined into ranked Arcanes	赋能现在显示升至满级的收集进度，包含已合并为升级赋能的份数
+Bug fixes	错误修复
+Buy / Sell	收购 / 出售
+Catalysts	催化剂
+Changelog	更新日志
+Crafting helper	制作助手
+Endo helper	内融核心助手
+Exilus adapters	特殊功能适配器
+Favorite stars now stay filled on hover without changing size or position	收藏星标在悬停时保持填充，且不再改变大小或位置
+Fissures	虚空裂缝
+Fixed Archon shard socket positions and outdated shard effects	修复了执刑官源力石插槽位置与过时的源力石效果
+Fixed crafting trees showing missing materials as already owned	修复了制作树将缺失材料显示为已拥有的问题
+Fixed failed loads appearing as empty results in Foundry, Mastery helper and Stats	修复了加载失败时在铸造厂、精通助手与统计中显示为空结果的问题
+Fixed inventory and Archon shards sometimes failing to load at startup, and reduced startup pauses	修复了启动时仓库与执刑官源力石有时加载失败的问题，并减少了启动卡顿
+Fixed older searches replacing newer results or showing details for the wrong item	修复了较早的搜索覆盖较新结果或显示错误物品详情的问题
+Fixed price spikes, incorrect max-rank mod prices and daily trading volume estimates	修复了价格尖峰、满级 MOD 价格错误与每日交易量估算的问题
+Fixed release-channel selection for Patreon Tier 1 and Overwolf subscribers	修复了 Patreon 第 1 档与 Overwolf 订阅者的发布通道选择
+Fixed Riven price history when records are missing or out of order	修复了记录缺失或顺序混乱时的裂罅价格历史
+Fixed Stats and event popups being cut off or appearing behind other dialogs	修复了统计与事件弹窗被截断或显示在其他对话框之后的问题
+Fixed trade notifications cutting off player names and losing your message when giving reputation fails	修复了交易通知截断玩家名称以及赠送声望失败时丢失消息的问题
+Fixed trading for veiled Rivens	修复了未揭示裂罅的交易
+Hi everyone! It's been a long time. I really hope you enjoy this new update :)	大家好！好久不见。真心希望你们喜欢这次新更新 :)
+Improved Riven Finder, price history charts and Riven details, with clearer grades and recommended attributes	改进裂罅查找器、价格历史图表与裂罅详情，评级更清晰并给出推荐属性
+Improvements	改进
+Inventory now has a compact list view. New items found separates your latest finds from your total inventory and shows their value	仓库现在提供紧凑列表视图。“新发现物品”会将最新发现与仓库总量分开显示，并展示其价值
+Inventory now shows which spare parts you can sell after accounting for crafting needs and existing listings	仓库现在会显示在计入制作需求与现有挂单后，哪些多余部件可以出售
+Major changes	主要变更
+Mastery helper now shows when Easy mode recommendations are blocked by your Mastery Rank	当“简单模式”推荐因精通段位受限时，精通助手现在会予以提示
+Mod Planner	MOD 规划器
+New Endo helper in Planner estimates Endo from spare unranked mods, with copies to keep, favorite protection and market prices	规划器新增内融核心助手，可根据多余未升级 MOD 估算内融核心，并考虑保留份数、收藏保护与市场价格
+New items found	发现新物品
+New view showing the materials missing from your favorites, with a combined shopping list you can copy	新增视图，显示你的收藏所缺材料，并提供可复制的合并购物清单
+Premium settings now show separate Tier 1 and Tier 2+ sections, with visible previews of locked controls	高级版设置现在分为第 1 档与第 2 档以上两个区域，并显示锁定控件的预览
+Premium Trading Analytics now has separate views for your trading history and market activity	高级版交易分析现在为你的交易历史与市场活动提供独立视图
+Prices now update properly. A weird edge case sometimes prevented them from refreshing. Sorry about that!	价格现在能正常更新了。此前某个奇怪的边界情况有时会阻止刷新。非常抱歉！
+Railjack Void Storm	航道星舰虚空风暴
+Reactors	反应堆
+Release	发布
+Relic Planner	遗物规划器
+Relic Planner now calculates faster and makes refinement costs and squad reward chances easier to compare	遗物规划器现在计算更快，并让精炼花费与小队奖励概率更易比较
+Resource inventory	资源仓库
+Reworked the activity view, balance charts and trade history, including public stats pages	重构了活动视图、余额图表与交易历史，包括公开统计页面
+Safe to list	可安全上架
+Search, filters and dropdowns now use consistent controls across tabs	搜索、筛选与下拉菜单现在在各选项卡中使用统一的控件
+See the Endo and Credits needed to max your favorite mods	查看将收藏 MOD 升满所需的内融核心与星币
+See your resources and how much to keep for favorites and remaining unlocks	查看你的资源，以及为收藏与剩余解锁需保留的数量
+Tier 1	第 1 阶
+Tier 2+	第 2 阶以上
+Timers & Events and Fissures now have separate tabs beside Buy / Sell, giving fissure missions and alerts more room	计时器与事件、虚空裂缝现在在“买入 / 卖出”旁拥有独立选项卡，为裂缝任务与提醒提供更多空间
+to keep	保留
+Trading	交易
+View available and installed shards, each Warframe's sockets and fusion costs	查看可用与已安装的源力石、各战甲的插槽及融合花费
+Void	虚空
+Void Storms	虚空风暴
+You can now resize and arrange the main window using Windows' built-in Snap features	你现在可以使用 Windows 内置的贴靠功能调整与排列主窗口

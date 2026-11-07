@@ -1,0 +1,466 @@
+# arbitration entries
+0.06 means 6%. Editable baseline from the documented Update 30.5 change.	0.06 表示 6%。可编辑的基准值，来自 30.5 更新中记录的改动。
+0.18 means an 18% independent chance of doubling a collected drop. Use 0 when absent.	0.18 表示有 18% 的独立几率使已采集的掉落翻倍。不存在时填 0。
+0s between drones	无人机间隔 0 秒
+1 hour before	提前 1 小时
+10 minutes before	提前 10 分钟
+15 minutes before	提前 15 分钟
+30 minutes before	提前 30 分钟
+5 minutes before	提前 5 分钟
+7-day forecast	7 天预测
+90 s recent, 5 min all time	最近 90 秒，全部时间 5 分钟
+90th percentile	第 90 百分位
+A compact summary beside your other timers	在其他计时器旁的紧凑摘要
+A run cannot be deleted while it is recording.	录制中的记录无法删除。
+Aborted	已中止
+Actions	操作
+Active	活跃
+Active time	活跃时间
+Active waves	活动波次
+Add conditions segment	添加条件分段
+Add favorites	添加收藏
+Advance notice	提前通知
+Agent composition	单位构成
+Alerts	警报
+All Arbitration missions	全部仲裁任务
+All days	全部日期
+All spawns	全部生成
+All time	全部时间
+Allied agent population reported by game log samples, when present.	由游戏日志采样报告出的友方单位数量（如有）。
+Allied agents	友方单位
+Also notify at rotation start	轮换开始时也通知
+Amount per drop	单次掉落数量
+Arbitration	仲裁
+Arbitration aborted	仲裁已中止
+Arbitration alert preferences saved.	仲裁提醒偏好已保存。
+Arbitration complete	仲裁已完成
+Arbitration earnings	仲裁收益
+Arbitration ended	仲裁已结束
+Arbitration failed	仲裁失败
+Arbitration recorded. Open Run history to view the report.	仲裁已记录。打开历史记录查看报告。
+ARBITRATION RUN REPORT	仲裁记录报告
+Arbitration, AlecaFrame	仲裁，AlecaFrame
+Arbitrations	仲裁
+At least 50% and 10 seconds above the run median	至少高于记录中位数 50% 且持续 10 秒
+At rotation start	轮换开始时
+Available	可用
+Average	平均
+Average drone spawns per minute of gameplay, including intermissions and excluding preparation and the extraction tail	每分钟游玩时间内平均无人机生成数，包含间隔，不含准备阶段与撤离收尾
+Back to charts	返回图表
+Back to history	返回历史
+Base drop probability	基础掉落概率
+Cached forecast	缓存的预测
+Cancel	取消
+Capture:	采集：
+Card	卡片
+Choose a run to record earnings and model its expected yield.	选择一条记录以登记收益并模拟其预期产出。
+Choose files	选择文件
+Choose how to receive reminders	选择提醒方式
+Choose up to 100 files at a time.	每次最多选择 100 个文件。
+Chosen individually on the schedule	在日程中单独选择
+Cleanup	清理
+Clear	清除
+Clear search	清除搜索
+Clear search and filters	清除搜索与筛选
+Click a wave to link its time range across charts, drone cadence, and the spawn map. Hover for its timing and observed drones.	点击某个波次可将其时间范围联动到图表、无人机频率与生成地图。悬停可查看其时间与观测到的无人机。
+Client	客户端
+Close live Arbitration	关闭实时仲裁
+Close now	立即关闭
+Closing in	即将结束
+Combined multiplier you want to assume for this segment.	你希望为此分段假定采用的综合倍率。
+Community farming tier	社区刷取档位
+Community farming tiers	社区刷取档位
+Community forecast	社区预测
+Companion	同伴
+Companion double probability	同伴双倍概率
+Compare	对比
+Compared with	与…相比
+Complete capture	完整采集
+Complete each segment with valid counts, probabilities and multipliers.	用有效的计数、概率与倍率补全每个分段。
+Complete intervals	完整间隔
+Completed	已完成
+Completed interval durations, seconds, full run	各间隔时长（秒），完整一局
+Configure	配置
+Confirm the conditions below to calculate an estimate.	确认下方条件以计算估算值。
+Connect	连接
+Copy summary	复制摘要
+Cumulative Arbitration drone spawn events observed by this log. Does not measure drone kills or drops.	此日志观测到的累计仲裁无人机生成事件。不代表无人机击杀或掉落。
+Cumulative enemy spawn events observed by this log. Does not measure kills or enemies currently alive.	此日志观测到的累计敌人生成事件。不代表击杀或当前存活敌人数。
+Current forecast	当前预测
+Current wave time	当前波次时间
+Custom range	自定义范围
+Date unavailable	日期不可用
+Day	白天
+Default	默认
+Defense objective	防御目标
+Delete saved run?	删除已保存的记录？
+Delivery	交付
+Delivery off	交付关闭
+Density	密度
+Discard edits	放弃修改
+Dismiss	忽略
+Dismiss recap, Escape	忽略回顾，Esc
+Drag to pan, scroll to zoom, double-click to fit	拖动平移，滚轮缩放，双击适应
+Drone cadence	无人机生成频率
+Drone spawn rate	无人机生成率
+Drone spawns	无人机生成次数
+Drone spawns per minute of active wave time. Compared with the duration-weighted rate of earlier completed waves, excluding intermissions.	每活动波次分钟的无人机生成数。与先前已完成波次的时长加权速率比较，不含间隔。
+drones / min	无人机 / 分钟
+Drones per interval	每个间隔的无人机数
+Drones spawned	已生成无人机
+Drop blessing expired	掉落祝福已过期
+Drop blessing, confirmation missing	掉落祝福，缺少确认
+Drop blessing, unknown	掉落祝福，未知
+Drop chance multiplier	掉落几率倍率
+Drop-rate source	掉率来源
+Duration	持续时间
+Edit matching preferences	编辑匹配偏好
+Eligible drone kills	符合条件的无人机击杀
+Enable Windows notifications or Discord delivery in Settings. AlecaFrame must be running to send alerts.	请在设置中启用 Windows 通知或 Discord 推送。AlecaFrame 需保持运行才能发送提醒。
+Enabled	已启用
+Enemies per interval	每个间隔的敌人数
+Enemy counter	敌人计数器
+Enemy positions	敌人位置
+Enemy spawn rate	敌人生成速率
+Enemy spawns	敌人生成次数
+Enter a whole number for other Vitus.	请输入其他生息精华的整数。
+Enter a whole Vitus amount from 0 to 1,000,000, or leave it blank.	请输入 0 到 1,000,000 之间的整数生息精华，或留空。
+Enter the Vitus collected in a run. Inventory balance changes are tracked separately.	输入一局中收集的生息精华。仓库余额变化单独记录。
+Entire run	整局
+Essence / hour	生息精华 / 小时
+Estimated fraction of eligible drops you collect. Use 1 only if assuming all drops are collected.	你采集到的符合条件掉落的估算比例。仅在假设全部掉落都被采集时使用 1。
+Events	事件
+Expand interval chart	展开间隔图表
+Expand observations chart	展开观测图表
+Expected Essence	预期生息精华
+Expected VE	预期生息精华
+Expected Vitus	预期生息精华
+Expected Vitus Essence	预期生息精华
+Expected Vitus unavailable, gameplay timing, drone observations, or reward cycles are missing.	预期生息精华不可用：缺少游玩计时、无人机观测或奖励周期数据。
+Expected yield	预期产出
+Export run	导出记录
+Faction	阵营
+Faster	更快
+Fastest	最快
+Fastest median	最快中位数
+Favorite nodes	收藏节点
+Favorite run	收藏记录
+Filter by mission, node, or favorites	按任务、节点或收藏筛选
+Filter saved runs	筛选已保存记录
+Filters	筛选器
+Final interval	最后一个间隔
+Finalizing run report	正在完成记录报告
+Find a node	查找节点
+Find your next Arbitration	查找下一场仲裁
+First 100 intervals	前 100 个间隔
+First 50 intervals	前 50 个间隔
+First measured wave	首个测量的波次
+Fit	适应
+Follow run	跟随任务
+For example, damage or support	例如：伤害或辅助
+For other analyzers	用于其他分析器
+Forecast ready	预测已就绪
+Forecast unavailable	预测不可用
+Fraction collected	采集比例
+From	起始
+From, seconds	起始（秒）
+Front, Y / Z	正面，Y / Z
+Game information is unavailable.	游戏信息不可用。
+Gameplay time, excluding preparation and ending at extraction when observed	游玩时间，不含准备阶段，并在观测到撤离时结束
+Gameplay time, including intermissions	游玩时间（含间隔）
+Host	主机
+Hourly rates use observed gameplay time, including intermissions.	每小时速率使用观测到的游玩时间，包含间隔。
+Image preview	图片预览
+Import failed.	导入失败。
+Import logs	导入日志
+Imported log	已导入日志
+Imported report	已导入报告
+Include all nodes	包含所有节点
+Include non-favorite nodes	包含非收藏节点
+Include player names where available	尽可能包含玩家名称
+Includes time between rewards	包含奖励之间的时间
+Increments in the mission's Spawned counter, separate from named agent creations. These are not kills or the number of enemies alive.	任务中“已生成”计数器的增量，与具名单位的创建分开计算。不代表击杀数或存活敌人数。
+Inspect spawns	查看生成情况
+Intermission	间歇
+Intermission not classified	未分类的间隔
+Intermissions	间隔
+Interrupted	已中断
+Interval	间隔
+Interval analysis	间隔分析
+Interval pace	间隔节奏
+Intervals	间隔
+Invalid Arbitration response	仲裁响应无效
+Invalid Arbitration schedule	仲裁日程无效
+Invalid picker path.	文件选择路径无效。
+Invalid picker result.	文件选择结果无效。
+Invalid preferences	偏好设置无效
+Last 1 minute	最近 1 分钟
+Last 10 minutes	最近 10 分钟
+Last 30 days	最近 30 天
+Last 5 minutes	最近 5 分钟
+Last 7 days	最近 7 天
+Last 90 days	最近 90 天
+Last wave time	上一波次时间
+left to enter	剩余进入
+Live Arbitration	实时仲裁
+Live charts return with the next wave	下一波恢复实时图表
+Load a forecast to see missions matching your preferences	加载预测以查看符合你偏好的任务
+Loading Arbitrations	正在加载仲裁…
+Loading run report	正在加载记录报告
+Loading saved runs	正在加载已保存记录
+Loading saved runs…	正在加载已保存记录…
+Local time	本地时间
+Longest first	最长优先
+Longest observed gaps	观测到的最长间隔
+Matches my alert preferences	符合我的提醒偏好
+Matches unavailable	匹配不可用
+Max	最大
+Maximize	最大化
+May	五月
+Mean gap	平均间隔
+Measurements and notes	测量与备注
+Median	中位数
+Median gap	中位间隔
+Median interval:	中位间隔：
+Min	最小
+Minimize	最小化
+Mission	任务
+Mission observations	任务观测
+Mission time	任务时间
+Mission type	任务类型
+Mission types	任务类型
+Monitor information is unavailable.	显示器信息不可用。
+More	更多
+Most expected Essence	预期生息精华最多
+Most intervals	间隔最多
+Most recent	最新
+Munio	墓垒
+Named creations observed in the log, including unclassified agents. This is separate from the mission's enemy spawn counter.	日志中观测到的具名单位创建，含未分类单位。这与任务的敌人生成计数器分开计算。
+Newest first	最新优先
+Next mission unavailable	下一任务不可用
+Next seven days	未来七天
+No complete interval boundaries were recorded	未记录到完整的间隔边界
+No complete interval timings in this capture	本次采集中没有完整的间隔计时
+No complete interval timings in this range	该范围内没有完整的间隔计时
+No complete intervals	没有完整间隔
+No current forecast	暂无预测
+No drone telemetry	无无人机遥测数据
+No earlier spawn rate	无更早的生成速率
+No favorite nodes	无收藏节点
+No file errors reported	未报告文件错误
+No matching rotation	没有匹配的轮次
+No measurements	无测量数据
+No named agent creation events were retained for this capture	本次采集未保留具名单位创建事件
+No observations for this measurement in the selected range	所选范围内没有该测量的观测数据
+No original game log was retained for this run. Importing a structured report cannot reconstruct the original events.	此记录未保留原始游戏日志。导入结构化报告无法重建原始事件。
+No original log retained, import its game log to use arbi.guide	未保留原始日志，请导入其游戏日志以使用 arbi.guide
+No preferences set	未设置偏好
+No spawn coordinates in this range	该范围内没有生成坐标
+No timeline events in this range	该范围内没有时间线事件
+Node	节点
+Not available	不可用
+Not reported	未上报
+Notify me about matching missions	匹配任务通知我
+Observed agents	观测到的单位
+Observed drone spawn events per minute between adjacent captured samples.	相邻采集样本之间每分钟观测到的无人机生成事件。
+Observed drone spawn events, not kills or Vitus drops.	观测到的无人机生成事件，不代表击杀或生息精华掉落。
+Observed drone spawns	观测到的无人机生成
+Observed drone spawns, not kills or Vitus drops	观测到的无人机生成，不代表击杀或生息精华掉落
+Observed enemy spawn events per minute between adjacent captured samples.	相邻采集样本之间每分钟观测到的敌人生成事件。
+Observed enemy spawns:	观测到的敌人生成：
+Observed spawn events, not kills or drops.	观测到的生成事件，不代表击杀或掉落。
+Oldest first	最早优先
+On pace	进度正常
+One-time reminders	一次性提醒
+Only favorite nodes	仅收藏节点
+Only favorite nodes is enabled, but no nodes are starred. Add favorites on the schedule or include non-favorite nodes	已启用“仅收藏节点”，但没有星标节点。请在日程中添加收藏，或包含非收藏节点
+Only positions recorded in the log appear here	此处仅显示日志中记录的位置
+Open original run log in arbi.guide	在 arbi.guide 中打开原始记录日志
+Open run history	打开历史记录
+Open Settings	打开设置
+Opening the Arbitration window was cancelled.	已取消打开仲裁窗口。
+Original run log (.log)	原始记录日志（.log）
+Other Vitus included	包含的其他生息精华
+Outcome	结果
+Pace	节奏
+Partial	部分
+Partial capture	部分采集
+Partial run captured	已采集部分运行
+Paused	已暂停
+Peak in 10s	10 秒内峰值
+Peak in 60s	60 秒内峰值
+Peak observed agents	观测到的单位峰值
+Personal choices	个人选择
+Perspective	视角
+Perspective unknown	视角未知
+Planets	星球
+Points	点位
+Positioned enemy spawns	带位置的敌人生成
+Preparing	准备中
+Preview your matches	预览匹配结果
+Primary	主武器
+Readable summary	可读摘要
+Reconnecting	正在重新连接
+Recorded	已记录
+Recorded here	记录于此
+Recording	录制中
+Recording interrupted	录制已中断
+Recurring alerts for your saved conditions	为你保存的条件定期提醒
+Reminder removed.	提醒已移除。
+Reminders	提醒
+Reminders use your saved advance notice. Keep AlecaFrame running and notification delivery enabled.	提醒使用你保存的提前通知设置。请保持 AlecaFrame 运行并开启通知推送。
+Remove favorite node	移除收藏节点
+Remove reminder	移除提醒
+Reported minus expected	上报值减去预期值
+Reported runs	上报的记录数
+Reported Vitus	上报的生息精华
+Reported Vitus / hour	上报生息精华 / 小时
+Reset	重置
+Reset range	重置范围
+Restore	还原
+Retry	重试
+Retrying automatically	正在自动重试
+Role, entered by you	角色，由你填写
+Rotation time	轮次时间
+Run	记录
+Run added to favorites.	记录已加入收藏。
+Run average	平均每局
+Run data is unavailable. Retrying automatically.	运行数据不可用，正在自动重试。
+Run earnings could not be loaded.	无法加载运行收益。
+Run earnings could not be saved. Your edits are still here.	无法保存运行收益。你的修改仍保留在此。
+Run earnings saved.	运行收益已保存。
+Run exported.	记录已导出。
+Run finished	运行已结束
+Run history	历史记录
+Run library unavailable	记录库不可用
+Run notes saved.	记录备注已保存。
+Run removed from favorites.	记录已取消收藏。
+Run report	运行报告
+Run summary	本局摘要
+Run summary copied.	本局摘要已复制。
+Run unavailable	记录不可用
+Save	保存
+Save or discard your edits before choosing another run.	在选择另一条记录前，请保存或放弃你的修改。
+Save this preview	保存此预览
+Saved run deleted.	已保存记录已删除。
+Saved runs	已保存记录
+Schedule	日程
+Schedule data sourced from	日程数据来源
+Search node, mode, role, or notes	搜索节点、模式、角色或备注
+Search nodes, planets, or mission types	搜索节点、星球或任务类型
+Secondary	副武器
+Select any number of choices in each group. Empty groups include everything. Changes save automatically	每组可任意多选。留空表示包含全部。更改会自动保存。
+Show 50 more	再显示 50 条
+Show 80 more	再显示 80 条
+Show all	显示全部
+Show in Timers	在计时器中显示
+Show more runs	显示更多记录
+Side, X / Y	侧面，X / Y
+Slower	更慢
+Slower sections	较慢的分段
+Slowest	最慢
+Sorting uses the lower estimate when a range is shown.	显示范围时按较低的估算值排序。
+Source unknown	来源未知
+Spawn counts are observed events, not kills or drops.	生成计数是观测到的事件，不代表击杀或掉落。
+Spawn map	生成地图
+Spawn phase	生成阶段
+Spawns	生成
+spawns/min	生成/分钟
+Specific nodes	指定节点
+Split kills into segments when conditions change. Other Vitus is a fixed amount you explicitly include, such as rotation earnings.	条件变化时将击杀拆分为分段。“其他生息精华”是你明确计入的固定数量，例如轮次收益。
+Stale forecast, alerts paused	预测已过期，提醒已暂停
+Star a node on the schedule. The favorite applies to every occurrence of that node.	在日程中给节点加星。收藏对该节点的每次出现都生效。
+Started	已开始
+Stopping the import after the current operation.	将在当前操作完成后停止导入。
+Text	文本
+Text report (.txt)	文本报告（.txt）
+The application is closing.	应用正在关闭。
+The Arbitration forecast could not be loaded. Try again.	无法加载仲裁预测，请重试。
+The Arbitration forecast could not be refreshed. Try again.	无法刷新仲裁预测，请重试。
+The Arbitration forecast took too long to load. Try again.	加载仲裁预测超时，请重试。
+The Arbitration forecast was incomplete. Try again.	仲裁预测不完整，请重试。
+The Arbitration window could not be focused.	无法聚焦仲裁窗口。
+The Arbitration window could not be opened.	无法打开仲裁窗口。
+The Arbitration window could not be opened. Try again.	无法打开仲裁窗口，请重试。
+The Arbitration window could not be positioned.	无法定位仲裁窗口。
+The Arbitration window could not be resized.	无法调整仲裁窗口大小。
+The Arbitration window could not be restored.	无法还原仲裁窗口。
+The favorite could not be saved.	无法保存收藏。
+The file picker returned an invalid file path.	文件选择器返回了无效的文件路径。
+The import could not be stopped.	无法停止导入。
+The live Arbitration window could not be opened.	无法打开实时仲裁窗口。
+The live run status could not be loaded.	无法加载实时运行状态。
+The live run status could not be read.	无法读取实时运行状态。
+The report could not be copied.	无法复制报告。
+The request could not be completed. Try again.	无法完成请求，请重试。
+The request failed. Try again.	请求失败，请重试。
+The request took too long. Try again.	请求超时，请重试。
+The response could not be read. Try again.	无法读取响应，请重试。
+The run chart data was incomplete.	记录图表数据不完整。
+The run could not be deleted.	无法删除记录。
+The run could not be exported.	无法导出记录。
+The run could not be saved.	无法保存记录。
+The run library response was incomplete.	记录库响应不完整。
+The run request timed out. Retrying automatically.	记录请求超时，正在自动重试。
+The run response did not match the current mission.	记录响应与当前任务不匹配。
+The run response was incomplete.	记录响应不完整。
+The schedule updates automatically	日程会自动更新
+There are no future rotations in this forecast	此预测中没有未来轮换
+These values reflect the assumptions I want to use.	这些数值反映的是我想采用的假设。
+This deletes the saved report, its notes, and its retained log from AlecaFrame. This cannot be undone.	此操作会从 AlecaFrame 删除已保存的报告、其备注与保留的日志。此操作无法撤销。
+This forecast has not been refreshed for over 24 hours. Arbitration notifications are paused until fresh data is available.	此预测已超过 24 小时未刷新。在有新数据前，仲裁通知将暂停。
+This model uses your conditions and independent drop trials. Log spawns do not prove kills, collection, booster state or companion effects.	此模型使用你的条件与独立掉落试验。日志中的生成记录不能证明击杀、采集、加成状态或同伴效果。
+This reminder has already been delivered or the rotation has started.	此提醒已发送，或轮次已经开始。
+This report has no captured player names. Original log export preserves game evidence, including any names in the original text.	此报告没有采集到玩家名称。导出原始日志会保留游戏证据，包括原始文本中的任何名称。
+This run could not be opened.	无法打开此记录。
+This wave	本次波次
+Time left to enter	剩余进入时间
+Time since the last reward	距上次奖励的时间
+Time since the wave ended	距波次结束的时间
+Timeline	时间线
+Times use observed mission boundaries.	时间以观测到的任务边界为准。
+Timing	计时
+Timing breakdown	时间分布
+To	结束
+To, seconds	结束（秒）
+Today	今天
+Tomorrow	明天
+Too few expected drop or non-drop events for a useful normal-approximation range.	预期掉落或非掉落事件过少，无法给出有用的正态近似区间。
+Top, X / Z	顶部，X / Z
+Total interval	间隔总计
+Try again.	重试。
+Unable to initialize Arbitration ad	无法初始化仲裁广告
+Unclassified	未分类
+Unique drone spawns observed during this wave. The log does not confirm individual drone kills.	本波次观测到的唯一无人机生成。日志无法确认单次无人机击杀。
+Unknown	未知
+Unknown agent	未知单位
+Unknown mode	未知模式
+Unknown node	未知节点
+Unrated	未评级
+Up next	接下来
+Use no more than 16 segments.	最多使用 16 个分段。
+Use the amount attributable to this run. A blank value means unknown, 0 means none collected.	使用归因于本次运行的数量。留空表示未知，0 表示未收集。
+Use the bell beside a future rotation to save a reminder. Recurring alerts can stay off.	点击未来轮次旁的铃铛保存提醒。定期提醒可以保持关闭。
+Version	版本
+Visible	可见
+Vitus	生息精华
+Vitus / hour	生息精华 / 小时
+Vitus collected	已收集的生息精华
+Vitus per successful collected drop, before an optional companion double.	每次成功采集掉落的生息精华，在可选的同伴双倍之前。
+Waiting for run data	正在等待运行数据
+Waiting for the gameplay start	正在等待游玩开始
+Waiting for the next Arbitration	正在等待下一场仲裁
+Waiting for wave 1	正在等待第 1 波
+Wave recap	波次回顾
+Wave span starts at the first observed wave and includes its intermissions. Full capture also includes setup and the final decision or extraction.	波次区间从首个观测到的波次开始，并包含其间隔。完整采集还包含准备阶段与最终决策或撤离。
+Wave time	波次时间
+Year	年
+Your alert preferences	你的提醒偏好
+Your Arbitration preferences could not be saved. Retrying automatically.	无法保存你的仲裁偏好，正在自动重试。
+Your Arbitration preferences could not be saved. Try again.	无法保存你的仲裁偏好，请重试。
+Your estimate of eligible killed drones. Observed spawns do not establish kills.	你对符合条件已击杀无人机的估计。观测到的生成不能证明击杀。
+Your notes	你的备注
+Your preferences have no matches in the next seven days	未来七天内没有符合你偏好的内容
+Zoom	变焦
+Zoom in	放大
+Zoom out	缩小

@@ -1,0 +1,156 @@
+# archon-shards entries
++1 Health per enemy killed with Blast (Max 300 Health)	通过爆炸伤害击杀的每个敌人可增加1 生命值，最多增加300 最大生命值
++1% Secondary critical chance per enemy with Heat killed (Max 50%)	每击杀一个受火焰异常状态影响的敌人，次要武器的暴击几率增加1%，最高可达50%
++1.5% Secondary critical chance per enemy with Heat killed (Max 75%)	每击杀一个受火焰异常状态影响的敌人，次要武器的暴击几率增加1.5%，最高可达75%
++10% Ability damage on enemies affected by Electricity	对受到电击异常影响的敌人造成+10% 额外技能伤害
++10% Ability damage on enemies with Corrosive	对受到腐蚀异常影响的敌人造成+10% 额外技能伤害
++10% Ability damage on enemies with Radiation	针对处于辐射异常状态的敌人，你的技能伤害增加+10%
++10% Duration	+10% 技能持续时间
++10% Strength	+10% 技能强度
++100% Health orb effectiveness	+100% 生命球效果
++15% Ability damage on enemies affected by Electricity	对受到电击异常影响的敌人造成+15% 额外技能伤害
++15% Ability damage on enemies with Corrosive	对受到腐蚀异常影响的敌人造成+15% 额外技能伤害
++15% Ability damage on enemies with Radiation	针对处于辐射异常状态的敌人，你的技能伤害增加+15%
++15% Duration	+15% 技能持续时间
++15% Parkour velocity	+15% 跑酷速度
++15% Strength	+15% 技能强度
++150 Armor	+150 护甲
++150 Health	+150 生命值
++150 Shield	+150 护盾值
++150% Health orb effectiveness	+150% 生命球效果
++2 Corrosive maximum Corrosive stacks	腐蚀异常最高堆叠层数+2
++2 Health on damaging enemies with Toxin	每当敌人受到毒素异常伤害时，恢复+2 生命值
++2 Health per enemy killed with Blast (Max 450 Health)	通过爆炸伤害击杀的每个敌人可增加2 生命值，最多增加450 最大生命值
++20% Energy from Health pickups and vice versa	拾取生命球时获得+20% 能量，拾取能量球时获得+20% 生命值
++22.5% Parkour velocity	+22.5% 跑酷速度
++225 Armor	+225 护甲
++225 Health	+225 生命值
++225 Shield	+225 护盾值
++25% casting speed	+25% 技能施放速度
++25% Melee critical damage	+25% 近战暴击伤害
++25% Melee critical damage (2x over 500 Energy)	近战武器获得+25% 暴击伤害，最大能量超过500时，增益数值翻倍
++25% Primary status chance	+25% 主要武器触发几率
++25% Secondary critical chance	+25% 次要武器暴击几率
++3 Corrosive maximum Corrosive stacks	腐蚀异常最高堆叠层数+3
++3 Health on damaging enemies with Toxin	每当敌人受到毒素异常伤害时，恢复+3 生命值
++30% Energy from Health pickups and vice versa	拾取生命球时获得+30% 能量，拾取能量球时获得+30% 生命值
++30% Primary Electricity (+10% per additional Crimson, Azure, or Violet shard)	主要武器获得+30% 电击伤害，每装备一颗深红、蔚蓝、紫晶源力石，额外获得+10% 电击伤害
++30% starting energy	+30% 初始能量
++30% Toxin Status Effect damage	+30% 毒素异常状态造成伤害
++37.5% casting speed	+37.5% 技能施放速度
++37.5% Melee critical damage	+37.5% 近战暴击伤害
++37.5% Melee critical damage (2x over 500 Energy)	近战武器获得+37.5% 暴击伤害，最大能量超过500时，增益数值翻倍
++37.5% Primary status chance	+37.5% 主要武器触发几率
++37.5% Secondary critical chance	+37.5% 次要武器暴击几率
++45% Primary Electricity (+15% per additional Crimson, Azure, or Violet shard)	主要武器获得+45% 电击伤害，每装备一颗深红、蔚蓝、紫晶源力石，额外获得+15% 电击伤害
++45% starting energy	+45% 初始能量
++45% Toxin Status Effect damage	+45% 毒素异常状态造成伤害
++5 Health/s	+5 每秒生命回复
++5 Shields per enemy killed with Blast Damage	使用爆炸伤害击杀敌人时恢复+5 护盾
++50 maximum energy	+50 能量上限
++50% Energy orb effectiveness	+50% 能量球效果
++7.5 Health/s	+7.5 每秒生命回复
++7.5 Shields per enemy killed with Blast Damage	使用爆炸伤害击杀敌人时恢复+7.5 护盾
++75 maximum energy	+75 能量上限
++75% Energy orb effectiveness	+75% 能量球效果
+Ability damage, Corrosive	腐蚀技能伤害
+Ability damage, Electricity	电击技能伤害
+Ability damage, Radiation	辐射技能伤害
+Ability duration	技能持续时间
+Ability strength	技能强度
+All Warframes	全部战甲
+Arch	Archwing
+Archon	执刑官
+Archon shards	源力石
+Ascent	升华
+Azure	蔚蓝
+Blast & heat	爆炸与火焰
+Casting speed	技能施放速度
+Change your search or filters.	修改搜索或筛选条件。
+Close shard details	关闭源力石详情
+Coalescent	联结
+Collection	收藏
+Crimson	深红
+Duplicate Warframe identity	重复的战甲标识
+Effect	效果
+Effect data unavailable	效果数据不可用
+Effect guide	效果指南
+Electricity & melee	电击与近战
+Emerald	翡翠
+Empty slot	空槽位
+Empty slots	空槽位
+Energy orb effectiveness	能量球效果
+Favorite Warframes	收藏战甲
+Find equipped shards	查找已装备的源力石
+Fully slotted	已满槽
+Fully Tauforged	全部 TAU 源力石
+Fusion lab	融合实验室
+Gem	宝石
+Has regular shards	有普通源力石
+Has Tauforged shards	有 TAU 源力石
+Healing from Toxin	毒素异常治疗
+Health & energy conversion	生命能量转换
+Health from Blast kills	爆炸击杀生命值
+Health orb effectiveness	生命球效果
+Health regeneration	每秒生命回复
+Incomplete shard response	源力石响应不完整
+Inspect shards	查看源力石
+Installation	安装
+Installed	已安装
+Installed Archon shards	已安装的执刑官源力石
+Invalid shard records	源力石记录无效
+Loading shards…	正在加载源力石…
+Maximum Corrosive stacks	腐蚀最高堆叠层数
+Maximum energy	能量上限
+Melee critical damage	近战暴击伤害
+Melee critical damage, energy	能量近战暴击伤害
+Most regular shards	最多普通源力石
+Most shards	最多源力石
+Most Tauforged	最多 TAU源力石
+Navigation	导航
+No matching Warframes	没有匹配的战甲
+No shards installed	未安装源力石
+Open Warframe and return to your Orbiter to load your collection. The effect guide is still available.	打开游戏并返回轨道飞行器以加载收藏，效果指南仍可使用。
+Order	订单
+Parkour velocity	跑酷速度
+Part of your inventory is unavailable. Return to your Orbiter to refresh it.	部分库存不可用，请返回轨道飞行器刷新。
+Possible combinations with available shards and Stela, calculated separately for each recipe.	基于现有源力石与 Stela 的可用组合数，按每项配方单独计算。
+Power & precision	力量与精准
+Primary Electricity damage	主要电击伤害
+Primary status chance	主要武器触发几率
+Refreshing shards	正在刷新源力石
+Requires the Helminth Coalescent Segment	需要 HELMINTH 联结模块
+Resources	资源
+Return to your Orbiter to sync your inventory.	返回轨道飞行器以同步库存。
+Search Warframes, colors, or effects…	搜索战甲、颜色或效果…
+Secondary critical chance	次要武器暴击几率
+Secondary critical chance, Heat	火焰次要暴击几率
+Shard color	源力石颜色
+Shard quality	源力石品质
+Shards currently installed on your Warframes	当前已安装在你战甲上的源力石
+Shields	护盾值
+Shields from Blast kills	爆炸击杀护盾
+Show all Warframes	显示所有战甲
+Showing the last successful snapshot	显示最近一次成功快照
+Speed & energy	速度与能量
+Starting energy	初始能量
+Success	成功
+Survivability & reserves	生存与储备
+Tauforged	TAU源力石
+Tauforged shards in your collection	收藏中的 TAU 源力石
+The shard refresh took too long. Try again.	刷新源力石超时，请重试。
+The shard response was incomplete. Try again.	源力石响应不完整，请重试。
+This Warframe is no longer in the latest inventory.	此战甲已不在最新仓库中。
+Topaz	黄玉
+Toxin & corrosion	毒素与腐蚀
+Toxin status damage	毒素异常状态伤害
+Unequipped shards, ready to install or fuse	未装备的源力石，可安装或融合
+Unknown shard	未知源力石
+Unrecognized effect	未识别的效果
+Violet	紫晶
+Warframe details	战甲详情
+Warframe inventory unavailable	战甲库存不可用
+Warframe name	战甲名称
+With shards	已安装源力石
+Your Archon shards could not be loaded. Try again.	无法加载你的执刑官源力石，请重试。
+✦ Tauforged	✦ TAU源力石

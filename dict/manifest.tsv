@@ -1,0 +1,22 @@
+# order	path	kind	scope	schema	note
+10	generated/items.tsv	generated	global	2	generated game data
+20	generated/mioeu-terms.tsv	generated	global	2	generated MIOEU terms
+30	upstream/translations.zh-CN.json	upstream	global	2	upstream UI dictionary
+40	fixes.tsv	manual	global	5	manual upstream corrections (empty initial)
+100	entries/common/ui.tsv	manual	shared	2	common UI
+110	entries/common/notifications.tsv	manual	shared	2	notifications/changelog
+200	entries/screens/arbitration.tsv	manual	screen:arbitration	2	arbitration entries
+210	entries/screens/foundry.tsv	manual	screen:foundry	2	foundry entries
+220	entries/screens/inventory.tsv	manual	screen:inventory	2	inventory entries
+230	entries/screens/mod-planner.tsv	manual	screen:mod-planner	2	mod-planner entries
+240	entries/screens/onboarding.tsv	manual	screen:onboarding	2	onboarding entries
+250	entries/screens/relic.tsv	manual	screen:relic	2	relic entries
+260	entries/screens/riven.tsv	manual	screen:riven	2	riven entries
+270	entries/screens/squad.tsv	manual	screen:squad	2	squad entries
+280	entries/screens/stats.tsv	manual	screen:stats	2	stats entries
+290	entries/screens/wfm.tsv	manual	screen:wfm	2	wfm entries
+300	entries/screens/world-timers.tsv	manual	screen:world-timers	2	world-timers entries
+310	entries/screens/archon-shards.tsv	manual	screen:archon-shards	2	archon-shards entries
+900	overrides.tsv	override	global	5	overrides with reason/source
+950	keep-english.tsv	policy	-	3	keep english policy
+960	generated/relic-rewards.tsv	index	-	2	relic reward search index

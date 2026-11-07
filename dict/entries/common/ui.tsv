@@ -1,0 +1,477 @@
+# common entries
+0 / 0 lines	0 / 0 行
+0.1 seconds	0.1 秒
+0.25 seconds	0.25 秒
+0.5 seconds	0.5 秒
+1 second	1 秒
+2 seconds	2 秒
+A log line exceeds the 1 MiB limit.	单行日志超过 1 MiB 上限。
+A player was kicked from the squad!	一名玩家被踢出小队！
+About estimates	关于估算
+About these figures	关于这些数据
+Add a target	添加目标
+Add resources, mods, or Arcanes. Or include your favourites above.	添加资源、MOD 或赋能，或包含上方收藏。
+Add targets	添加目标
+Added sources for targets your route did not cover. Review access and rotation requirements before farming.	已为你的路线未覆盖的目标补充来源。刷取前请确认进入条件与轮次要求。
+After linking, wait 1–2 minutes, then restart AlecaFrame	关联后等待 1–2 分钟，然后重启 AlecaFrame
+AlecaFrame (recommended)	AlecaFrame（推荐）
+AlecaFrame automatically detects your account, inventory and progress as you play	AlecaFrame 会在你游玩时自动识别账户、仓库与进度
+AlecaFrame Premium	AlecaFrame 高级版
+AlecaFrame prices make updates faster and safer, with better protection against price manipulation. Choose warframe.market to check live prices instead. Orders stay unchanged if no matching price is found.	AlecaFrame 定价更快更安全，并能更好地防止价格操纵。也可以选择 warframe.market 查看实时价格。未匹配到价格时订单保持不变。
+AlecaFrame trade complete	AlecaFrame 交易完成
+Alerts & favorites	提醒与收藏
+Alerts, Invasions & events	提醒、入侵与事件
+All alerts	全部提醒
+Alpha	内测版
+Already a Patreon member?	已是 Patreon 会员？
+Also found:	还找到：
+Any price	任意价格
+Any rerolls	任意洗练次数
+App & startup	应用与启动
+App version	应用版本
+Apr	四月
+Ask for help on Discord before reinstalling Overwolf. This check looks for a problem with its Warframe detection files	重装 Overwolf 前请先在 Discord 求助。此检查用于排查其 Warframe 检测文件的问题
+Attack speed	攻击速度
+Attack type	攻击类型
+Attribute price & popularity	属性价格与使用率
+Aug	八月
+Autodetect	自动检测
+Automatic checks are temporarily unavailable. You can review these requirements yourself while we try again.	自动检查暂时不可用。我们重试期间你可以自行核对这些要求。
+Automatically open the live Arbitration window when a run starts	开始跑图时自动打开实时仲裁窗口
+Average attempts to collect the remaining amount. One attempt may be a rotation, stage, or enemy drop.	收集剩余数量的平均尝试次数。一次尝试可以是一个轮次、阶段或敌人掉落。
+Average attempts to obtain one relic, not the Prime part.	获得一个遗物的平均尝试次数（不含 Prime 部件）。
+Base armor	基础护甲
+Base energy	基础能量
+Base health	基础生命
+Base shields	基础护盾
+Best ways to gain mastery	获取精通的最佳方式
+Blocked by Mastery Rank	受精通段位限制
+Blocking angle	阻挡角度
+Bulk "lowest price" updates	批量更新“最低价”
+Buy on warframe.market	在 warframe.market 购买
+Calculating duplicates…	正在计算重复项…
+Check access again	重新检查权限
+Checklist unavailable	清单不可用
+Choose a changelog release and category.	选择更新日志版本与分类。
+Choose a changelog release.	选择更新日志版本。
+Choose a notification type.	选择通知类型。
+Choose a preset or set your own colors	选择预设或自定义颜色
+Choose a stop line after the current position and within this log.	在当前行之后、且在此日志范围内选择一个终点行。
+Choose a tab guide.	选择选项卡指南。
+Choose a welcome tour section.	选择欢迎导览章节。
+Choose an option	选择一个选项
+Choose Easy, From relics, or With platinum	选择简单、来自遗物或用白金
+Choose Normal or try upcoming updates in Beta	选择普通版或在测试版体验更新
+Choose targets	选择目标
+Choose up to 100 targets. Quantities can be adjusted in your plan.	最多选择 100 个目标。数量可在你的规划中调整。
+Choose whether to enable or disable the subscription override.	选择启用或禁用订阅覆盖。
+Choose your targets	选择你的目标
+Clear filters	清除筛选
+Close AlecaFrame	关闭 AlecaFrame
+Close AlecaFrame?	关闭 AlecaFrame？
+Close filters	关闭筛选
+Close previews	关闭预览
+Close Warframe, keep Overwolf and AlecaFrame open, then launch the game again	关闭 Warframe，保持 Overwolf 与 AlecaFrame 开启，然后重新启动游戏
+Cloud gaming or playing on another device won’t work.	云游戏或在其他设备游玩无法使用。
+Colors & overlays	颜色与叠加层
+Companion weapon	同伴武器
+Compare platinum and ducat values for the squad's rewards	比较小队奖励的白金与杜卡德金币价值
+Compatible	兼容
+Compatible game permissions	兼容的游戏权限
+Completing missions and entering or leaving other locations also trigger updates	完成任务、进出其他地点也会触发更新
+Component details	部件详情
+Copied to clipboard.	已复制到剪贴板。
+Copy diagnostics	复制诊断信息
+Copy Discord changelog	复制 Discord 更新日志
+Could not copy. Try again.	无法复制，请重试。
+Could not load mastery data	无法加载精通数据
+Could not open the EE.log simulator.	无法打开 EE.log 模拟器。
+Could not refresh analytics. Your previous results are still shown.	无法刷新分析。仍显示你之前的结果。
+Could not restore the EE.log simulator.	无法还原 EE.log 模拟器。
+Could not send reputation. Please try again.	无法发送声望，请重试。
+Could not verify developer access.	无法验证开发者权限。
+covers all recorded trades. Net platinum is received minus spent, including purchases you still own. It does not track resale profit.	覆盖所有已记录交易。净白金为收入减支出（包含仍持有的购买），不追踪转售利润。
+Credits owned / needed	星币 已拥有 / 需要
+Critical chance	暴击几率
+Critical multiplier	暴击倍率
+Current price × average daily volume, not sales revenue	现价 × 日均交易量，非销售额
+Custom Menu Scale value	自定义菜单缩放值
+Custom themes	自定义主题
+Daily value	每日价值
+Daily volume	每日成交量
+Data details	数据详情
+Data error code	数据错误代码
+Debug tools	调试工具
+Debug tools are restricted to the developer account.	调试工具仅限开发者账户使用。
+Debug tools could not be opened.	无法打开调试工具。
+Debug tools, AlecaFrame	调试工具，AlecaFrame
+Delivery & sound	通知与声音
+Delta request failed	增量请求失败
+Demo inventory	演示仓库
+Desired total, including owned	目标总数（含已拥有）
+Developer	开发者
+Developer tools	开发者工具
+Diagnostics copied.	诊断信息已复制。
+Diagnostics could not be copied.	无法复制诊断信息。
+Disable override	禁用覆盖
+Disconnect plan	断开规划
+Discord changelog copied.	已复制 Discord 更新日志。
+Discord webhook URL	Discord Webhook 地址
+Dismiss notification	忽略通知
+Dismiss these finds	忽略这些发现
+Documentation	文档
+Drag to pan, Scroll to zoom, Select a component for details	拖动平移，滚轮缩放，选择部件查看详情
+Drop an EE.log file here	将 EE.log 文件拖到此处
+Drop one log file at a time.	一次只能拖入一个日志文件。
+Ducats from the newly found copies.	新发现份数对应的杜卡德金币。
+Duplicate mods could not be loaded. Try again.	无法加载重复 MOD，请重试。
+Duplicates	重复项
+Earlier lines	前面的行
+Earned XP	获得经验
+EE.log simulator	EE.log 模拟器
+EE.log simulator opened.	EE.log 模拟器已打开。
+EE.log simulator, AlecaFrame	EE.log 模拟器，AlecaFrame
+Enable override	启用覆盖
+Enable Stats in Settings and play Warframe on this PC	在设置中启用统计并在此电脑游玩
+End of file	文件末尾
+End of log	日志末尾
+End session	结束会话
+Endo owned / needed	内融核心 已拥有 / 需要
+Enemies, vendors & other sources	敌人、商人与其他来源
+Enter a relay, then leave and return to your Orbiter. You can repeat this whenever you need an update.	进入中继站，然后离开并返回轨道飞行器。需要更新时可重复此操作。
+Estimated sell value of the newly found copies. Prices can change.	新发现份数的估算出售价值。价格可能变动。
+Exclude all copies of your favorite mods	排除收藏 MOD 的所有份数
+Export all my data	导出我的全部数据
+Extra capacity	额外容量
+Failed to download the latest game data	下载最新游戏数据失败
+Farm Routes	刷取路线
+Feb	二月
+Filter duplicate mods	筛选重复 MOD
+Fit the entire crafting tree	适应整棵制作树
+Fixed interval	固定间隔
+Follow playback	跟随回放
+For favourites	收藏项
+Force the main window to behave as unsubscribed	强制主窗口以未订阅状态运行
+Frequently asked questions	常见问题
+From recorded sales	根据已记录销售
+Get help on Discord	在 Discord 获取帮助
+Get to know AlecaFrame	了解 AlecaFrame
+Guest player	访客玩家
+Heavy attack wind-up	重击蓄力
+Help and feedback	帮助与反馈
+Hide completed branches	隐藏已完成分支
+Hide the ingredients of components you already own	隐藏已拥有部件的材料
+Hover an item to preview the mastery XP you could gain from it.	悬停在物品上可预览你可从中获得的精通经验。
+Icons on BG	背景图标
+In Overwolf settings, open Overlay & Hotkeys and enable the Warframe overlay, then restart the game	在 Overwolf 设置中打开“叠加层与热键”，启用 Warframe 叠加层，然后重启游戏
+in parallel	并行
+In-game traders only in Buy / Sell	收购/出售仅显示游戏内商人
+Incarnon Genesis	灵化之源
+Include favourites	包含收藏
+include up to 35 sales or purchase items, or 50 market items or partners. Sorting reloads the ranking; search filters those results.	最多包含 35 个出售/购买物品，或 50 个市场物品/伙伴。排序会重新加载排行，搜索会筛选这些结果。
+Included	已包含
+Included with every Patreon tier	所有 Patreon 档位均包含
+Inspect the live dashboard or its waiting state.	查看实时面板或其等待状态。
+Intrinsics	内源之力
+Invalid checklist	清单无效
+Invalid delta response	增量响应无效
+Invalid item response	物品响应无效
+Invalid mastery response	精通响应无效
+Invalid prices	价格无效
+Invalid saved goals	已保存目标无效
+Invalid weapon response	武器响应无效
+Inventory & mastery	仓库与精通
+Inventory unverified	仓库未验证
+Item unavailable	物品不可用
+Items couldn't be loaded	物品加载失败
+Jan	一月
+Jul	七月
+Jun	六月
+Keep between 1 and 100 copies.	保留份数需在 1 到 100 之间。
+Keep favorites	保留收藏
+Keep your Auto mode setting when AlecaFrame restarts	重启 AlecaFrame 时保留自动模式设置
+Later lines	后面的行
+Leave a positive review	留下好评
+Legacy (ONLY <=1080p)	旧版（仅 ≤1080p）
+Link your account to activate your benefits in AlecaFrame	关联账户以在 AlecaFrame 中激活权益
+Linking page opened in your browser. Finish linking there, then restart AlecaFrame after 1–2 minutes.	已在浏览器中打开关联页面。在那里完成关联，然后在 1–2 分钟后重启 AlecaFrame。
+Live Arbitration window opened.	实时仲裁窗口已打开。
+Live inventory	实时仓库
+Load a log to inspect and replay its lines.	加载日志以查看并回放其内容。
+Load a log to start a simulator session.	加载日志以开始模拟器会话。
+Load your Warframe inventory to see duplicate mods	加载仓库以查看重复 MOD
+Loading crafting tree…	正在加载制作树…
+Loading items and prices…	正在加载物品与价格…
+Loading log…	正在加载日志…
+Log out of warframe.market	退出登录 warframe.market
+Log preview	日志预览
+Log time unknown	日志时间未知
+Loops are average attempts at a reward table, rotation, stage, or enemy drop. Each rate is estimated separately.	循环次数是奖励表、轮次、阶段或敌人掉落的平均尝试次数，各项掉率分别估算。
+Loops unavailable	循环不可用
+Made with ❤️ in 🇪🇸 🇪🇺 by Alejandro Cabrerizo	由 Alejandro Cabrerizo 在 🇪🇸 🇪🇺 用 ❤️ 制作
+Magazine / ammo	弹匣 / 弹药
+Main navigation	主导航
+Main window	主窗口
+Mark as seen	标记为已读
+Market activity	市场动态
+Market activity is not available yet	市场动态尚不可用
+Market categories	市场分类
+Market ranking	市场排行
+Mastery request failed	精通请求失败
+Match the Menu Scale setting in Warframe	与 Warframe 菜单缩放设置一致
+Materials for your craftable favourites	可制作收藏所需材料
+Materials needed by favourites stay active; the larger shortage is used.	收藏所需材料保持有效，取较大缺口。
+Melee weapon	近战武器
+Message template (accepts Discord pings)	消息模板（支持 Discord ping）
+Minimum copies to keep per mod, including ranked and equipped copies	每个 MOD 需保留的最少份数，含已升级与已装备的份数
+Missions & activities	任务与活动
+More categories	更多分类
+Most duplicates	最多重复
+Most Endo	最多内融核心
+Most targets covered	覆盖目标最多
+Move stop earlier	将终点前移
+Move stop later	将终点后移
+Murmur	低语者
+Narrow your farming sources	缩小刷取来源
+Native plugin	原生插件
+Needed to craft one of your favourites	制作你的收藏之一所需
+Needs parts	需要部件
+Net platinum	净白金
+New in-game conversation from **	来自 ** 的新游戏内对话
+New parts will appear here as you play	新部件会在游玩时显示于此
+Next 10	后 10 条
+Next line	下一行
+Next page	下一页
+No ads & custom themes	无广告与自定义主题
+No current matching shortage	当前没有匹配的短缺
+No delay	无延迟
+No drop table in the current data	当前数据中没有掉落表
+No excess unranked mods match your choices	没有符合条件的多余未升级 MOD
+No game data	无游戏数据
+No log loaded	未加载日志
+No matches in this ranking. Try another search.	该排行中没有匹配，换个关键词试试。
+No new tradeable parts	无新可交易部件
+No recommendations in this mode	该模式下无推荐
+No targets	无目标
+Noise	噪音
+Not compatible	不兼容
+Notify before the cycle changes (minutes)	周期变化前通知（分钟）
+Nov	十一月
+Oct	十月
+On recorded purchases	根据已记录购买
+one at a time	一次一个
+Only verified shortages are shown. Check incomplete recipes in Resources.	仅显示已确认的缺口。在资源页检查未完成配方。
+Open changelog	打开更新日志
+Open in the trading panel	在交易面板中打开
+Open live window	打开实时窗口
+Open log	打开日志
+Open simulator	打开模拟器
+Open the main window, then refresh to load its preview options.	打开主窗口后刷新以加载预览选项。
+Open tree	打开制作树
+Open Warframe on this PC and log in to your account in the game	在此电脑上打开 Warframe 并在游戏中登录你的账户
+Open welcome tour	打开新手导览
+or choose Open log, up to 128 MiB	或选择“打开日志”，最大 128 MiB
+Output	产出
+Overwolf installation working	Overwolf 安装正常
+Overwolf started before Warframe	Overwolf 先于 Warframe 启动
+Partners	合作伙伴
+Patreon 'AlecaFrame Enjoyer' tier	Patreon“AlecaFrame Enjoyer”档位
+per mod	每个 MOD
+Platinum / trades	白金 / 交易
+Platinum received	已获得白金
+Platinum spent	已花费白金
+Playback returned to line 1. Earlier app actions have not been undone.	回放已回到第 1 行。此前应用执行的操作并未被撤销。
+Playback uses the current inventory and all normal app handlers, including overlays, trade/stat recording, and Arbitration history. Real game messages continue arriving. Restart replays actions; it does not undo them.	回放使用当前仓库和所有正常处理逻辑（包括叠加层、交易/统计记录与仲裁历史）。真实游戏消息仍会继续到达。重新开始只是重放操作，不会撤销这些操作。
+Playing	游玩中
+Please try loading the recipe again.	请尝试重新加载配方。
+Potential XP from favorites	收藏的潜在经验
+Potential XP from hovered item	悬停物品的潜在经验
+Premium override	高级版覆盖
+Preview the shared toast styles in the main window.	在主窗口预览共享提示样式。
+Previous page	上一页
+Price history & trends	价格历史与趋势
+Prices unavailable	价格不可用
+Prime collection	Prime 收藏
+Progress to next rank	下一等级进度
+Purchase count	购买次数
+Purchase platinum	购买白金
+Ranged weapon	远程武器
+Rank by volume	按交易量排序
+Ranked and equipped copies are kept	已升级和已装备的副本会保留
+Ranked by current unit price	按当前单价排序
+Ranked by target coverage	按目标覆盖率排序
+Ranked copies count toward the total	已升级的份数计入总数
+Rankings	排行
+Rate unavailable	速率不可用
+Recalculating	重新计算中
+Received − spent	收入 − 支出
+Received:	收到：
+Recorded timing	记录时间
+Release channel	发布通道
+Release channel unavailable.	发布通道不可用。
+Relic estimates are per relic. Drops are random, and sources may have access or event requirements.	遗物估算按单个遗物计算。掉落是随机的，来源可能有进入条件或活动限制。
+Relic prices unavailable	遗物价格不可用
+Relic request failed	遗物请求失败
+Reload time	装填时间
+Remember Auto mode?	记住自动模式？
+Remove ads and see Premium benefits	移除广告并查看高级版权益
+Remove ads and support development	移除广告并支持开发
+Remove ads, customize your app, and support AlecaFrame's development	移除广告、自定义应用并支持 AlecaFrame 开发
+Remove manual target	移除手动目标
+Remove reached targets	移除已达成目标
+Remove stop	移除站点
+Reopen the introduction from the beginning.	从头重新打开介绍。
+Replay welcome tour	重播新手导览
+Requires MR	需要段位
+Reset to 100%	重置为 100%
+Resets & Sortie	重置与突击
+Resource regions	资源区域
+Review items	评价物品
+Review your trades and compare market activity	查看交易并对比市场动态
+Reward prices unavailable	奖励价格不可用
+Riven disposition	裂罅倾向
+Sales count	销售次数
+Sales platinum	销售白金
+Same scale	相同比例
+Save a copy of your recorded data to your desktop	将记录数据副本保存到桌面
+Save a source below or use Suggest stops.	在下方保存来源，或使用“推荐站点”。
+Saved inventory	已保存仓库
+Saved setting	已保存设置
+Search duplicate mods	搜索重复 MOD
+Search sources or target items	搜索来源或目标物品
+Search within this ranking	在此排行中搜索
+See Patreon or Overwolf for pricing and subscription details	价格与订阅详情见 Patreon 或 Overwolf
+Select a UTF-8 text log, not a binary or UTF-16 file.	请选择 UTF-8 文本日志，而非二进制或 UTF-16 文件。
+Select an item in the tree to see what you need and where to find it	在树中选择物品以查看所需与获取位置
+Sending line…	正在发送行…
+Session diagnostics could not be read.	无法读取会话诊断信息。
+Session diagnostics refreshed.	会话诊断信息已刷新。
+Session status only. Account and inventory details are excluded.	仅会话状态，不含账户与仓库详情。
+Setup checklist	设置检查清单
+Shortest build time when different recipes are crafted at the same time	不同配方同时制作时的最短建造时间
+Show all targets	显示全部目标
+Show in Timers & Events	在计时器与事件中显示
+Show main window	显示主窗口
+Show release notes without changing the installed version.	查看发行说明而不更改已安装版本。
+Show sources for this target	显示此目标的来源
+Sign in to the configured Overwolf account to use these tools.	登录已配置的 Overwolf 账户以使用这些工具。
+Simulator action failed.	模拟器操作失败。
+Simulator session ended.	模拟器会话已结束。
+Some checks are only available while Warframe is running	部分检查仅在 Warframe 运行时可用
+Source name	来源名称
+Space, play/pause. Right arrow, next line. Shift + Right arrow, next 10.	空格播放/暂停，右箭头下一行，Shift+右箭头后 10 行。
+Speed	速度
+Spent	已花费
+Sprint speed	冲刺速度
+Stable	稳定版
+Start playing Warframe	开始游玩 Warframe
+Step through a saved log using the existing replay tools.	使用现有回放工具逐步查看已保存日志。
+Stop after line	在该行后停止
+Stopped, restart required	已停止，需要重启
+Subscribe through your Overwolf account	通过 Overwolf 账户订阅
+Subscribe with Overwolf	通过 Overwolf 订阅
+Subscription override	订阅覆盖
+Suggest stops	推荐站点
+Suggested stops prioritize target coverage. Arrange their order yourself.	推荐站点优先覆盖目标，可自行调整顺序。
+Support AlecaFrame	支持 AlecaFrame
+Support development with a Patreon membership	通过 Patreon 会员支持开发
+Target reached	已达成目标
+Targets	目标
+Thank you to our supporters	感谢我们的支持者
+The crafting recipe could not be read.	无法读取制作配方。
+The debug action failed.	调试操作失败。
+The Discord changelog could not be generated.	无法生成 Discord 更新日志。
+The highlighted line is sent next	下一行发送高亮行
+The linking page could not be opened. Please try again.	无法打开关联页面，请重试。
+The local app data folder is unavailable.	本地应用数据文件夹不可用。
+The main window is still loading. Try again in a moment.	主窗口仍在加载，请稍后重试。
+The relic reward overlay won't appear while AlecaFrame is closed	AlecaFrame 关闭时不会显示遗物奖励叠加层
+The saved subscription override could not be verified. Refresh and try again.	无法验证已保存的订阅覆盖设置。请刷新后重试。
+The simulator returned an invalid response.	模拟器返回了无效响应。
+The simulator window was closed or replaced.	模拟器窗口已关闭或被替换。
+The subscription override could not be read.	无法读取订阅覆盖设置。
+The subscription override could not be saved.	无法保存订阅覆盖设置。
+The subscription override could not be saved. Refresh to check its saved setting.	无法保存订阅覆盖设置。请刷新以检查其保存状态。
+The subscription override is already being saved.	订阅覆盖设置正在保存中。
+The welcome tour is saving. Try again in a moment.	欢迎导览正在保存，请稍后重试。
+The window could not be opened.	无法打开窗口。
+The window could not be shown.	无法显示窗口。
+Theme applied!	主题已应用！
+Theme author	主题作者
+Theme created!	主题已创建！
+Theme name	主题名称
+These suggestions are already covered by your stops. You can add other sources from the list.	这些建议已被你的站点覆盖。你可以从列表中添加其他来源。
+This file exceeds the 128 MiB limit. Split it into smaller logs.	此文件超过 128 MiB 上限。请将其拆分为更小的日志。
+This item's Mastery Rank requirement has not been met.	尚未满足此物品的精通段位要求。
+This log exceeds the limit of 1,000,000 lines. Split it into smaller logs.	此日志超过 1,000,000 行的上限。请将其拆分为更小的日志。
+This log is empty.	此日志为空。
+This plan could not be saved on this device. Your changes will last for this session.	此规划无法保存在本设备上。你的更改仅在本次会话中有效。
+This session	本次会话
+Toggle maximize	切换最大化
+Tools & windows	工具与窗口
+Top purchases	购买排行
+Top sales	销售排行
+Total build time if every recipe is crafted one after another	所有配方依次制作的总建造时间
+Total credits required for the remaining crafting steps	剩余制作步骤所需星币总计
+Total platinum	白金总计
+Totals for this crafting tree	该制作树合计
+Tour and changelog previews closed.	导览与更新日志预览已关闭。
+Tour completed	导览已完成
+Trace cost from Intact, Average platinum & ducats per run	从完整遗物追踪每局白金与杜卡德成本
+Trade rankings	交易排行
+Trading & rivens	交易与裂罅
+Trading analytics	交易分析
+Trading Analytics (Premium)	交易分析（高级版）
+Trading analytics could not be loaded. Please try again.	无法加载交易分析，请重试。
+Trading Analytics requires Patreon Tier 2+	交易分析需要 Patreon 第 2 档以上
+Trading by category	按分类交易
+Trading history unavailable	交易历史不可用
+Trading partners	交易伙伴
+Trigger a data update	触发数据更新
+Try loading your latest finds again	重新加载你最新的发现
+Turn off to also show Online and Offline traders	关闭后也会显示在线与离线商人
+Turn off “Run as administrator” for Steam, the launcher and Warframe, then restart the game	关闭 Steam、启动器与 Warframe 的“以管理员身份运行”，然后重启游戏
+UI previews	界面预览
+Unable to initialize ad placement	无法初始化广告位
+Unexpected playback position. Restart before sending more lines.	回放位置异常。请先重新开始再发送更多行。
+Unknown debug action.	未知调试操作。
+Unknown plan version	未知规划版本
+Unowned & unmastered	未拥有且未精通
+Unranked copies available to dissolve in-game	可在游戏内分解的未升级份数
+Unreadable Resources plan	无法读取的资源规划
+Unsupported Resources plan	不支持的资源规划
+Updating plan…	正在更新规划…
+Updating ranking…	正在更新排行…
+Use <PLAYER_NAME> for the Warframe username	用 <PLAYER_NAME> 表示游戏用户名
+Use <WFM_MESSAGE> for the message content	用 <WFM_MESSAGE> 表示消息内容
+uses current prices and average volume from the latest 7 daily records. Estimated daily value is price × volume.	使用当前价格与最近 7 天日均交易量。每日估算价值 = 价格 × 交易量。
+Version unavailable.	版本不可用。
+View guide	查看指南
+View market activity	查看市场动态
+View Patreon tiers	查看 Patreon 档位
+View Premium options	查看高级版选项
+Volume averages the latest 7 daily records	交易量取最近 7 天日均
+Wait for the current line to finish before loading a log.	请等待当前行完成后再加载日志。
+Wait for the current line to finish before loading another log.	请等待当前行完成后再加载另一份日志。
+Waiting for inventory. Your targets are saved.	正在等待仓库数据，目标已保存。
+Warframe conversations	Warframe 对话
+Warframe menu scale	Warframe 菜单缩放
+Warframe must run locally on the same PC as AlecaFrame.	Warframe 须与 AlecaFrame 在同一台电脑上运行。
+Warframe overlay enabled	Warframe 叠加层已启用
+Warframe running and logged in	Warframe 正在运行且已登录
+warframe.market (live)	warframe.market（实时）
+Warframe.market messages	Warframe.market 消息
+Weapon bonuses unavailable	武器加成不可用
+Weapon type	武器类型
+Welcome tour	新手导览
+What's new in:	新内容：
+When you join a squad, you are responsible for making sure you can complete the tasks listed in the title/requirements. Multiple offences will result in a ban. If you are close to meeting the requirements, it is allowed to join the squad and ask in the chat if everyone is ok with your situation.	加入小队后，你有责任确保能完成标题/要求中列出的任务，多次违规会被封禁。若你接近满足要求，也可以加入并在聊天中询问大家是否接受你的情况。
+World cycle reminders	世界周期提醒
+Your account could not be linked. Please try again.	无法关联你的账户，请重试。
+Your plan could not be refreshed. Your saved targets are safe. Try again.	无法刷新你的规划。你已保存的目标安全无损，请重试。
+Your route has 12 stops. Remove a stop before adding another.	你的路线已有 12 个站点。请先移除一个站点再添加。
+Your saved Resources plan could not be read. Open Resources to review it, or turn off the linked plan.	无法读取你已保存的资源规划。打开“资源”查看，或关闭关联的规划。
+Your stops	你的站点
+Your trading	你的交易
+… (preview shortened, the full line is sent)	…（预览已截断，实际发送完整行）
+＋ Add target	＋ 添加目标

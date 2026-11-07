@@ -1,51 +1,58 @@
 # 贡献指南
 
-感谢你愿意帮忙完善 AlecaFrame-ZH。请先阅读 [README](README.md) 与 [维护手册](docs/维护手册.md)。
-
-> **重构期间（refactor/architecture 分支）**：流程以 [AGENTS.md](AGENTS.md)、[docs/README.md](docs/README.md)、[docs/contributing/](docs/contributing/README.md) 为准；重构合并到 main 后恢复 feature → main，不再使用 dev 分支。旧流程文档在重构完成后更新。
+感谢你愿意帮忙完善 AlecaFrame-ZH。开始前请先读 [AGENTS.md](AGENTS.md)、[docs/README.md](docs/README.md) 与 [docs/contributing/workflow.md](docs/contributing/workflow.md)。
 
 ## 可以贡献什么
 
-- **翻译修正**：错译、机翻腔、术语不统一；
-- **新增词条**：新版 AlecaFrame 出现的英文界面；
-- **物品名**：游戏数据缺失/错误的中文名（在 `src/build_items.py` 的 `MANUAL` / `PART_ZH` 或 `dict/` 里补）；
-- **规则**：数字/日期等动态模板；
-- **文档**：排障案例、使用说明。
+- **词典词条**：界面文案、物品/部件/遗物等精确匹配词条；
+- **翻译规则**：数字/日期/模板类动态文本；
+- **中文搜索 / hook**：宿主方法包装、本地过滤、诊断；
+- **启动器 / 注入**：PowerShell 模块、页面注册表、快照/还原；
+- **OCR 边界**：manifest/路径/文档（OCR 逻辑变更另立项目）；
+- **文档与测试**：指南、模块说明、真机回归记录。
 
-## 词条格式
+## 贡献流程
 
-`dict/*.tsv`，一行一条，**英文<TAB>中文**，不要有空行或多余空格：
+1. Fork 仓库，从 `main` 切 `feature/<scope>` 或 `fix/<scope>`；
+2. 按 [docs/contributing/task-router.md](docs/contributing/task-router.md) 找到必读文件与可改位置；
+3. 本地构建、检查、按 Tier 做真机验证；
+4. 向 `main` 开 PR，填写 [.github/PULL_REQUEST_TEMPLATE.md](.github/PULL_REQUEST_TEMPLATE.md) 并附证据；
+5. 维护者复核并手动合并。
 
-```
-No preferences set	未设置偏好
-```
+贡献者不要直接推 `main`，不要自行合并 PR。
 
-- 英文必须与界面文本完全一致（大小写、标点、弯引号 `’` 与直引号 `'` 不同）；
-- 只加在 `dict/extra-*.tsv`（UI 文案）或 `dict/fixes.tsv`（覆盖上游错误）；
-- 同一英文不要重复；修改请保留原有顺序，方便 review。
+## 本地检查
 
-## 本地构建与验证
+使用仓库实际存在的命令（新架构工具落地后）：
 
 ```powershell
-python src\build.py          # 合并词典 -> bin/alecaframe-zh-cn.js
+python tools\build.py
+powershell -ExecutionPolicy Bypass -File tools\verify.ps1
+node tests\search.test.mjs
 ```
 
-- 输出会打印 `UI keys not found in app source: N`；新增词条后该数字应尽量不增加（说明文本匹配不上）。
-- 在中文会话里运行 `Refresh-Chinese.cmd` 即可看到效果（不需要重启 Overwolf）。
-- 截图可用 `verify/capture.ps1`（仅本机调试，不提交）。
+真机操作：
 
-## 提交前检查
+```powershell
+Start-Chinese.cmd
+Refresh-Chinese.cmd
+Restore-English.cmd
+Status.cmd
+```
 
-- [ ] `powershell -ExecutionPolicy Bypass -File scripts\verify.ps1` 全绿（等价于 CI 检查）
-- [ ] `python src/build.py` 成功
-- [ ] 词条 TSV 每行都有 Tab
-- [ ] 没有提交 `bin/alecaframe-zh-cn.js`、`state/`、`logs/`、`dist/`、`backup/`
-- [ ] `bin/AlecaFrame-ZH.ps1` 若被修改，保持 **UTF-8 with BOM**（中文提示需要）
-- [ ] PR 描述里说明：改了什么、对应哪个界面、如何验证
+## 词典
 
-## 版本与发布
+- 词典目录、manifest、override 规则见 `dict/AGENTS.md`；
+- 一个英文键只有一个权威译文；改值只能写 `overrides.tsv` 并附 scope/reason/source；
+- 不要用 Excel 编辑 TSV；不要提交生成物。
 
-- 所有改动先在 `dev`（或 `feature/*`）分支上做，验证通过后再合入 `main`；
-  完整流程见 [分支与发布流程](docs/分支与发布流程.md)；
-- 版本号在 `VERSION`，更新记录在 `CHANGELOG.md`；
-- 维护者打 tag（如 `v1.0.1`）并推送后，GitHub Actions 会自动构建并发布 zip 到 Releases。
+## 提交与 PR
+
+- 提交信息：`feat|fix|refactor|docs|test|chore(scope): 中文描述`；
+- 一个 PR 一个主题；Tier 按 [AGENTS.md](AGENTS.md) §8 标注；
+- 证据等级（SIM/HOST/REAL）与未验证项见 [docs/contributing/evidence.md](docs/contributing/evidence.md)；
+- 不要提交 `bin/`、`dist/`、`state/`、`logs/`、报告文件。
+
+## 发布
+
+维护者负责合并、`VERSION`/`CHANGELOG`、tag 与 GitHub Release；流程见 [docs/分支与发布流程.md](docs/分支与发布流程.md)。

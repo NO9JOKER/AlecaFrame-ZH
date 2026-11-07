@@ -1,12 +1,13 @@
 # 贡献流程（fork PR）
 
-> 适用于外部贡献者。维护者重构期间（`refactor/architecture` 分支）不接受外部 PR；重构完成后本流程生效。
+> 适用于外部贡献者。项目由维护者手动合并 PR。
+> 当前项目正在按新架构实现；命令/工具以仓库实际存在的为准，目标路径见 [task-router.md](task-router.md)。
 
 ## 0. 前置
 
 - Windows（launcher 真机验证需要）+ Python 3 + Node.js + PowerShell 5.1。
 - 读 [AGENTS.md](../../AGENTS.md)、[task-router.md](task-router.md)、[evidence.md](evidence.md)。
-- 不需要 OCR 便携依赖，除非任务涉及 OCR；OCR 本轮只允许改边界。
+- 不需要 OCR 便携依赖，除非任务涉及 OCR；OCR 只允许改边界/路径，逻辑变更另立项目。
 
 ## 1. Fork 与分支
 
@@ -25,23 +26,23 @@ git switch -c feature/<scope> upstream/main
 
 ## 2. 本地检查
 
-在仓库根目录：
+在仓库根目录，使用仓库实际存在的命令（新架构工具落地后）：
 
 ```powershell
-python src\build.py
-powershell -ExecutionPolicy Bypass -File scripts\verify.ps1
+python tools\build.py
+powershell -ExecutionPolicy Bypass -File tools\verify.ps1
 node tests\search.test.mjs
 ```
 
-- `verify.ps1` 必须退出码 0；改文档可加 `-NoBuild`，但改词典/代码必须完整跑。
+- `verify` 必须退出码 0；改文档可跳过构建，但改词典/代码必须完整跑。
 - 生成物不要提交。
-- 若本机 python/node 不在 PATH，按 [docs/维护手册.md](../维护手册.md) 用 `-Python`/`-Node` 指定路径。
+- 若某命令/工具尚未落地，在 PR 中说明实际运行的等价命令，不要伪造输出。
 
 ## 3. 真机验证（按 Tier）
 
 | Tier | 开发者必须做 |
 |---|---|
-| T0 | 改词典/文档：build + Refresh，截图受影响界面；改文档无需真机 |
+| T0 | 改词典/文档：构建 + `Refresh-Chinese.cmd`，截图受影响界面；改文档无需真机 |
 | T1 | 改引擎/规则/搜索：现有搜索/规则测试全过（数量以测试输出为准）、规则 golden、受影响界面前后截图、日志 `[AlecaFrame-ZH] loaded translated=...` |
 | T2 | 改 launcher/注入/OCR/CI：完整 `Start / Restore / Refresh / Toggle / Status`，保存日志、截图、bundle hash；验证回滚 |
 
@@ -55,7 +56,7 @@ git commit -m "fix(search): 中文查询在 X 场景失效"
 git push origin feature/<scope>
 ```
 
-- 提交信息风格：`feat|fix|refactor|docs|test|chore(scope): 中文描述`。
+- 提交信息风格：`feat|fix|refactor|docs|test|chore(scope): 中文描述`（`refactor` 是常规提交类型）。
 - 不要 `git add -f` 生成物；不要提交 `.tools/`、`state/`、`logs/`。
 - 新提交会触发重新审核；已审过的 head 变了要重新审。
 
@@ -71,8 +72,3 @@ git push origin feature/<scope>
 - 维护者的复核 AI 会从 PR head 复核；可能要求补证据或拆分 PR。
 - 维护者合并后，由维护者打 tag/发版（或等到下次发版）。
 - 合并后删除自己的 feature 分支。
-
-## 7. 重构分支例外
-
-- 当前 `refactor/architecture` 是维护者的长期重构分支；外部贡献者不要向它提交。
-- 重构合并到 main、发布 v1.2.0 后，才恢复本流程。

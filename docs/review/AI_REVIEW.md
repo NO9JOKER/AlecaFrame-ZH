@@ -17,7 +17,7 @@ git fetch origin pull/<PR号>/head:pr-<PR号>
 git switch --detach pr-<PR号>
 ```
 
-如果拿不到 fork 的 head，要求贡献者提供 patch 或可访问的分支；不要基于旧提交审。
+如果拿不到 fork 的 head，要求贡献者提供 patch 或可访问的分支；不要基于过期提交审。
 
 ## 2. 硬规则
 
@@ -46,7 +46,7 @@ powershell -ExecutionPolicy Bypass -File scripts\verify.ps1
 node tests\search.test.mjs
 ```
 
-- B/C 阶段后改用 `tools/build.py`、`tools/verify.ps1`、`tools/dict.py check --strict`；以分支实际命令为准。
+- 以 `AGENTS.md` §3 的命令为准；工具尚未落地时使用仓库实际存在的等价命令，并在报告中记录命令与结果。
 - 检查构建两次 hash 是否一致、生成物是否被跟踪、bundle 是否包含必需全局名。
 - 词典 PR：检查 `dict`/`scan_missing` 报告、合并键数、覆盖是否被静默改变。
 - 运行时 PR：规则/fixture 单测、hook 安装计数、`__AFZH_SEARCH_TEST__` 纯函数导出。
@@ -63,7 +63,7 @@ node tests\search.test.mjs
 - 词典是否只通过 manifest 加载，是否出现未登记文件、同值重定义、静默改值？
 - 生成物/报告是否被提交？`bin/` 是否被手改？
 - PowerShell 是否 UTF-8 BOM、PS5.1 兼容、快照/还原路径正确？
-- 状态文件/schema 变更是否兼容旧文件？
+- 状态文件/schema 变更是否兼容无版本/缺省文件？
 - 是否引入网络/文件系统/secrets/本机绝对路径？
 - 文档是否同 PR 更新，链接是否可达？
 
@@ -71,7 +71,7 @@ node tests\search.test.mjs
 
 - 环境版本/commit/bundle hash 与 PR head 一致？
 - 证据覆盖了声明的页面/词条/hook？
-- 截图/日志的时间戳合理？是否用旧版本证据？
+- 截图/日志的时间戳合理？是否用过期版本证据？
 - REAL 项无证据、或证据与声明不符 → 记 `REQUEST_CHANGES`/`BLOCKED`，不要猜。
 - 无法验证的项（视觉布局、实际 OCR 识别、真实游戏事件）单列 `UNVERIFIABLE`。
 - T2 是否包含 Start/Restore/Refresh/Toggle/Status 和回滚验证？

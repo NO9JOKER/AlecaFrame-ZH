@@ -1,8 +1,7 @@
 # AGENTS.md — AlecaFrame-ZH 的 AI 操作契约
 
-> 状态：A 阶段（2026-11-08，分支 `refactor/architecture`）。
-> 本文件定义目标约定；标有「B/C/E 阶段」的路径或命令尚未落地，落地前使用「当前等价物」。
-> 人类贡献者入口：[CONTRIBUTING.md](CONTRIBUTING.md)。贡献者 AI 的详细路线：[docs/contributing/README.md](docs/contributing/README.md)。维护者复核 AI：[docs/review/AI_REVIEW.md](docs/review/AI_REVIEW.md)。
+> 状态：架构规范（实现中）。部分目标目录/命令尚未落地；以实际代码和本文件为准。发现文档与代码不一致时先停下，在 PR/报告中说明，不要按猜测继续。
+> 人类贡献者入口：[CONTRIBUTING.md](CONTRIBUTING.md)。贡献者 AI 路线：[docs/contributing/README.md](docs/contributing/README.md)。维护者复核 AI：[docs/review/AI_REVIEW.md](docs/review/AI_REVIEW.md)。
 
 ## 0. 你是什么角色
 
@@ -14,10 +13,10 @@
 
 - 这是 Overwolf 应用 AlecaFrame 的**非官方简体中文补丁**，不是 AlecaFrame 源码分支。
 - 运行方式：启动器带 Overwolf 校验绕过参数启动，向 AlecaFrame 中需要汉化的页面注入一个 JS bundle（词典 + 翻译引擎 + 中文搜索）；具体页面清单以 launcher / `pages.json` / 生成矩阵为准，不要依赖文档里的数字。
-- 兼容性基线（2026-11-08 核对）：AlecaFrame `3.0.6` / Overwolf `0.311.1.6`；当时发布 `v1.1.11`，重构目标 `v1.2.0`。
-- **这些是基线快照，不是永久事实**：升级 AlecaFrame/Overwolf、发版或改页面清单时，必须同 PR 更新本节及 `docs/refactor/v1.2.0-report.md`；AI 发现它们与 `VERSION`、本机安装目录或命令输出不一致时，以实际为准并指出文档过期。
+- 兼容性核对版本（2026-11-08）：AlecaFrame `3.0.6` / Overwolf `0.311.1.6`；项目目标版本 `1.2.0`。
+- **这些是带日期的兼容性快照，不是永久事实**：升级 AlecaFrame/Overwolf、发布新版本或改页面清单时，必须同 PR 更新本节与 `docs/project/v1.2.0-plan.md`；AI 发现它们与 `VERSION`、本机安装目录或命令输出不一致时，以实际为准并指出文档过期。
 - 不要修改官方安装包的签名/DLL；唯一允许的官方文件原地补丁是 OCR 相关文件，且必须可还原。
-- 规模会变：词典是数据主体，bundle 大部分是词典数据；运行时主链路是少量代码；OCR 是独立可选子系统，且本轮只搬家、不重写。具体数字以构建/报告输出为准，不要写死。
+- 规模会变：词典是数据主体，bundle 大部分是词典数据；运行时主链路是少量代码；OCR 是独立可选子系统。具体数字以构建/报告输出为准，不要写死。
 
 ## 2. 先读什么
 
@@ -29,20 +28,20 @@
 
 然后只读任务相关模块：
 
-- 词典任务：`dict/AGENTS.md`、[docs/词典来源.md](docs/词典来源.md)、目标词条文件头部；
-- 引擎/规则/搜索：`src/runtime/AGENTS.md`、对应模块 README（B/C 阶段创建）、目标文件头；
-- 启动器/注入：`src/launcher/AGENTS.md`、[docs/维护手册.md](docs/维护手册.md)；
-- OCR：`src/ocr/AGENTS.md`、[docs/OCR集成说明.md](docs/OCR集成说明.md)。
+- 词典任务：`dict/AGENTS.md`、目标词条文件头部；
+- 引擎/规则/搜索：`src/runtime/AGENTS.md`、对应模块 README、目标文件头；
+- 启动器/注入：`src/launcher/AGENTS.md`、`pages.json`；
+- OCR：`src/ocr/AGENTS.md`、`src/ocr/CONTRACT.md`。
 
-不要读：`bin/` 生成物、全部词条、旧架构说明中与任务无关的章节、`dist/`、`state/`、`logs/`。
+不要读：`bin/` 生成物、全部词条、与本任务无关的参考文档、`dist/`、`state/`、`logs/`。
 
-## 3. 稳定命令（当前可用）
+## 3. 稳定命令
 
-在仓库根目录执行：
+新架构的稳定命令（对应工具实现后）：
 
 ```powershell
-python src\build.py                              # 合并词典，生成 bin/alecaframe-zh-cn.js 与 bin/ocr/afzh-items.js
-powershell -ExecutionPolicy Bypass -File scripts\verify.ps1
+python tools\build.py                            # 合并词典，生成注入 bundle 与 OCR 词库
+powershell -ExecutionPolicy Bypass -File tools\verify.ps1
 node tests\search.test.mjs
 ```
 
@@ -55,34 +54,36 @@ Restore-English.cmd     # 还原官方文件并正常启动
 Status.cmd              # 查看会话 flag / 注入状态 / OCR 状态
 ```
 
-B–E 阶段会迁移到 `tools/`（`tools/build.py`、`tools/verify.ps1`、`tools/dict.py` 等）；迁移完成前以本节命令为准，迁移后本文件同步更新。
+工具尚未落地时，不要凭本文件猜命令；以仓库实际可执行文件为准，并在 PR 中记录实际运行的命令。
 
-## 4. 目录与边界
+## 4. 目录与依赖
 
-目标结构（B/C/E 阶段逐步落地）：
+目标结构：
 
 ```text
-dict/                 词典数据（生成物 / 上游 / 人工词条 / overrides / keep-english）
+dict/                 词典数据（manifest / generated / 人工词条 / overrides / keep-english）
 src/runtime/          单 bundle 运行时：core / rules / dom / features / adapters / entry
 src/launcher/         PowerShell 启动器模块：Snapshot / Patch / Overwolf / Ocr / Cli
-src/ocr/              OCR 子系统边界：manifest / page-scripts / server / worker（本轮只搬家）
+src/ocr/              OCR 子系统边界：manifest / page-scripts / server / worker
 tools/                构建、校验、词典工具、索引生成
 tests/                单元测试 / fixtures / golden / 手工真机清单
-docs/                 架构、指南、贡献者入口、复核模板、ADR、重构报告
+docs/                 架构、指南、贡献者入口、复核模板、ADR、项目计划
 bin/                  只放生成物；源码不要放这里
 ```
 
-依赖方向（只允许向左）：
+依赖方向（禁止反向依赖）：
 
-```text
-dict(data) -> build -> bundle
-core -> rules / dom / features -> adapters / entry
-launcher / tools / tests 可以读所有层，但不能被运行时依赖
-```
+- `core`：纯函数/索引/决策链，不依赖任何上层。
+- `rules`、`dom`、`features`：只能依赖 `core`；features 内部可按需依赖 rules/dom。
+- `adapters`、`entry`：可以依赖 core/rules/dom/features；不得被它们反向依赖。
+- `dict` 数据只通过 build 进入 bundle；运行时不得直接读词典文件。
+- `launcher`/`tools`/`tests` 可以读所有层，但不能被运行时依赖。
 
-- **页面名只能出现在 `pages.json`**（E 阶段创建）；features 不许知道页面名；页面差异放 `adapters/`。
+边界规则：
+
+- **页面名只能出现在 `pages.json` 和 `adapters/`**；features 不许知道页面名。
 - 单 bundle 注入契约不变：一个 `assets/js/alecaframe-zh-cn.js`，一个 `<script>` 标签。
-- OCR 只能通过 `src/ocr/manifest.json` 描述；OCR 逻辑不重写。
+- OCR 只能通过 `src/ocr/manifest.json` 描述；OCR 逻辑保持稳定，边界先行。
 
 ## 5. 硬性不变量（改坏会静默出错）
 
@@ -91,21 +92,21 @@ launcher / tools / tests 可以读所有层，但不能被运行时依赖
 3. 生成物不入库：`bin/alecaframe-zh-cn.js`、`bin/ocr/afzh-items.js`、报告文件等。
 4. 翻译是**精确匹配**；不做模糊/词形变化。规则必须全串锚定，禁止宽泛正则（如 `^(\d+) (.+)$`），且要有防循环守卫。
 5. 运行时不得联网（OCR 仅 `127.0.0.1:38147`）、不得访问文件系统、不得写 secrets。
-6. 以下全局名是与宿主/OCR 的硬契约，不要改名：`__AFCN__`、`__AFCN_DICT__`、`__AFCN_RELIC_REWARDS__`、`__AFCN_TRANSLATE__`、`__AFZH_SEARCH__`、`__AFZH_SEARCH_API__`、`__AFZH_SEARCH_TEST__`、`__ALECAFRAME_ZH_CN_ITEMS__`，以及 `docs/OCR集成说明.md` 列出的 OCR 全局名。
-7. `status.last-session.json`、settings 等状态文件要加 `schemaVersion`；改动需兼容旧文件或明确迁移。
+6. 以下全局名是与宿主/OCR 的硬契约，不要改名：`__AFCN__`、`__AFCN_DICT__`、`__AFCN_RELIC_REWARDS__`、`__AFCN_TRANSLATE__`、`__AFZH_SEARCH__`、`__AFZH_SEARCH_API__`、`__AFZH_SEARCH_TEST__`、`__ALECAFRAME_ZH_CN_ITEMS__`，以及 `src/ocr/CONTRACT.md` 列出的 OCR 全局名。
+7. `status.last-session.json`、settings 等状态文件要加 `schemaVersion`；读取时能处理无版本/缺省值，否则给出明确错误。
 8. 页面/宿主版本升级后，hook 方法与选择器可能失效；失败必须可诊断，不能静默吞掉。
 
 ## 6. 可改 / 禁改
 
 | 区域 | 规则 |
 |---|---|
-| `dict/` 人工词条 | B 阶段后可改；`generated/` 只由脚本生成，禁手改 |
-| `src/runtime/` | C 阶段后可改；必须同 PR 更新模块 README/测试 |
-| `src/launcher/` | E 阶段后可改；T2，必须有真机 Start/Restore 证据 |
-| `src/ocr/` | 本轮只允许改 manifest/路径/文档；OCR 逻辑不改 |
+| `dict/` 人工词条 | 可改；`generated/` 只由脚本生成，禁手改 |
+| `src/runtime/` | 可改；必须同 PR 更新模块 README/测试 |
+| `src/launcher/` | 可改；T2，必须有真机 Start/Restore 证据 |
+| `src/ocr/` | 只允许改 manifest/路径/文档；OCR 逻辑变更需独立项目/ADR |
 | `tools/`、`tests/` | 可改；改门禁本身按 T2 处理 |
 | `bin/` | 禁改（生成物） |
-| `.github/`、`scripts/verify.ps1`、`scripts/package.py` | T2；不得弱化检查 |
+| `.github/`、`tools/verify.ps1`、`tools/package.py` | T2；不得弱化检查 |
 | OCR 协议、端口、官方文件补丁点 | 禁改（除非独立 OCR 项目） |
 
 ## 7. 证据与 PR
@@ -126,15 +127,15 @@ launcher / tools / tests 可以读所有层，但不能被运行时依赖
 
 ## 9. OCR 与词典边界
 
-- OCR：本轮把源码搬到 `src/ocr/`，定义 manifest/CONTRACT，launcher 从 manifest 读取注入；**逻辑不重写**。详细边界见 `src/ocr/AGENTS.md`。
-- 词典：按「变更域」分文件，不按页面分；优先级由 `dict/manifest.tsv` 决定；同一英文键只有一个权威译文，改值只能写 `overrides.tsv` 并附 scope/reason/source。B 阶段落地。
+- OCR：`src/ocr/` 是独立子系统边界；launcher 只按 `src/ocr/manifest.json` 复制/注入/启停；协议、端口、全局名、官方补丁点稳定，逻辑变更另立项目。
+- 词典：按「变更域」分文件，不按页面分；优先级由 `dict/manifest.tsv` 决定；同一英文键只有一个权威译文，改值只能写 `overrides.tsv` 并附 scope/reason/source。
 
 ## 10. 分支与版本
 
-- 本次重构：`refactor/architecture` 长期分支，阶段提交；全部稳定后合并 main、删除分支、打 `v1.2.0`。
-- 重构完成后：`feature/* -> main`；不再启用 `dev`。
-- 发版：维护者直接在主分支提交 `VERSION`/`CHANGELOG` 后打 tag；tag 必须在 main 上。
-- 一个 PR 只做一个主题；不要在一个 PR 里混合词典搬家、语义修正和运行时重构。
+- `main` 是发布分支；功能分支通过 PR 合入 main。
+- 维护者手动合并；贡献者不直接推 main，也不自行合并。
+- 发版：维护者提交 `VERSION`/`CHANGELOG` 后打 tag；tag 必须在 main 上。
+- 一个 PR 只做一个主题；不要混合词典数据、语义修正和运行时逻辑。
 
 ## 11. 不要做
 
@@ -155,25 +156,25 @@ launcher / tools / tests 可以读所有层，但不能被运行时依赖
 - [.github/PULL_REQUEST_TEMPLATE.md](.github/PULL_REQUEST_TEMPLATE.md)
 - [docs/decisions/0001-capability-first-architecture.md](docs/decisions/0001-capability-first-architecture.md)
 - [docs/decisions/0002-contribution-and-review-model.md](docs/decisions/0002-contribution-and-review-model.md)
-- [docs/refactor/v1.2.0-report.md](docs/refactor/v1.2.0-report.md)
+- [docs/project/v1.2.0-plan.md](docs/project/v1.2.0-plan.md)
 
 ## 13. 事实来源与文档维护
 
-以下事实会变。本文件只写“截至 2026-11-08”的基线，不承担永久正确性；需要当前值时查唯一来源：
+以下事实会变。本文件只写“截至 2026-11-08”的核对值，不承担永久正确性；需要当前值时查唯一来源：
 
 | 事实 | 唯一来源 | 写死规则 |
 |---|---|---|
-| 当前发布版本 | 根 `VERSION` + `CHANGELOG.md` | 发版提交必须同步 §1 与报告 |
-| 宿主版本 | 本机安装目录/诊断包 | 升级后更新 §1 基线；旧值不能当现状 |
-| 页面清单/注入数量 | `pages.json`（E 阶段后）/ launcher 当前常量；`PAGE_MATRIX.md` 生成 | 不在代码/文档里另写一份 |
+| 当前发布版本 | 根 `VERSION` + `CHANGELOG.md` | 发版提交必须同步 §1 与项目计划 |
+| 宿主版本 | 本机安装目录/诊断包 | 升级后更新 §1 兼容性版本；过期值不能当现状 |
+| 页面清单/注入数量 | `pages.json` + `PAGE_MATRIX.md` 生成 | 不在代码/文档里另写一份 |
 | 词典条数/冲突/覆盖 | `tools/dict.py report` / 构建输出 / `DICT_REPORT.md` | 不把数字写进正文 |
 | 测试数量 | 测试命令输出 | 只写“现有测试全过”，不写死条数 |
-| OCR 页面脚本与映射 | `src/ocr/manifest.json`（E 阶段后）/ 当前 launcher 常量 | 不从文档抄数量 |
-| bundle 内容与路径 | `build.py` + `modules.json` + 生成产物 | 以产物/构建报告为准 |
+| OCR 页面脚本与映射 | `src/ocr/manifest.json` + 生成页面矩阵 | 不从文档抄数量 |
+| bundle 内容与路径 | `tools/build.py` + `modules.json` + 生成产物 | 以产物/构建报告为准 |
 
 规则：
 
-1. 文中出现“当前/最新/基线”时，必须带日期或指向来源；否则视为可能过期。
+1. 文中出现“当前/最新/兼容性”时，必须带日期或指向来源；否则视为可能过期。
 2. 修改上述事实（版本、页面、词典结构、测试、OCR 映射）必须同 PR 更新引用它的文档；CI/复核检查链接与生成索引，不靠记忆。
-3. AI 发现文档与 `VERSION`、安装目录、命令输出不一致：以实际为准，不按旧文档推断；在 PR/报告中指出过期文档。
+3. AI 发现文档与 `VERSION`、安装目录、命令输出不一致：以实际为准，不按过期文档推断；在 PR/报告中指出过期文档。
 4. 可推导的数字优先由脚本生成（`MODULE_MAP`/`PAGE_MATRIX`/`DICT_REPORT`），散文只写判断与坑。

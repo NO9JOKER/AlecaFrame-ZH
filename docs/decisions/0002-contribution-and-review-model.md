@@ -1,17 +1,17 @@
 # ADR 0002：贡献与复核模型（fork PR + 维护者手动合并 + 开发者真机责任）
 
-- 状态：Proposed（随 `refactor/architecture` 合入 main 后生效）
+- 状态：Proposed（随首次架构实现合入 main 后生效）
 - 日期：2026-11-08
 - 决策者：项目维护者
 - 相关：`docs/decisions/0001-capability-first-architecture.md`、`.github/PULL_REQUEST_TEMPLATE.md`、`docs/review/AI_REVIEW.md`
 
 ## 背景
 
-- 决策时仓库是单人维护；未来贡献者会**使用自己的 AI** 开发、验证后提交。
+- 项目由单人维护；未来贡献者会**使用自己的 AI** 开发、验证后提交。
 - 维护者使用自己的 AI 分析变更，然后**手动合并**。
 - 真机回归由开发者负责：维护者无法复现每个贡献者的 Windows/Overwolf/游戏环境。
 - 仓库为私有仓库、单 GitHub 账号；GitHub 原生“另一个账号批准”既无法证明独立性，也不应成为流程核心。
-- 决策时没有外部用户，重构期间可以跳过兼容层，但不应该跳过行为验证。
+- 项目起步阶段没有外部用户，可以自由定义新结构；但行为验证不能省。
 
 ## 决策
 
@@ -31,16 +31,15 @@
 2. 本地实现 + 运行项目检查 + 按 Tier 做真机验证。
 3. 向 `main` 开 PR，填写 `.github/PULL_REQUEST_TEMPLATE.md` 与证据。
 4. GitHub Actions/维护者本地跑检查；维护者的复核 AI 输出报告。
-5. 维护者手动合并；贡献者的分支由贡献者清理，仓库分支由维护者清理。
-6. 维护者按需发版、打 tag。
+5. 维护者手动合并；合并后由贡献者清理自己的分支。
 
 贡献者没有 main 写权限，因此不需要依赖 GitHub required review；维护者手动合并就是最终门禁。
 
-### 3. 重构期间的分支例外
+### 3. 分支模型
 
-- 本次架构重构使用长期分支 `refactor/architecture`，按 A–F 阶段提交；全部稳定后合并 main、删除分支、打 `v1.2.0`。
-- 重构完成后恢复 `feature/* -> main`；不启用 `dev` 分支。
-- 分支上允许阶段性未完成状态，但每个阶段结束时必须可构建、可验证。
+- `main` 是发布分支；功能分支通过 PR 合入。
+- 不设置长期集成分支；一个 PR 一个主题。
+- 维护者发版时在主分支提交 `VERSION`/`CHANGELOG`，然后打 tag。
 
 ### 4. 真机责任与证据
 
@@ -66,8 +65,8 @@
 ### 7. 发版与 CI
 
 - 发版：维护者直接在主分支提交 `VERSION` + `CHANGELOG`，然后打 tag；release workflow 校验 tag==VERSION 且 tag 在 main 上。
-- 本轮暂不增加 Windows CI：维护者的复核 AI 在本机 Windows 上运行 `scripts/verify.ps1`，加上开发者真机证据，足以覆盖；未来贡献者变多再评估 path-filtered Windows job。
-- Linux CI 继续负责构建、词典检查、JS/单元测试、文档/索引/范围检查。
+- 暂不增加 Windows CI：维护者的复核 AI 在本机 Windows 上运行 `tools/verify.ps1`，加上开发者真机证据，足以覆盖；未来贡献者变多再评估 path-filtered Windows job。
+- Linux CI 负责构建、词典检查、JS/单元测试、文档/索引/范围检查。
 
 ## 考虑过的替代方案
 

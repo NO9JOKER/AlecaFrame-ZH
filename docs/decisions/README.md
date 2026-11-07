@@ -8,7 +8,7 @@
 ## 约定
 
 - ADR 记录**为什么**这样决策，以及放弃的替代方案；不重复实现细节。
-- 已接受的 ADR 不重写历史；要改变决策，新增一份 ADR 并在旧文档标记 `Superseded by NNNN`。
+- 已接受的 ADR 不重写历史；要改变决策，新增一份 ADR，并在被替代的 ADR 标记 `Superseded by NNNN`。
 - ADR 合并到 main 后状态改为 `Accepted`；被替代时改为 `Superseded`。
 - 新 ADR 文件命名：`NNNN-kebab-case-title.md`，从 0001 递增。
 - 任何改变以下内容的决策都需要新 ADR：注入契约、单 bundle、页面注册表、词典优先级模型、评审/发布门禁、OCR 边界。

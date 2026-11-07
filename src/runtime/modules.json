@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "modules": [
+    {
+      "id": "core.normalize",
+      "file": "core/normalize.js",
+      "layer": "core",
+      "deps": [],
+      "risk": "T1",
+      "notes": "字符串归一/字符判定；无宿主依赖"
+    },
+    {
+      "id": "core.dict-index",
+      "file": "core/dict-index.js",
+      "layer": "core",
+      "deps": ["core.normalize"],
+      "risk": "T1",
+      "notes": "精确匹配 Map 与纯拉丁 lowercase 兜底索引"
+    },
+    {
+      "id": "core.translate",
+      "file": "core/translate.js",
+      "layer": "core",
+      "deps": ["core.normalize", "core.dict-index"],
+      "risk": "T1",
+      "notes": "翻译决策链：精确 -> lowercase -> 复合 -> 规则"
+    }
+  ]
+}

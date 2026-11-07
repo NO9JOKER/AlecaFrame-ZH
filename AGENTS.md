@@ -45,6 +45,7 @@
 python tools\build.py                            # 合并词典，生成注入 bundle 与 OCR 词库
 powershell -ExecutionPolicy Bypass -File tools\verify.ps1
 node tests\search.test.mjs
+node tests\runtime.test.mjs
 ```
 
 真机操作仅 Windows：

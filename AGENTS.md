@@ -46,6 +46,7 @@ python tools\build.py                            # 合并词典，生成注入 b
 powershell -ExecutionPolicy Bypass -File tools\verify.ps1
 node tests\search.test.mjs
 node tests\runtime.test.mjs
+node tests\rules.test.mjs
 ```
 
 真机操作仅 Windows：

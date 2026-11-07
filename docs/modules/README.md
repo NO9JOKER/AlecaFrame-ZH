@@ -38,6 +38,8 @@ ADR/指南/页面卡/契约 schema。
 | module-id | 目标路径 | 状态 |
 |---|---|---|
 | `runtime-core` | `src/runtime/core/` | active（W2 基础） |
+| `runtime-rules` | `src/runtime/rules/` | active（规则表） |
+| `runtime-dom` | `src/runtime/dom/` | active（DOM 翻译） |
 | `runtime-rules` | `src/runtime/rules/` | planned |
 | `runtime-dom` | `src/runtime/dom/` | planned |
 | `runtime-features` | `src/runtime/features/` | planned |

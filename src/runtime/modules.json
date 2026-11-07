@@ -18,12 +18,44 @@
       "notes": "精确匹配 Map 与纯拉丁 lowercase 兜底索引"
     },
     {
+      "id": "core.composite",
+      "file": "core/composite.js",
+      "layer": "core",
+      "deps": ["core.normalize"],
+      "risk": "T1",
+      "notes": "节点/星球复合文本：只翻逗号后的星球"
+    },
+    {
+      "id": "rules.index",
+      "file": "rules/index.js",
+      "layer": "rules",
+      "deps": ["core.normalize"],
+      "risk": "T1",
+      "notes": "动态文本规则表（裂罅/源力石/统计/通用）"
+    },
+    {
       "id": "core.translate",
       "file": "core/translate.js",
       "layer": "core",
       "deps": ["core.normalize", "core.dict-index"],
       "risk": "T1",
       "notes": "翻译决策链：精确 -> lowercase -> 复合 -> 规则"
+    },
+    {
+      "id": "dom.index",
+      "file": "dom/index.js",
+      "layer": "dom",
+      "deps": ["core.normalize"],
+      "risk": "T1",
+      "notes": "DOM 文本/属性翻译、观察器、裂罅上下文"
+    },
+    {
+      "id": "entry",
+      "file": "entry.js",
+      "layer": "entry",
+      "deps": ["core.normalize", "core.dict-index", "core.composite", "rules.index", "core.translate", "dom.index"],
+      "risk": "T1",
+      "notes": "组合根：构建 translator、暴露兼容全局、启动 DOM"
     }
   ]
 }

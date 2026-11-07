@@ -33,6 +33,13 @@
 - **`docs/分支与发布流程.md`**：main 只接受来自 `dev` / `feature/*` 的合并提交；改动先在分支验证，
   全绿并手动回归后再合入 main、打 tag、推送。
 - 中文搜索单元测试从 40 项增加到 **47 项**（部分中文、英文透传、0 命中兜底、裂罅武器、强制 showAll、赋能页钩子）。
+- **词库补漏 `dict/extra-10.tsv`（12 条）**：裂罅属性名（`Beam Length`、`Headshot Critical Chance`、
+  `Maximum Ammo`、`Melee Status Chance`、`Slam Attack Damage`、`Slide Critical Chance`、`Self Damage Reduction`）
+  与 `Ascent`/`Coalescent`/`Points`/`Veil`/`Volatile`；未覆盖界面串 **166 → 20 条**。
+- **修掉 `scan_missing.py` 的 141 条误报**：之前没排除补丁自己注入的 `afzh-*.js`（OCR 桥/图片映射），
+  把补丁内部字符串当成了界面缺口；现按 `afzh-` 前缀排除。
+- 同轮词形修正：`Coalescent` 统一为官方「联结」、`Kuva Fort.` 修正为「赤毒要塞」（vendor 层多了句号）、
+  `Ammo Maximum` 统一为「最大弹药量」。
 
 ### 变更
 

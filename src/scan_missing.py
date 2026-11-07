@@ -191,7 +191,7 @@ def resolve_web_dir(app_dir):
 def is_vendor(rel):
     parts = [p.lower() for p in rel.replace("\\", "/").split("/")]
     base = parts[-1]
-    if base in VENDOR_FILES or base in PATCH_FILES:
+    if base in VENDOR_FILES or base in PATCH_FILES or base.startswith("afzh-"):
         return True
     return any(p in VENDOR_DIRS for p in parts[:-1])
 

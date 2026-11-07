@@ -412,6 +412,25 @@ test("铸造厂输入部分中文「死亡」：本地过滤出所有匹配项�
   assert.ok(!calls.some((c) => c.search === "Death"), "不应把「死亡」改写成 UI 术语 Death");
 });
 
+test("铸造厂中文查询强制 showAll=true（原生 search 为空时只回 100 条，不全量会漏）", () => {
+  const mod = loadSearchModule(HOOK_DICT);
+  const calls = [];
+  const native = {
+    getFilteredFoundry(query, showAll, cb) {
+      calls.push({ filters: JSON.parse(query), showAll });
+      cb(true, JSON.stringify([{ name: "Kaszas" }]));
+    }
+  };
+  assert.ok(mod.hookJsonSearchMethod(native, "getFilteredFoundry", ["name"], { forceTrueIndex: 1 }));
+  let result = null;
+  native.getFilteredFoundry(JSON.stringify({ search: "死亡" }), false, (ok, data) => {
+    result = JSON.parse(data);
+  });
+  assert.equal(calls[0].showAll, true, "中文查询应强制 showAll=true");
+  assert.equal(calls[0].filters.search, "");
+  assert.deepEqual(result.map((x) => x.name), ["Kaszas"]);
+});
+
 test("英文查询原样交给原生，不做本地过滤", () => {
   const mod = loadSearchModule(HOOK_DICT);
   const calls = [];

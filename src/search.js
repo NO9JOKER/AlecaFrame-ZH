@@ -701,7 +701,9 @@
     // forceTrueIndex=1：中文过滤需要完整列表，把 includeAll 强制为 true（插件否则最多返回 100 条）
     (native) => hookJsonSearchMethod(native, "getFilteredInventory", ["name"], { forceTrueIndex: 1 }),
     // 铸造：mainFoundry.js:249 `getFilteredFoundry(JSON.stringify(filterSettings), showAll, receive)`
-    (native) => hookJsonSearchMethod(native, "getFilteredFoundry", ["name"]),
+    // forceTrueIndex=1：中文过滤需要完整列表，把 showAll 强制为 true（实测 search 为空时原生只回 100 条，
+    // 「死亡」「极速」这类中文名在按字母序排到 100 之外的物品会被漏掉）
+    (native) => hookJsonSearchMethod(native, "getFilteredFoundry", ["name"], { forceTrueIndex: 1 }),
     // 遗物规划：mainRelicPlanner.js:92；结果走 onRelicPlannerUpdate 事件，这里只负责清空 search
     (native) => hookJsonSearchMethod(native, "getFilteredRelicPlanner", null),
     // WFM 订单/合同：ordersAndContracts.js:92 `plugin.get()[orders?'GetWFMOrders':'GetWFMContracts'](...)`

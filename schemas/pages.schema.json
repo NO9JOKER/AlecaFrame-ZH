@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "pages.schema.json",
+  "title": "pages.json",
+  "description": "AlecaFrame 页面注册表：页面清单、注入范围、特征、OCR 脚本与宿主补丁",
+  "type": "object",
+  "required": ["schemaVersion", "project", "host", "appId", "bundle", "pages"],
+  "additionalProperties": false,
+  "properties": {
+    "schemaVersion": { "type": "integer", "const": 1 },
+    "project": { "type": "string", "minLength": 1 },
+    "host": {
+      "type": "object",
+      "required": ["alecaframe", "overwolf", "verifiedAt"],
+      "additionalProperties": false,
+      "properties": {
+        "alecaframe": { "type": "string", "minLength": 1 },
+        "overwolf": { "type": "string", "minLength": 1 },
+        "verifiedAt": { "type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$" }
+      }
+    },
+    "appId": { "type": "string", "minLength": 1 },
+    "bundle": {
+      "type": "object",
+      "required": ["source", "deployPath", "scriptTag"],
+      "additionalProperties": false,
+      "properties": {
+        "source": { "type": "string", "minLength": 1 },
+        "deployPath": { "type": "string", "minLength": 1 },
+        "scriptTag": { "type": "string", "minLength": 1 }
+      }
+    },
+    "pages": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/page" }
+    }
+  },
+  "$defs": {
+    "page": {
+      "type": "object",
+      "required": [
+        "id",
+        "officialWindow",
+        "file",
+        "windowKind",
+        "nativeWindow",
+        "inject",
+        "features",
+        "adapter",
+        "ocrScripts",
+        "hostPatches"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z][A-Za-z0-9]*$" },
+        "officialWindow": { "type": "string", "minLength": 1 },
+        "file": { "type": "string", "pattern": "\\.html$" },
+        "windowKind": {
+          "type": "string",
+          "enum": ["main", "background", "overlay", "notification", "tool", "other", "uninstall"]
+        },
+        "nativeWindow": { "type": "boolean" },
+        "inject": { "type": "boolean" },
+        "features": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "enum": ["translate", "search", "archon", "pluginHooks"] }
+        },
+        "adapter": { "type": ["string", "null"] },
+        "ocrScripts": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "pattern": "\\.js$" }
+        },
+        "hostPatches": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "reason": { "type": "string", "minLength": 1 },
+        "notes": { "type": "string" }
+      },
+      "if": {
+        "properties": { "inject": { "const": false } },
+        "required": ["inject"]
+      },
+      "then": {
+        "required": ["reason"],
+        "properties": {
+          "features": { "maxItems": 0 },
+          "ocrScripts": { "maxItems": 0 }
+        }
+      }
+    }
+  }
+}

@@ -1,7 +1,7 @@
 # 文档索引
 
 > 项目按新架构实现；部分目标文档会随模块落地创建，以路径是否存在为准。
-> **目标接口说明**：`tools/*`、`pages.json`、`dict/manifest.tsv`、`src/runtime/*`、`src/launcher/*`、`src/ocr/*` 等是新架构目标路径，可能尚未实现；本文档中的命令/路径不表示已存在。实际文件以仓库现状为准。
+> **目标接口说明**：`tools/*`、`dict/manifest.tsv`、`src/runtime/*`、`src/launcher/*`、`src/ocr/*` 等是新架构目标路径，可能尚未实现；本文档中的命令/路径不表示已存在。实际文件以仓库现状为准。
 > 所有可变的版本/数量以命令输出或生成报告为准，见 [AGENTS.md](../AGENTS.md) §13。
 
 ## 给 AI 的入口
@@ -9,6 +9,7 @@
 | 角色 | 先读 |
 |---|---|
 | 所有 AI | [AGENTS.md](../AGENTS.md) |
+| 所有 AI（全景） | [docs/ARCHITECTURE.md](ARCHITECTURE.md) |
 | 贡献者 AI | [docs/contributing/README.md](contributing/README.md) → [task-router.md](contributing/task-router.md) |
 | 维护者复核 AI | [docs/review/AI_REVIEW.md](review/AI_REVIEW.md) |
 
@@ -30,20 +31,23 @@
 
 | 文档 | 内容 |
 |---|---|
+| [架构总览](ARCHITECTURE.md) | 运行链路、模块边界、页面/词典/OCR/启动器地图 |
 | [ADR 0001](decisions/0001-capability-first-architecture.md) | 能力优先、页面矩阵、数据/代码分离、单 bundle、OCR 边界 |
 | [ADR 0002](decisions/0002-contribution-and-review-model.md) | fork PR、维护者手动合并、开发者真机责任、风险分级 |
 | [项目计划](project/v1.2.0-plan.md) | 工作流、里程碑、验收与发布清单 |
 | [词典验收设计](project/dictionary-acceptance.md) | golden 基准、构建确定性、数据/引擎等价校验 |
+| [模块文档模板](modules/README.md) | 模块 README 固定标题与计划清单 |
+| [页面卡模板](pages/README.md) | 页面卡固定标题与生成矩阵说明 |
+| [契约 schema](../schemas/README.md) | pages/modules/ocr/dict manifest 的结构与校验 |
 
 ## 目标文档（随实现创建）
 
-- `docs/ARCHITECTURE.md`：一页全景（判断/边界/不变量）。
 - `docs/MODULE_MAP.md`：生成式模块索引。
 - `docs/PAGE_MATRIX.md`：生成式页面矩阵（注入/适配器/OCR/覆盖/回归）。
 - `docs/DICT_REPORT.md`：生成式词典报告（层/条数/冲突/覆盖）。
 - `docs/guides/dictionary.md`：人类词条指南（唯一长文）。
 - `docs/guides/{rules,hooks,launcher,testing,release}.md`。
-- `docs/modules/<module>/README.md`、`docs/pages/<page>.md`。
+- `docs/modules/<module>/README.md`、`docs/pages/<page>.md`（按模板创建）。
 
 ## 维护规则
 

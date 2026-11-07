@@ -1,7 +1,7 @@
 # AGENTS.md — AlecaFrame-ZH 的 AI 操作契约
 
 > 状态：架构规范（实现中）。部分目标目录/命令尚未落地；以实际代码和本文件为准。发现文档与代码不一致时先停下，在 PR/报告中说明，不要按猜测继续。
-> **目标接口说明**：本文中的 `tools/*`、`pages.json`、`dict/manifest.tsv`、`src/runtime/*`、`src/launcher/*`、`src/ocr/*` 等是新架构的目标路径，可能尚未创建。实现前不要假设它们存在；实际可执行文件以仓库现状为准，并在 PR 中记录实际命令。
+> **目标接口说明**：本文中的 `tools/*`、`dict/manifest.tsv`、`src/runtime/*`、`src/launcher/*`、`src/ocr/*` 等是新架构的目标路径，可能尚未创建。实现前不要假设它们存在；实际可执行文件以仓库现状为准，并在 PR 中记录实际命令。
 > 人类贡献者入口：[CONTRIBUTING.md](CONTRIBUTING.md)。贡献者 AI 路线：[docs/contributing/README.md](docs/contributing/README.md)。维护者复核 AI：[docs/review/AI_REVIEW.md](docs/review/AI_REVIEW.md)。
 
 ## 0. 你是什么角色
@@ -24,8 +24,9 @@
 所有 AI 的最短路径：
 
 1. 本文件；
-2. [docs/contributing/README.md](docs/contributing/README.md)（角色与阅读规则）；
-3. [docs/contributing/task-router.md](docs/contributing/task-router.md)（按任务定位文件）。
+2. [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)（一页全景）；
+3. [docs/contributing/README.md](docs/contributing/README.md)（角色与阅读规则）；
+4. [docs/contributing/task-router.md](docs/contributing/task-router.md)（按任务定位文件）。
 
 然后只读任务相关模块：
 
@@ -57,15 +58,23 @@ Status.cmd              # 查看会话 flag / 注入状态 / OCR 状态
 
 工具尚未落地时，不要凭本文件猜命令；以仓库实际可执行文件为准，并在 PR 中记录实际运行的命令与结果。不要执行不存在的路径。
 
+当前已可执行的契约检查（W0）：
+
+```powershell
+python tools\check_contracts.py
+```
+
 ## 4. 目录与依赖
 
 目标结构：
 
 ```text
+pages.json            页面注册表（官方窗口/注入/features/OCR/宿主补丁）
 dict/                 词典数据（manifest / generated / 人工词条 / overrides / keep-english）
 src/runtime/          单 bundle 运行时：core / rules / dom / features / adapters / entry
 src/launcher/         PowerShell 启动器模块：Snapshot / Patch / Overwolf / Ocr / Cli
 src/ocr/              OCR 子系统边界：manifest / page-scripts / server / worker
+schemas/              契约 schema（pages/modules/ocr/dict manifest）
 tools/                构建、校验、词典工具、索引生成
 tests/                单元测试 / fixtures / golden / 手工真机清单
 docs/                 架构、指南、贡献者入口、复核模板、ADR、项目计划
@@ -151,6 +160,7 @@ bin/                  只放生成物；源码不要放这里
 ## 12. 相关文件
 
 - [docs/contributing/README.md](docs/contributing/README.md)
+- [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
 - [docs/contributing/task-router.md](docs/contributing/task-router.md)
 - [docs/contributing/evidence.md](docs/contributing/evidence.md)
 - [docs/review/AI_REVIEW.md](docs/review/AI_REVIEW.md)
@@ -158,6 +168,7 @@ bin/                  只放生成物；源码不要放这里
 - [docs/decisions/0001-capability-first-architecture.md](docs/decisions/0001-capability-first-architecture.md)
 - [docs/decisions/0002-contribution-and-review-model.md](docs/decisions/0002-contribution-and-review-model.md)
 - [docs/project/v1.2.0-plan.md](docs/project/v1.2.0-plan.md)
+- [schemas/README.md](schemas/README.md)
 
 ## 13. 事实来源与文档维护
 

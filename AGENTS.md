@@ -1,0 +1,157 @@
+# AGENTS.md — AlecaFrame-ZH 的 AI 操作契约
+
+> 状态：A 阶段（2026-11-08，分支 `refactor/architecture`）。
+> 本文件定义目标约定；标有「B/C/E 阶段」的路径或命令尚未落地，落地前使用「当前等价物」。
+> 人类贡献者入口：[CONTRIBUTING.md](CONTRIBUTING.md)。贡献者 AI 的详细路线：[docs/contributing/README.md](docs/contributing/README.md)。维护者复核 AI：[docs/review/AI_REVIEW.md](docs/review/AI_REVIEW.md)。
+
+## 0. 你是什么角色
+
+- **贡献者 AI**：读 §1–§9，再按 [docs/contributing/task-router.md](docs/contributing/task-router.md) 只读与你任务相关的文件。不要通读整个仓库。
+- **维护者复核 AI**：读 §1–§9 和 [docs/review/AI_REVIEW.md](docs/review/AI_REVIEW.md)。只读、不改代码、不合并、不写作者分支。
+- **其他自动化**：把本文件当作仓库约定；与用户当前指令冲突时，以用户指令为准，并在 PR/报告中说明。
+
+## 1. 项目是什么
+
+- 这是 Overwolf 应用 AlecaFrame 的**非官方简体中文补丁**，不是 AlecaFrame 源码分支。
+- 运行方式：启动器带 Overwolf 校验绕过参数启动，向 10 个页面注入一个 JS bundle（词典 + 翻译引擎 + 中文搜索）；OCR 是可选子系统。
+- 基线：AlecaFrame `3.0.6` / Overwolf `0.311.1.6`；当前发布 `v1.1.11`，重构目标 `v1.2.0`。
+- 不要修改官方安装包的签名/DLL；唯一允许的官方文件原地补丁是 OCR 相关文件，且必须可还原。
+- 规模会变，以下只作方向感，不作验收数字：词典约 2.5 万键；bundle 约 95% 是词典数据；运行时主链路约 3 千行；OCR 约 6 千行且本轮只搬家、不重写。
+
+## 2. 先读什么
+
+所有 AI 的最短路径：
+
+1. 本文件；
+2. [docs/contributing/README.md](docs/contributing/README.md)（角色与阅读规则）；
+3. [docs/contributing/task-router.md](docs/contributing/task-router.md)（按任务定位文件）。
+
+然后只读任务相关模块：
+
+- 词典任务：`dict/AGENTS.md`、[docs/词典来源.md](docs/词典来源.md)、目标词条文件头部；
+- 引擎/规则/搜索：`src/runtime/AGENTS.md`、对应模块 README（B/C 阶段创建）、目标文件头；
+- 启动器/注入：`src/launcher/AGENTS.md`、[docs/维护手册.md](docs/维护手册.md)；
+- OCR：`src/ocr/AGENTS.md`、[docs/OCR集成说明.md](docs/OCR集成说明.md)。
+
+不要读：`bin/` 生成物、全部 2.5 万条词条、旧 771 行架构说明中与任务无关的章节、`dist/`、`state/`、`logs/`。
+
+## 3. 稳定命令（当前可用）
+
+在仓库根目录执行：
+
+```powershell
+python src\build.py                              # 合并词典，生成 bin/alecaframe-zh-cn.js 与 bin/ocr/afzh-items.js
+powershell -ExecutionPolicy Bypass -File scripts\verify.ps1
+node tests\search.test.mjs
+```
+
+真机操作仅 Windows：
+
+```powershell
+Start-Chinese.cmd       # 冷启动：停 Overwolf -> 还原官方文件 -> 带 flag 启动 -> 注入
+Refresh-Chinese.cmd     # 中文会话内重注入 + 重载渲染进程（改词典/代码后用）
+Restore-English.cmd     # 还原官方文件并正常启动
+Status.cmd              # 查看会话 flag / 注入状态 / OCR 状态
+```
+
+B–E 阶段会迁移到 `tools/`（`tools/build.py`、`tools/verify.ps1`、`tools/dict.py` 等）；迁移完成前以本节命令为准，迁移后本文件同步更新。
+
+## 4. 目录与边界
+
+目标结构（B/C/E 阶段逐步落地）：
+
+```text
+dict/                 词典数据（生成物 / 上游 / 人工词条 / overrides / keep-english）
+src/runtime/          单 bundle 运行时：core / rules / dom / features / adapters / entry
+src/launcher/         PowerShell 启动器模块：Snapshot / Patch / Overwolf / Ocr / Cli
+src/ocr/              OCR 子系统边界：manifest / page-scripts / server / worker（本轮只搬家）
+tools/                构建、校验、词典工具、索引生成
+tests/                单元测试 / fixtures / golden / 手工真机清单
+docs/                 架构、指南、贡献者入口、复核模板、ADR、重构报告
+bin/                  只放生成物；源码不要放这里
+```
+
+依赖方向（只允许向左）：
+
+```text
+dict(data) -> build -> bundle
+core -> rules / dom / features -> adapters / entry
+launcher / tools / tests 可以读所有层，但不能被运行时依赖
+```
+
+- **页面名只能出现在 `pages.json`**（E 阶段创建）；features 不许知道页面名；页面差异放 `adapters/`。
+- 单 bundle 注入契约不变：一个 `assets/js/alecaframe-zh-cn.js`，一个 `<script>` 标签。
+- OCR 只能通过 `src/ocr/manifest.json` 描述；OCR 逻辑不重写。
+
+## 5. 硬性不变量（改坏会静默出错）
+
+1. 启动器/注入可逆：所有改动前先快照，`Restore` 必须能恢复官方文件。
+2. `.ps1`/`.psm1` 必须 UTF-8 with BOM；兼容 Windows PowerShell 5.1。
+3. 生成物不入库：`bin/alecaframe-zh-cn.js`、`bin/ocr/afzh-items.js`、报告文件等。
+4. 翻译是**精确匹配**；不做模糊/词形变化。规则必须全串锚定，禁止宽泛正则（如 `^(\d+) (.+)$`），且要有防循环守卫。
+5. 运行时不得联网（OCR 仅 `127.0.0.1:38147`）、不得访问文件系统、不得写 secrets。
+6. 以下全局名是与宿主/OCR 的硬契约，不要改名：`__AFCN__`、`__AFCN_DICT__`、`__AFCN_RELIC_REWARDS__`、`__AFCN_TRANSLATE__`、`__AFZH_SEARCH__`、`__AFZH_SEARCH_API__`、`__AFZH_SEARCH_TEST__`、`__ALECAFRAME_ZH_CN_ITEMS__`，以及 `docs/OCR集成说明.md` 列出的 OCR 全局名。
+7. `status.last-session.json`、settings 等状态文件要加 `schemaVersion`；改动需兼容旧文件或明确迁移。
+8. 页面/宿主版本升级后，hook 方法与选择器可能失效；失败必须可诊断，不能静默吞掉。
+
+## 6. 可改 / 禁改
+
+| 区域 | 规则 |
+|---|---|
+| `dict/` 人工词条 | B 阶段后可改；`generated/` 只由脚本生成，禁手改 |
+| `src/runtime/` | C 阶段后可改；必须同 PR 更新模块 README/测试 |
+| `src/launcher/` | E 阶段后可改；T2，必须有真机 Start/Restore 证据 |
+| `src/ocr/` | 本轮只允许改 manifest/路径/文档；OCR 逻辑不改 |
+| `tools/`、`tests/` | 可改；改门禁本身按 T2 处理 |
+| `bin/` | 禁改（生成物） |
+| `.github/`、`scripts/verify.ps1`、`scripts/package.py` | T2；不得弱化检查 |
+| OCR 协议、端口、官方文件补丁点 | 禁改（除非独立 OCR 项目） |
+
+## 7. 证据与 PR
+
+- 贡献者负责**真机验证**；维护者的 AI 不能替代真机，也不能替开发者签字。
+- 证据等级：`SIM`（可自动/本地命令复现）、`HOST`（本机合成注入/日志）、`REAL`（真实 Overwolf + 游戏画面，由开发者本人执行）。
+- PR 必须使用 [.github/PULL_REQUEST_TEMPLATE.md](.github/PULL_REQUEST_TEMPLATE.md)，并附 `docs/contributing/evidence.md` 要求的证据。
+- 维护者的复核 AI 只输出报告，不批准、不合并；最终由维护者手动合并。
+- 审核发生在合并前；作者先合并再补审核的 PR 不接受。
+
+## 8. 风险分级
+
+| Tier | 范围 | 合并要求 |
+|---|---|---|
+| T0 | 文档、词典新增（不改值）、测试 | CI/本地检查通过 + 复核报告；维护者可快速合并 |
+| T1 | 引擎、规则、搜索、hooks、构建脚本 | T0 要求 + 规则/行为 golden + 受影响界面 REAL 证据 |
+| T2 | 启动器、注入、OCR 边界、CI、发布、评审规则本身 | T1 要求 + 完整真机清单 + 维护者抽检 |
+
+## 9. OCR 与词典边界
+
+- OCR：本轮把源码搬到 `src/ocr/`，定义 manifest/CONTRACT，launcher 从 manifest 读取注入；**逻辑不重写**。详细边界见 `src/ocr/AGENTS.md`。
+- 词典：按「变更域」分文件，不按页面分；优先级由 `dict/manifest.tsv` 决定；同一英文键只有一个权威译文，改值只能写 `overrides.tsv` 并附 scope/reason/source。B 阶段落地。
+
+## 10. 分支与版本
+
+- 本次重构：`refactor/architecture` 长期分支，阶段提交；全部稳定后合并 main、删除分支、打 `v1.2.0`。
+- 重构完成后：`feature/* -> main`；不再启用 `dev`。
+- 发版：维护者直接在主分支提交 `VERSION`/`CHANGELOG` 后打 tag；tag 必须在 main 上。
+- 一个 PR 只做一个主题；不要在一个 PR 里混合词典搬家、语义修正和运行时重构。
+
+## 11. 不要做
+
+- 不要按 AlecaFrame 页面创建代码/词典主目录；页面只做 `pages.json` + 生成矩阵 + 适配器例外层。
+- 不要拆成按页面加载的多个 bundle；不要把词典拆成独立运行时文件。
+- 不要把词典改成 JSON/Excel；不要用 Excel 编辑 TSV。
+- 不要为每个文件写一篇长文档；用模块 README + 文件头契约 + 一份词典指南。
+- 不要提交生成物、不要把本机绝对路径/用户名/token 写进代码或证据。
+- 不要用 `git add -f` 提交被忽略的产物；不要 force push main。
+- 不要说“已验证”却没有证据；不要在无法验证时假装通过。
+
+## 12. 相关文件
+
+- [docs/contributing/README.md](docs/contributing/README.md)
+- [docs/contributing/task-router.md](docs/contributing/task-router.md)
+- [docs/contributing/evidence.md](docs/contributing/evidence.md)
+- [docs/review/AI_REVIEW.md](docs/review/AI_REVIEW.md)
+- [.github/PULL_REQUEST_TEMPLATE.md](.github/PULL_REQUEST_TEMPLATE.md)
+- [docs/decisions/0001-capability-first-architecture.md](docs/decisions/0001-capability-first-architecture.md)
+- [docs/decisions/0002-contribution-and-review-model.md](docs/decisions/0002-contribution-and-review-model.md)
+- [docs/refactor/v1.2.0-report.md](docs/refactor/v1.2.0-report.md)

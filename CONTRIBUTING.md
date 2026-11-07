@@ -2,6 +2,8 @@
 
 感谢你愿意帮忙完善 AlecaFrame-ZH。请先阅读 [README](README.md) 与 [维护手册](docs/维护手册.md)。
 
+> **重构期间（refactor/architecture 分支）**：流程以 [AGENTS.md](AGENTS.md)、[docs/README.md](docs/README.md)、[docs/contributing/](docs/contributing/README.md) 为准；重构合并到 main 后恢复 feature → main，不再使用 dev 分支。旧流程文档在重构完成后更新。
+
 ## 可以贡献什么
 
 - **翻译修正**：错译、机翻腔、术语不统一；

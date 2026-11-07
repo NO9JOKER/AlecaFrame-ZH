@@ -371,6 +371,112 @@ test("同一部词典多次 createApi 结果一致（确定性）", () => {
 });
 
 // ---------------------------------------------------------------------------
+console.log("\n[11] 插件钩子：中文优先本地过滤（部分中文，v1.1.8 回归）");
+// ---------------------------------------------------------------------------
+
+/** 模拟原生 getFilteredFoundry(query, showAll, cb)：按英文 name 子串过滤，空 search 返回全量。 */
+function makeFoundryNative(items, calls) {
+  return {
+    getFilteredFoundry(query, showAll, cb) {
+      const filters = JSON.parse(query);
+      calls.push(filters);
+      const term = String(filters.search || "").toLowerCase();
+      const matched = term
+        ? items.filter((item) => item.name.toLowerCase().indexOf(term) !== -1)
+        : items.slice();
+      cb(true, JSON.stringify(matched));
+    }
+  };
+}
+
+// 关键：词典里同时有 UI 术语 Death -> 死亡（mioeu-terms.tsv:769）和物品 死亡使徒 -> Kaszas
+const HOOK_DICT = {
+  "Death": "死亡",
+  "Dethcube": "死亡魔方",
+  "Kaszas": "死亡使徒",
+  "Braton": "布莱顿",
+  "Serration": "膛线"
+};
+
+test("铸造厂输入部分中文「死亡」：本地过滤出所有匹配项，不被 UI 术语 Death 劫持", () => {
+  const mod = loadSearchModule(HOOK_DICT);
+  const calls = [];
+  const native = makeFoundryNative([{ name: "Kaszas" }, { name: "Dethcube" }, { name: "Braton" }], calls);
+  assert.ok(mod.hookJsonSearchMethod(native, "getFilteredFoundry", ["name"]));
+  let result = null;
+  native.getFilteredFoundry(JSON.stringify({ type: "archwing", search: "死亡" }), false, (ok, data) => {
+    result = JSON.parse(data);
+  });
+  assert.deepEqual(result.map((x) => x.name), ["Kaszas", "Dethcube"], "应命中所有中文名含「死亡」的物品");
+  assert.equal(calls[0].search, "", "中文查询应先清空 search 走本地过滤");
+  assert.ok(!calls.some((c) => c.search === "Death"), "不应把「死亡」改写成 UI 术语 Death");
+});
+
+test("铸造厂中文查询强制 showAll=true（原生 search 为空时只回 100 条，不全量会漏）", () => {
+  const mod = loadSearchModule(HOOK_DICT);
+  const calls = [];
+  const native = {
+    getFilteredFoundry(query, showAll, cb) {
+      calls.push({ filters: JSON.parse(query), showAll });
+      cb(true, JSON.stringify([{ name: "Kaszas" }]));
+    }
+  };
+  assert.ok(mod.hookJsonSearchMethod(native, "getFilteredFoundry", ["name"], { forceTrueIndex: 1 }));
+  let result = null;
+  native.getFilteredFoundry(JSON.stringify({ search: "死亡" }), false, (ok, data) => {
+    result = JSON.parse(data);
+  });
+  assert.equal(calls[0].showAll, true, "中文查询应强制 showAll=true");
+  assert.equal(calls[0].filters.search, "");
+  assert.deepEqual(result.map((x) => x.name), ["Kaszas"]);
+});
+
+test("英文查询原样交给原生，不做本地过滤", () => {
+  const mod = loadSearchModule(HOOK_DICT);
+  const calls = [];
+  const native = makeFoundryNative([{ name: "Kaszas" }, { name: "Braton" }], calls);
+  assert.ok(mod.hookJsonSearchMethod(native, "getFilteredFoundry", ["name"]));
+  let result = null;
+  native.getFilteredFoundry(JSON.stringify({ search: "Braton" }), false, (ok, data) => {
+    result = JSON.parse(data);
+  });
+  assert.equal(calls.length, 1);
+  assert.equal(calls[0].search, "Braton", "英文查询必须原样透传");
+  assert.deepEqual(result.map((x) => x.name), ["Braton"]);
+});
+
+test("本地过滤 0 命中时退回英文改写（词典缺译也不丢结果）", () => {
+  const mod = loadSearchModule({ "Alpha": "阿尔法" });
+  const calls = [];
+  const native = makeFoundryNative([{ name: "AlphaX" }], calls);
+  assert.ok(mod.hookJsonSearchMethod(native, "getFilteredFoundry", ["name"]));
+  let result = null;
+  native.getFilteredFoundry(JSON.stringify({ search: "阿尔法" }), false, (ok, data) => {
+    result = JSON.parse(data);
+  });
+  assert.deepEqual(calls.map((c) => c.search), ["", "Alpha"], "先本地过滤（search 清空），0 命中后按英文重试");
+  assert.deepEqual(result.map((x) => x.name), ["AlphaX"]);
+});
+
+test("裂罅武器搜索：部分中文同样先本地过滤", () => {
+  const mod = loadSearchModule(HOOK_DICT);
+  const calls = [];
+  const all = [{ name: "Kaszas" }, { name: "Braton" }];
+  const native = {
+    GetRivenWeapons(search, cb) {
+      calls.push(search);
+      const term = String(search || "").toLowerCase();
+      cb(true, JSON.stringify(term ? all.filter((x) => x.name.toLowerCase().indexOf(term) !== -1) : all));
+    }
+  };
+  assert.ok(mod.hookRivenWeapons(native));
+  let result = null;
+  native.GetRivenWeapons("死亡", (ok, data) => { result = JSON.parse(data); });
+  assert.deepEqual(result.map((x) => x.name), ["Kaszas"]);
+  assert.equal(calls[0], "", "中文应先用空查询取全量");
+});
+
+// ---------------------------------------------------------------------------
 console.log("\n" + (failures.length ? "FAILED" : "PASSED") + "  " + passed + " passed, " + failures.length + " failed");
 if (failures.length) {
   for (const failure of failures) console.error("\n--- " + failure.name + " ---\n" + (failure.error && failure.error.stack || failure.error));

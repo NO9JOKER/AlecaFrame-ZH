@@ -132,5 +132,61 @@ test("all rules miss -> null (keeps English)", () => {
   assert.equal(tr("Unknown UI text"), null);
 });
 
+test("archon cell text rebuilds the sentence without duplicating the icon alt", () => {
+  const element = {
+    childNodes: [
+      { nodeType: 3, nodeValue: "+30% " },
+      { nodeType: 1, tagName: "IMG", getAttribute: (name) => (name === "alt" ? "Toxin" : null) },
+      { nodeType: 3, nodeValue: " Toxin Status Effect damage" },
+    ],
+  };
+  const parts = runtime.features.archon.collectParts(element);
+  assert.equal(parts.length, 3);
+  assert.equal(runtime.features.archon.cellText(parts), "+30% Toxin Status Effect damage");
+});
+
+test("archon cell text keeps the icon alt when the text lacks the name", () => {
+  const element = {
+    childNodes: [
+      { nodeType: 3, nodeValue: "+5 Shields per enemy killed with " },
+      { nodeType: 1, tagName: "IMG", getAttribute: (name) => (name === "alt" ? "Blast" : null) },
+      { nodeType: 3, nodeValue: " damage" },
+    ],
+  };
+  const parts = runtime.features.archon.collectParts(element);
+  assert.equal(runtime.features.archon.cellText(parts), "+5 Shields per enemy killed with Blast damage");
+});
+
+test("archon rebuild anchors the original icon before the translated label", () => {
+  const img = { nodeType: 1, tagName: "IMG", getAttribute: (name) => (name === "alt" ? "Toxin" : null) };
+  const parts = runtime.features.archon.collectParts({
+    childNodes: [
+      { nodeType: 3, nodeValue: "+30% " },
+      img,
+      { nodeType: 3, nodeValue: " Toxin Status Effect damage" },
+    ],
+  });
+  const nodes = runtime.features.archon.rebuild(parts, "+30% 毒素异常状态造成伤害", (label) => (label === "Toxin" ? "毒素" : null));
+  assert.deepEqual(Array.from(nodes, (node) => node.type), ["text", "img", "text"]);
+  assert.equal(nodes[0].value, "+30% ");
+  assert.equal(nodes[1].node, img);
+  assert.equal(nodes[2].value, "毒素异常状态造成伤害");
+});
+
+test("archon rebuild keeps unknown icons instead of dropping them", () => {
+  const img = { nodeType: 1, tagName: "IMG", getAttribute: () => null };
+  const parts = runtime.features.archon.collectParts({
+    childNodes: [
+      { nodeType: 3, nodeValue: "+30% " },
+      img,
+      { nodeType: 3, nodeValue: " Toxin Status Effect damage" },
+    ],
+  });
+  const nodes = runtime.features.archon.rebuild(parts, "+30% 毒素异常状态造成伤害", () => null);
+  assert.equal(nodes[1].node, img);
+  assert.equal(nodes[0].value, "");
+  assert.equal(nodes[2].value, "+30% 毒素异常状态造成伤害");
+});
+
 console.log(`\n${passed} passed, ${failures.length} failed`);
 if (failures.length) process.exitCode = 1;

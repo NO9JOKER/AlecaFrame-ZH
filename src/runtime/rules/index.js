@@ -46,6 +46,18 @@
     rule("shard.more-effects", /^\+(\d+) more effects$/, (m) => "另有 " + m[1] + " 种效果"),
     rule("shard.effects", /^(.+) effects$/, (m, _rec, tr) => (tr(m[1]) ?? m[1]) + "效果"),
     rule("shard.find-warframes", /^Find Warframes using (.+)$/, (m, _rec, tr) => "查找使用「" + (tr(m[1]) ?? m[1]) + "」的战甲"),
+    // 槽位提示是「源力石名, 效果名」；必须排在 shard.tauforged 之前，否则整串会被当成 Tauforged 前缀。
+    rule("shard.slot-title", /^((?:Tauforged )?[A-Za-z]+ Archon Shard), (.+)$/, (m, _rec, tr) => {
+      const name = tr(m[1]);
+      const detail = tr(m[2]);
+      return typeof name === "string" && typeof detail === "string" ? name + "，" + detail : null;
+    }),
+    rule("shard.empty-slot", /^Empty slot (\d+)$/, (m) => "空槽位 " + m[1]),
+    rule("shard.stela-single", /^(\d[\d,]*) Stela$/, (m) => m[1] + " 虚空石块"),
+    rule("shard.frame-copy", /^Copy (\d+), (.+)$/, (m, _rec, tr) => {
+      const rest = tr(m[2]);
+      return typeof rest === "string" ? "复制 " + m[1] + "，" + rest : null;
+    }),
     rule("shard.installed", /^(\d+) \/ 5 installed(?:, (\d+) Tauforged)?$/, (m) => m[1] + " / 5 已安装" + (m[2] ? "，" + m[2] + " TAU源力石" : "")),
     rule("shard.slots", /^(\d+) \/ 5 slots(?:, (\d+) Tauforged)?$/, (m) => m[1] + " / 5 槽位" + (m[2] ? "，" + m[2] + " TAU源力石" : "")),
     rule("shard.tauforged", /^Tauforged (.+)$/, (m, _rec, tr) => (tr(m[1]) ?? m[1]) + " TAU源力石"),
@@ -91,7 +103,11 @@
     rule("generic.mods", new RegExp("^" + NUM + " mods$"), (m) => m[1] + " 个 MOD"),
     rule("generic.owned-types", new RegExp("^" + NUM + " owned types$"), (m) => "已拥有 " + m[1] + " 种"),
     rule("generic.orders", new RegExp("^" + NUM + " orders$"), (m) => m[1] + " 个订单"),
-    rule("generic.multiplied-item", /^(\d+(?:\.\d+)?)x (.+)$/, (m, rec) => m[1] + " 个 " + (rec || m[2])),
+    rule("generic.multiplied-item", /^(\d+(?:\.\d+)?)x (.+)$/, (m, _rec, tr) => {
+      // 旧实现翻的是数字（rec = translate(m[1])），标签一直留英文；必须翻 m[2]。
+      const label = tr(m[2]);
+      return typeof label === "string" ? m[1] + " 个 " + label : null;
+    }),
     rule("generic.starts-at", /^Starts at (.+)$/, (m, rec) => "开始于 " + (rec || m[1])),
     rule("generic.in", /^In (.+)$/, (m, rec) => "剩余 " + (rec || m[1])),
   ];

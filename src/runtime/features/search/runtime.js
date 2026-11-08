@@ -10,6 +10,8 @@
   if (!feature) throw new Error("features.search.runtime requires features.search.api");
   const api = feature.api;
   const resolveEnglishQuery = feature.resolveEnglishQuery;
+  const archonText = runtime.features && runtime.features.archon;
+  if (!archonText) throw new Error("features.search.runtime requires features.archon.text");
   const DICT = root.__AFCN_DICT__;
   const INVISIBLE = /[\u200B-\u200D\u2060\uFEFF\u00A0\u3000]/g;
   if (root.__AFZH_SEARCH__) return;
@@ -582,28 +584,31 @@
   }
 
   // ---------------------------------------------------------------------------
-  // 启动
+  // 源力石页面补译
   // ---------------------------------------------------------------------------
   /**
-   * 源力石页面补译：效果指南/融合配方的单元格是 v-html（文字被伤害图标切成多个文本节点），
-   * 按整段还原（img 用 alt 还原元素英文名）后查词典/规则，命中就替换成完整中文。
+   * 效果指南/融合配方/详情是 v-html 渲染，伤害图标把整句切成多个文本节点。
+   * 先按单元格整段还原文本查词典/规则，命中后写回译文并保留行内图标。
+   * 文本重建（不可见节点、去重 alt）是纯函数，见 features/archon/text.js。
    */
   function archonCellText(el) {
-    let out = "";
-    const walk = (wrapper) => {
-      for (const child of wrapper.childNodes || []) {
-        if (child.nodeType === 3) out += child.nodeValue;
-        else if (child.nodeType === 1) {
-          if (child.tagName === "IMG") {
-            out += " " + (child.getAttribute("alt") || child.getAttribute("title") || "") + " ";
-          } else {
-            walk(child);
-          }
-        }
-      }
-    };
-    walk(el);
-    return out.replace(/\s+/g, " ").trim();
+    return archonText.cellText(archonText.collectParts(el));
+  }
+
+  function applyArchonText(el, parts, text) {
+    if (!parts.some((part) => part.type === "img")) {
+      if (el.textContent.trim() !== text) el.textContent = text;
+      return;
+    }
+    const nodes = archonText.rebuild(parts, text, (label) => {
+      try { return root.__AFCN_TRANSLATE__(label); } catch (_) { return null; }
+    });
+    const children = nodes.map((part) => (part.type === "img" ? part.node : document.createTextNode(part.value)));
+    if (typeof el.replaceChildren === "function") el.replaceChildren.apply(el, children);
+    else {
+      while (el.firstChild) el.removeChild(el.firstChild);
+      for (const child of children) el.appendChild(child);
+    }
   }
 
   function translateArchonComposite() {
@@ -614,27 +619,14 @@
       let nodes;
       try { nodes = document.querySelectorAll(selector); } catch (_) { continue; }
       for (const el of nodes) {
-        const text = archonCellText(el);
+        const parts = archonText.collectParts(el);
+        const text = archonText.cellText(parts);
         if (!text || text.length > 300) continue;
         // 已经是译文（不含拉丁字母）就不再处理，避免反复叠加
         if (!/[A-Za-z]/.test(text)) continue;
-        // 战甲卡片的效果摘要形如「5 Casting speed」→「5 个 技能施放速度」；
-        // 只处理「数字 + 英文效果名」，避免把已有译文再拼一层。
-        const counted = text.match(/^(\d+) ([A-Za-z].*)$/);
-        if (counted) {
-          let label = null;
-          try { label = tr(counted[2]); } catch (_) { label = null; }
-          if (typeof label === "string" && label !== counted[2]) {
-            const translated = counted[1] + " 个 " + label;
-            if (el.textContent.trim() !== translated) el.textContent = translated;
-            continue;
-          }
-        }
         let result = null;
         try { result = tr(text); } catch (_) { result = null; }
-        if (typeof result === "string" && result !== text && el.textContent.trim() !== result) {
-          el.textContent = result;
-        }
+        if (typeof result === "string" && result !== text) applyArchonText(el, parts, result);
       }
     }
   }
@@ -652,14 +644,17 @@
     if (root.__afzhArchonPass) return;
     root.__afzhArchonPass = true;
     try {
-      const root = document.body || document.documentElement;
-      if (root && typeof MutationObserver === "function") {
-        new MutationObserver(scheduleArchonPass).observe(root, { childList: true, subtree: true, characterData: true });
+      const host = document.body || document.documentElement;
+      if (host && typeof MutationObserver === "function") {
+        new MutationObserver(scheduleArchonPass).observe(host, { childList: true, subtree: true, characterData: true });
       }
     } catch (_) { /* ignore */ }
     setInterval(translateArchonComposite, 3000);
   }
 
+  // ---------------------------------------------------------------------------
+  // 启动
+  // ---------------------------------------------------------------------------
   function start() {
     if (status.started) return;
     status.started = true;

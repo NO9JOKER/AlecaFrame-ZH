@@ -41,6 +41,7 @@ ADR/指南/页面卡/契约 schema。
 | `runtime-rules` | `src/runtime/rules/` | active（规则表） |
 | `runtime-dom` | `src/runtime/dom/` | active（DOM 翻译） |
 | `features-search` | `src/runtime/features/search/` | active（纯 API + 宿主 hook） |
+| `features-archon` | `src/runtime/features/archon/` | active（源力石 v-html 整段） |
 | `runtime-adapters` | `src/runtime/adapters/` | active（页面上下文） |
 | `runtime-rules` | `src/runtime/rules/` | planned |
 | `runtime-dom` | `src/runtime/dom/` | planned |

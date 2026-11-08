@@ -6,8 +6,8 @@
     "entries": 25304
   },
   "bundle": {
-    "sha256": "47103881621f79c757006ba2254b8d71bd0d5c45a6316b47134f0223d2f22efc",
-    "bytes": 1264136
+    "sha256": "3b8aa05d91f5793c5864356e9871e3dc148ad0a10e6660c0c88906fefddf1dbb",
+    "bytes": 1269090
   },
   "pages": [
     {
@@ -126,6 +126,7 @@
     "core.translate",
     "dom.index",
     "features.search.api",
+    "features.archon.text",
     "features.search.runtime",
     "adapters.index",
     "entry"

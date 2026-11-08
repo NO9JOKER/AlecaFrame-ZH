@@ -25,6 +25,9 @@ const index = runtime.dictIndex.buildIndex({
   "Critical Damage": "暴击伤害",
   "Damage to Corpus": "对 Corpus 伤害",
   Mercury: "水星",
+  "Primary status chance": "主要武器触发几率",
+  "Amber Archon Shard": "琥珀执刑官源力石",
+  "+25% casting speed": "+25% 技能施放速度",
 });
 const translate = runtime.translate.createTranslator(index, {
   composites: [runtime.composite.translateComposite],
@@ -45,8 +48,8 @@ function test(name, fn) {
   }
 }
 
-test("rule table size is 41", () => {
-  assert.equal(runtime.rules.list.length, 41);
+test("rule table size is 45", () => {
+  assert.equal(runtime.rules.list.length, 45);
 });
 
 test("composite translates planet only", () => {
@@ -67,6 +70,30 @@ test("shard Stela rule", () => {
 
 test("shard more effects rule", () => {
   assert.equal(translate("+1 more effects"), "另有 1 种效果");
+});
+
+test("shard card summary translates the effect name, not the count", () => {
+  assert.equal(translate("3x Primary status chance"), "3 个 主要武器触发几率");
+});
+
+test("multiplied item stays English when the label is unknown", () => {
+  assert.equal(translate("3x Unknown label"), null);
+});
+
+test("shard Stela single amount rule", () => {
+  assert.equal(translate("100 Stela"), "100 虚空石块");
+});
+
+test("shard empty slot rule", () => {
+  assert.equal(translate("Empty slot 3"), "空槽位 3");
+});
+
+test("shard slot title rule translates shard name and effect", () => {
+  assert.equal(translate("Amber Archon Shard, +25% casting speed"), "琥珀执刑官源力石，+25% 技能施放速度");
+});
+
+test("shard frame copy prefix keeps installed summary rule", () => {
+  assert.equal(translate("Copy 2, 5 / 5 installed, 3 Tauforged"), "复制 2，5 / 5 已安装，3 TAU源力石");
 });
 
 test("rank rule", () => {

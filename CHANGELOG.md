@@ -1,5 +1,28 @@
 # Changelog
 
+## 未发布
+
+修复源力石页面（效果指南/详情/卡片摘要/融合配方/槽位提示）汉化不完整。
+
+### 修复
+
+- **v-html 效果单元格整段匹配失败**：伤害图标前后的正文已包含图标英文名，旧逻辑无条件把
+  `<img alt>` 再拼进整段，得到 `Toxin Toxin …`，所有单元格都查不到精确词条。改为
+  `src/runtime/features/archon/text.js` 统一重建文本：只在正文缺词时补 alt。
+- **写回译文时保留行内伤害图标**：按译文里的元素名（Toxin→毒素、Blast→爆炸…）把原 `<img>`
+  锚回译文；锚点缺失时图标保留在原位，不丢弃。
+- **战甲卡片效果摘要只翻了数字**：`3x Primary status chance` 被 `generic.multiplied-item`
+  译成 `3 个 Primary status chance`；规则改为翻译效果名，未知名称保持英文不半翻。
+- 补齐源力石动态规则：槽位提示「源力石名, 效果名」、`Empty slot N`、`N Stela`、
+  复制战甲的 `Copy N, …` 前缀。
+
+### 验证
+
+- `python tools\build.py`、`tools\check_contracts.py`、`tools\golden.py verify`、
+  `dict.py check --strict`、Node/Python 测试通过；无头浏览器合成注入验证 27 行效果单元格全部中文、
+  20 个行内图标保留。真机（Overwolf + AlecaFrame 3.0.6）待开发者按
+  `docs/verification/REAL_MACHINE.md` 复验。
+
 ## v1.2.0 (2026-11-08)
 
 新架构发布：能力优先模块、manifest 驱动词典/构建/启动器、单 bundle、OCR 边界。

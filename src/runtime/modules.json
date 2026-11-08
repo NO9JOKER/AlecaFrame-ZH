@@ -58,12 +58,20 @@
       "notes": "中文搜索纯索引/查询 API"
     },
     {
+      "id": "features.archon.text",
+      "file": "features/archon/text.js",
+      "layer": "features",
+      "deps": [],
+      "risk": "T1",
+      "notes": "源力石 v-html 单元格文本重建：整段取词、去重图标 alt、译文回填时保留行内图标"
+    },
+    {
       "id": "features.search.runtime",
       "file": "features/search/runtime.js",
       "layer": "features",
-      "deps": ["features.search.api"],
+      "deps": ["features.search.api", "features.archon.text"],
       "risk": "T1",
-      "notes": "中文搜索插件/应用 hook、诊断与启动"
+      "notes": "中文搜索插件/应用 hook、源力石整段补译、诊断与启动"
     },
     {
       "id": "adapters.index",

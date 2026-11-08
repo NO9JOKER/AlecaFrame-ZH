@@ -1,4 +1,4 @@
-/* 移植自 MIOEU/AlecaFrame-ZH（MIT）。仅做路径/命名适配；OCR 协议（127.0.0.1:38147、端点名、window.__ALECAFRAME_ZH_CN_* 全局名）保持不变。
+﻿/* MIOEU/AlecaFrame-ZH (MIT)。OCR 协议（127.0.0.1:38147、端点名、window.__ALECAFRAME_ZH_CN_* 全局名）保持不变。
    工具目录 bin/ocr/.tools；状态目录 <包根>/state。详见 docs/OCR集成说明.md。 */
 /* Auto-generated from WFCD/warframe-items MOD and Arcane metadata. */
 (function () {

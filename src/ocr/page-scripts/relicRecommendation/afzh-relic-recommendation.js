@@ -1,4 +1,4 @@
-/* 移植自 MIOEU/AlecaFrame-ZH（MIT）。仅做路径/命名适配；OCR 协议（127.0.0.1:38147、端点名、window.__ALECAFRAME_ZH_CN_* 全局名）保持不变。
+﻿/* MIOEU/AlecaFrame-ZH (MIT)。OCR 协议（127.0.0.1:38147、端点名、window.__ALECAFRAME_ZH_CN_* 全局名）保持不变。
    工具目录 bin/ocr/.tools；状态目录 <包根>/state。详见 docs/OCR集成说明.md。 */
 (function () {
   "use strict";
@@ -111,7 +111,7 @@
       if (applyState(state, context)) {
         console.log("[AlecaFrame 中文遗物推荐] 已按 " + context.era + " 显示候选遗物");
       } else if (legacyRaw && !context.era && applyLegacyState(JSON.parse(legacyRaw))) {
-        console.log("[AlecaFrame 中文遗物推荐] 已显示旧版推荐结果");
+        console.log("[AlecaFrame 中文遗物推荐] 已显示推荐结果");
       }
     } catch (error) {
       console.warn("[AlecaFrame 中文遗物推荐] 无法读取推荐数据", error);

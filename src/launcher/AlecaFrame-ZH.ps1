@@ -45,21 +45,10 @@ if ($null -eq $script:PagesDoc -or $script:PagesDoc.schemaVersion -ne 1) {
 $script:AppId = [string]$script:PagesDoc.appId
 $script:Pages = @($script:PagesDoc.pages | Where-Object { $_.inject } | ForEach-Object { [string]$_.file })
 $script:ExtraOfficialFiles = @()
-$script:OcrInjections = @()
-$script:OcrScripts = @()
 foreach ($page in @($script:PagesDoc.pages)) {
     foreach ($patch in @($page.hostPatches)) {
         if ($patch -and ($script:ExtraOfficialFiles -notcontains [string]$patch)) {
             $script:ExtraOfficialFiles += [string]$patch
-        }
-    }
-    $scripts = @($page.ocrScripts | Where-Object { $_ } | ForEach-Object { [string]$_ })
-    if ($scripts.Count -gt 0) {
-        $script:OcrInjections += @{ Page = [string]$page.file; Scripts = $scripts }
-        foreach ($scriptName in $scripts) {
-            if ($script:OcrScripts -notcontains $scriptName) {
-                $script:OcrScripts += $scriptName
-            }
         }
     }
 }
@@ -79,6 +68,33 @@ $script:OcrStateDir = Join-Path $script:StateDir $script:OcrStateSub
 $script:LogDir = Join-Path $script:PkgRoot "logs"
 $script:LogFile = Join-Path $script:LogDir "launcher.log"
 $script:SettingsFile = Join-Path $script:PkgRoot "AlecaFrame-ZH.settings.json"
+
+# OCR 只从构建产物的 manifest 读取；不再维护第二份页面/脚本清单。
+$script:OcrScripts = @()
+$script:OcrInjections = @()
+$script:OcrManifestFile = Join-Path $script:OcrDir "manifest.json"
+if (-not (Test-Path -LiteralPath $script:OcrManifestFile)) {
+    throw "缺少 OCR manifest：$script:OcrManifestFile。请先运行 python tools\build.py 或使用完整测试包。"
+}
+$script:OcrManifest = Get-Content -LiteralPath $script:OcrManifestFile -Raw -Encoding UTF8 | ConvertFrom-Json
+if ($null -eq $script:OcrManifest -or $script:OcrManifest.schemaVersion -ne 1) {
+    throw "OCR manifest schemaVersion 必须为 1。"
+}
+$ocrByPage = @{}
+foreach ($ocrScript in @($script:OcrManifest.pageScripts)) {
+    $deployName = [string]$ocrScript.deployName
+    if ($script:OcrScripts -notcontains $deployName) {
+        $script:OcrScripts += $deployName
+    }
+    foreach ($ocrPage in @($ocrScript.pages)) {
+        $key = [string]$ocrPage
+        if (-not $ocrByPage.ContainsKey($key)) { $ocrByPage[$key] = @() }
+        $ocrByPage[$key] += $deployName
+    }
+}
+foreach ($key in $ocrByPage.Keys) {
+    $script:OcrInjections += @{ Page = $key; Scripts = @($ocrByPage[$key]) }
+}
 
 New-Item -ItemType Directory -Force -Path $script:StateDir | Out-Null
 New-Item -ItemType Directory -Force -Path $script:LogDir | Out-Null

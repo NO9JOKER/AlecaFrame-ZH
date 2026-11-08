@@ -7,9 +7,10 @@ verify/
 build/
 build-unmatched.txt
 
-# 构建产物（由 python src/build.py 生成）
+# 构建产物（由 python tools/build.py 生成）
 bin/alecaframe-zh-cn.js
-bin/ocr/afzh-items.js
+bin/ocr/*
+bin/ocr/.tools/
 
 # Python
 __pycache__/

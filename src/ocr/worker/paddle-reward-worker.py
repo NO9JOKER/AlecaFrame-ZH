@@ -1,4 +1,4 @@
-# 移植自 MIOEU/AlecaFrame-ZH（MIT）。仅做路径/命名适配。
+﻿# MIOEU/AlecaFrame-ZH (MIT)。仅做路径/命名适配。
 import json
 import os
 import sys

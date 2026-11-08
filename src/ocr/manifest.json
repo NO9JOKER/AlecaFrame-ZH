@@ -1,0 +1,92 @@
+{
+  "schemaVersion": 1,
+  "status": "active",
+  "server": {
+    "entry": "server/relic-ocr-server.js",
+    "port": 38147
+  },
+  "runtimeDir": "bin/ocr",
+  "generatedItems": "bin/ocr/afzh-items.js",
+  "pageScripts": [
+    {
+      "id": "relic-ocr",
+      "source": "page-scripts/background/afzh-relic-ocr.js",
+      "deployName": "afzh-relic-ocr.js",
+      "pages": ["background.html"],
+      "purpose": "遗物奖励截图与 OCR 请求"
+    },
+    {
+      "id": "riven-ocr",
+      "source": "page-scripts/background/afzh-riven-ocr.js",
+      "deployName": "afzh-riven-ocr.js",
+      "pages": ["background.html"],
+      "purpose": "裂罅卡片截图与 OCR 请求"
+    },
+    {
+      "id": "riven-overlay",
+      "source": "page-scripts/rivenOverlay/afzh-riven-overlay.js",
+      "deployName": "afzh-riven-overlay.js",
+      "pages": ["rivenOverlay.html"],
+      "purpose": "裂罅叠加层中文渲染"
+    },
+    {
+      "id": "relic-ducats",
+      "source": "page-scripts/relicOverlay/afzh-relic-ducats.js",
+      "deployName": "afzh-relic-ducats.js",
+      "pages": ["relicOverlay.html"],
+      "purpose": "遗物奖励杜卡德价值数据"
+    },
+    {
+      "id": "relic-overlay",
+      "source": "page-scripts/relicOverlay/afzh-relic-overlay.js",
+      "deployName": "afzh-relic-overlay.js",
+      "pages": ["relicOverlay.html"],
+      "purpose": "遗物奖励叠加层中文渲染"
+    },
+    {
+      "id": "relic-recommendation",
+      "source": "page-scripts/relicRecommendation/afzh-relic-recommendation.js",
+      "deployName": "afzh-relic-recommendation.js",
+      "pages": ["relicRecommendation.html"],
+      "purpose": "遗物推荐叠加层中文渲染"
+    },
+    {
+      "id": "relic-planner-cache",
+      "source": "page-scripts/main/afzh-relic-planner-cache.js",
+      "deployName": "afzh-relic-planner-cache.js",
+      "pages": ["main.html"],
+      "purpose": "遗物规划器缓存与叠加层桥接"
+    },
+    {
+      "id": "inventory-price-sync",
+      "source": "page-scripts/main/afzh-inventory-price-sync.js",
+      "deployName": "afzh-inventory-price-sync.js",
+      "pages": ["main.html"],
+      "purpose": "库存价格同步"
+    },
+    {
+      "id": "inventory-images",
+      "source": "page-scripts/main/afzh-inventory-images.js",
+      "deployName": "afzh-inventory-images.js",
+      "pages": ["main.html"],
+      "purpose": "库存图片增强"
+    }
+  ],
+  "globals": [
+    "__ALECAFRAME_ZH_CN_CAPTURE_REWARD__",
+    "__ALECAFRAME_ZH_CN_ITEMS__",
+    "__ALECAFRAME_ZH_CN_OPEN_RIVEN_OVERLAY__",
+    "__ALECAFRAME_ZH_CN_RELIC_OCR__",
+    "__ALECAFRAME_ZH_CN_RELIC_OVERLAY__",
+    "__ALECAFRAME_ZH_CN_RELIC_PLANNER_CACHE__",
+    "__ALECAFRAME_ZH_CN_REWARD_DUCATS__",
+    "__ALECAFRAME_ZH_CN_RIVEN_ACTIVE_AT__",
+    "__ALECAFRAME_ZH_CN_RIVEN_CHAT_ACTIVE_AT__",
+    "__ALECAFRAME_ZH_CN_RIVEN_CHAT_RESULT__",
+    "__ALECAFRAME_ZH_CN_RIVEN_OCR__",
+    "__ALECAFRAME_ZH_CN_RIVEN_OVERLAY__",
+    "__ALECAFRAME_ZH_CN_RIVEN_RESULT__"
+  ],
+  "prerequisites": ["node", "python311-portable", "paddleocr"],
+  "notes": "OCR 逻辑保持稳定；只改路径/清单/文档。构建把 page-scripts 平铺复制到 bin/ocr，部署名不变。"
+}

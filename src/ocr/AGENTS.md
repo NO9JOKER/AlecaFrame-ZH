@@ -23,6 +23,7 @@ src/ocr/
     rivenOverlay/
   server/
     relic-ocr-server.js
+  worker/
     relic-ocr-worker.ps1
     capture-warframe-screen.ps1
     paddle-reward-worker.py

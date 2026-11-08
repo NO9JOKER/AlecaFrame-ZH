@@ -122,6 +122,24 @@
   `golden.py verify`（已 snapshot）、`tools/verify.ps1`（PASS=15 FAIL=0）全过；
   bundle 抽查已包含描述译文。真机资源详情页复验待确认。
 
+### 修复：资源描述补全（跨数据文件 71 行）与来源标签（任务/敌人）
+
+- **补充描述**：首轮只取了 `Resources.json`，实测资源仓库还会显示 `Misc.json` 等文件里的
+  Resource 类条目（阿耶精华、抗血清注射器的碎片等）。这次把 `json/*.json` 中
+  `type` 为 Resource / Gem / Cut Gem / Alloy / Plant 的描述全部纳入，补 71 行，例如
+  `Raw Orokin memory plasma. Varzia's Foundry can consume Aya to create Void Relics.…`、
+  `A component of the Antiserum Injector.`、`Auron that has been forged into a stronger metal.`；
+  描述词条 318 → **389 行**。
+- **来源标签**：补 7 条词条：`Höllvania`→霍瓦尼亚、`Orb Vallis Bounty`→奥布山谷赏金、
+  `WF1999 Bounty`→1999 赏金、`Follie's Hunt`→Follie 的狩猎、
+  `Narmer Thumper`/`Narmer Thumper Bull`/`Narmer Thumper Doma`→合一众重击者/公牛/朵玛。
+  因此 `金星/Orb Vallis (Level 30 - 50 Orb Vallis Bounty), Rotation A`、
+  `Höllvania (Level 105 - 110 WF1999 Bounty), Rotation C`、
+  `金星/Vesper Relay (Follie's Hunt), Rotation B`、`Narmer Thumper` 等来源行现在整行中文。
+- **验证**：`dict.py check --strict`（entries 25,753 → **25,831**）、`build.py`、
+  `golden.py verify`（已 snapshot）、`tools/verify.ps1`（PASS=15 FAIL=0）全过；
+  bundle 抽查含新增词条。真机复验待确认。
+
 ## v1.2.1 (2026-11-08)
 
 ### 修复：OCR 前置安装的体积与幂等性（pip 缓存落到包根 / OpenCV 回溯 / 版本自检失效）

@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
   "dictionary": {
-    "sha256": "10ffea1638296d42978ac5c80d74946ad4a62ab4c618f3e6d02ef79abe46eb9f",
-    "bytes": 1230392,
-    "entries": 25753
+    "sha256": "844d1d7ee45608e85d0977d6c25963e35da176a52259c6f41c55d979e8126452",
+    "bytes": 1239852,
+    "entries": 25831
   },
   "bundle": {
-    "sha256": "612e9667dfa309c8ee180335e0e5a44f5b018b160cf53c020c6509e059382465",
-    "bytes": 1360647
+    "sha256": "bda350fa626c7715e95dc3e4288828f21fe46397bee42d585be353adde8d3a48",
+    "bytes": 1369795
   },
   "pages": [
     {

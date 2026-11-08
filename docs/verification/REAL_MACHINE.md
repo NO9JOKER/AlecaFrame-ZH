@@ -6,8 +6,8 @@
 
 > 当前证据状态（2026-11-08）：
 > - Start/Status/Refresh/Toggle/Restore 已由开发者反馈正常；截图/日志证据待归档。
-> - OCR 前置安装完成；`/health` 返回 `ready=true`，server 已停止；实际识别仍待验证。
-> - 新运行时/OCR 其余部分只有 SIM/HOST 证据。
+> - OCR 前置安装完成；`/health` 返回 `ready=true`，server 已停止；遗物价格与紫卡词条实际识别成功。
+> - 新运行时其余部分只有 SIM/HOST 证据。
 
 ## 0. 前置
 

@@ -43,6 +43,7 @@
 
 ```powershell
 python tools\build.py                            # 合并词典，生成注入 bundle 与 OCR 词库
+python tools\package.py                          # 生成 dist/ 真机测试包（非 release）
 powershell -ExecutionPolicy Bypass -File tools\verify.ps1
 node tests\search.test.mjs
 node tests\runtime.test.mjs

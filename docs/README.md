@@ -23,6 +23,7 @@
 | 贡献 | [CONTRIBUTING.md](../CONTRIBUTING.md) |
 | 写/改词典词条 | [docs/guides/dictionary.md](guides/dictionary.md) |
 | 维护/排障 | [docs/维护手册.md](维护手册.md) |
+| 真机验证 | [docs/verification/REAL_MACHINE.md](verification/REAL_MACHINE.md) |
 | 分支/发布 | [docs/分支与发布流程.md](分支与发布流程.md) |
 | OCR 集成参考 | [docs/OCR集成说明.md](OCR集成说明.md) |
 | 中文搜索原理参考 | [docs/中文搜索原理.md](中文搜索原理.md) |

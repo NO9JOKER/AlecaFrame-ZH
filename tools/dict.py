@@ -3,6 +3,7 @@
 """CLI for the new dictionary layout.
 
 Commands:
+  add <en> <zh>   append a new manual entry to a manifest-listed 2-column layer
   lookup <text>   show every layer and the effective value
   check [--strict] validate manifest, layers, overrides and policy
   report          per-layer counts and validation summary
@@ -87,10 +88,61 @@ def cmd_report(args) -> int:
     return 1 if payload["errors"] else 0
 
 
+def cmd_add(args) -> int:
+    root = Path(args.root)
+    dict_dir = root / dictlib.DICT_DIR
+    target = (dict_dir / args.file).resolve()
+    try:
+        relative = target.relative_to(dict_dir.resolve()).as_posix()
+    except ValueError:
+        print(f"dict: INPUT ERROR 目标文件不在 dict/ 下: {args.file}")
+        return 2
+    if "\t" in args.english or "\t" in args.chinese or "\n" in args.english or "\n" in args.chinese:
+        print("dict: INPUT ERROR 英文/中文不能包含 tab 或换行")
+        return 2
+    tree = dictlib.load_tree(root)
+    layer = next((item for item in tree.layers if item.path == relative), None)
+    if layer is None:
+        print(f"dict: INPUT ERROR 目标文件未登记在 manifest: {relative}")
+        return 2
+    if layer.kind != "manual" or layer.schema != 2:
+        print(f"dict: INPUT ERROR 只能向 manual/2 列层加词条: {relative} kind={layer.kind} schema={layer.schema}")
+        return 2
+    for entry in tree.entries_by_order[layer.order]:
+        if entry.key == args.english:
+            print(f"dict: INPUT ERROR 键已存在于 {layer.path}:{entry.line}: {args.english!r}")
+            return 1
+    for entry in tree.policy:
+        if entry.key == args.english:
+            print(f"dict: INPUT ERROR 键已在 keep-english: {args.english!r}")
+            return 1
+    if not target.is_file():
+        print(f"dict: INPUT ERROR 缺少目标文件: {relative}")
+        return 2
+    original = target.read_text(encoding="utf-8")
+    separator = "" if not original or original.endswith("\n") else "\n"
+    target.write_text(original + separator + args.english + "\t" + args.chinese + "\n", encoding="utf-8", newline="\n")
+    result = dictlib.check(root, strict=True)
+    if not result.ok(strict=True):
+        target.write_text(original, encoding="utf-8", newline="\n")
+        for error in result.errors:
+            print(f"ERROR {error}")
+        print("dict: FAIL 已回滚新增词条")
+        return 1
+    print(f"dict: added {args.english!r} -> {args.chinese!r} in {relative}")
+    return 0
+
+
 def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description="AlecaFrame-ZH dictionary tool")
     parser.add_argument("--root", default=str(dictlib.ROOT), help="repository root")
     sub = parser.add_subparsers(dest="command", required=True)
+
+    p_add = sub.add_parser("add", help="append a new manual entry (2-column layer)")
+    p_add.add_argument("english")
+    p_add.add_argument("chinese")
+    p_add.add_argument("--file", default="entries/common/ui.tsv", help="manifest path relative to dict/")
+    p_add.set_defaults(func=cmd_add)
 
     p_lookup = sub.add_parser("lookup", help="show all layers for an exact/normalized key")
     p_lookup.add_argument("text")

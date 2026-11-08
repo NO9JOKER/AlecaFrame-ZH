@@ -1,0 +1,189 @@
+{
+  "schemaVersion": 1,
+  "dictionary": {
+    "sha256": "2eb3ac63abf34b435ba3128c3eac587bca2d00d4715e5fce91fb71aad900a387",
+    "bytes": 1169862,
+    "entries": 25304
+  },
+  "bundle": {
+    "sha256": "47103881621f79c757006ba2254b8d71bd0d5c45a6316b47134f0223d2f22efc",
+    "bytes": 1264136
+  },
+  "pages": [
+    {
+      "id": "main",
+      "file": "main.html",
+      "inject": true,
+      "features": [
+        "translate",
+        "search",
+        "archon"
+      ]
+    },
+    {
+      "id": "background",
+      "file": "background.html",
+      "inject": true,
+      "features": [
+        "translate",
+        "pluginHooks"
+      ]
+    },
+    {
+      "id": "afBuilds",
+      "file": "AFBuilds.html",
+      "inject": true,
+      "features": [
+        "translate"
+      ]
+    },
+    {
+      "id": "inGameNotification",
+      "file": "InGameNotification.html",
+      "inject": true,
+      "features": [
+        "translate"
+      ]
+    },
+    {
+      "id": "relicOverlay",
+      "file": "relicOverlay.html",
+      "inject": true,
+      "features": [
+        "translate"
+      ]
+    },
+    {
+      "id": "relicRecommendation",
+      "file": "relicRecommendation.html",
+      "inject": true,
+      "features": [
+        "translate"
+      ]
+    },
+    {
+      "id": "rivenOverlay",
+      "file": "rivenOverlay.html",
+      "inject": true,
+      "features": [
+        "translate"
+      ]
+    },
+    {
+      "id": "squadMakingMain",
+      "file": "SquadMakingMain.html",
+      "inject": true,
+      "features": [
+        "translate"
+      ]
+    },
+    {
+      "id": "squadMakingSquad",
+      "file": "SquadMakingSquad.html",
+      "inject": true,
+      "features": [
+        "translate"
+      ]
+    },
+    {
+      "id": "tradeFinishedNotification",
+      "file": "tradeFinishedNotification.html",
+      "inject": true,
+      "features": [
+        "translate"
+      ]
+    },
+    {
+      "id": "arbitrationLive",
+      "file": "arbitrationLive.html",
+      "inject": false,
+      "features": []
+    },
+    {
+      "id": "debugTools",
+      "file": "debugTools.html",
+      "inject": false,
+      "features": []
+    },
+    {
+      "id": "eeLogSimulator",
+      "file": "eeLogSimulator.html",
+      "inject": false,
+      "features": []
+    },
+    {
+      "id": "uninstall",
+      "file": "uninstall.html",
+      "inject": false,
+      "features": []
+    }
+  ],
+  "modules": [
+    "core.normalize",
+    "core.dict-index",
+    "core.composite",
+    "rules.index",
+    "core.translate",
+    "dom.index",
+    "features.search.api",
+    "features.search.runtime",
+    "adapters.index",
+    "entry"
+  ],
+  "ocr": [
+    {
+      "deployName": "afzh-relic-ocr.js",
+      "pages": [
+        "background.html"
+      ]
+    },
+    {
+      "deployName": "afzh-riven-ocr.js",
+      "pages": [
+        "background.html"
+      ]
+    },
+    {
+      "deployName": "afzh-riven-overlay.js",
+      "pages": [
+        "rivenOverlay.html"
+      ]
+    },
+    {
+      "deployName": "afzh-relic-ducats.js",
+      "pages": [
+        "relicOverlay.html"
+      ]
+    },
+    {
+      "deployName": "afzh-relic-overlay.js",
+      "pages": [
+        "relicOverlay.html"
+      ]
+    },
+    {
+      "deployName": "afzh-relic-recommendation.js",
+      "pages": [
+        "relicRecommendation.html"
+      ]
+    },
+    {
+      "deployName": "afzh-relic-planner-cache.js",
+      "pages": [
+        "main.html"
+      ]
+    },
+    {
+      "deployName": "afzh-inventory-price-sync.js",
+      "pages": [
+        "main.html"
+      ]
+    },
+    {
+      "deployName": "afzh-inventory-images.js",
+      "pages": [
+        "main.html"
+      ]
+    }
+  ]
+}

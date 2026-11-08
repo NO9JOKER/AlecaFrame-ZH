@@ -42,6 +42,7 @@
 
 ```powershell
 python tools\build.py                            # 合并词典，生成注入 bundle、launcher 与 OCR 资产
+python tools\golden.py verify                     # 构建/页面/模块/OCR 清单 golden 校验
 python tools\package.py                          # 生成 dist/ 真机测试包（非 release）
 powershell -ExecutionPolicy Bypass -File tools\verify.ps1
 node tests\runtime.test.mjs

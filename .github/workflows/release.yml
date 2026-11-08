@@ -40,6 +40,7 @@ jobs:
         run: |
           python tools/build.py
           python tools/check_contracts.py
+          python tools/golden.py verify
           python tools/dict.py check --strict
           python -m unittest discover -s tests -p "test_dictlib.py"
           node tests/runtime.test.mjs

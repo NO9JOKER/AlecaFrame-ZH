@@ -65,15 +65,22 @@ if ($python) {
         Invoke-Check "构建" $python @("tools\build.py")
     }
     Invoke-Check "契约" $python @("tools\check_contracts.py")
+    Invoke-Check "golden 构建清单" $python @("tools\golden.py", "verify")
     Invoke-Check "词典 strict" $python @("tools\dict.py", "check", "--strict")
     Invoke-Check "Python 单元测试" $python @("-m", "unittest", "discover", "-s", "tests", "-p", "test_dictlib.py")
-    Invoke-Check "Python 语法" $python @("-m", "py_compile", "tools\build.py", "tools\check_contracts.py", "tools\dict.py", "tools\dictlib.py", "tools\package.py")
+    Invoke-Check "Python 语法" $python @("-m", "py_compile", "tools\build.py", "tools\check_contracts.py", "tools\dict.py", "tools\dictlib.py", "tools\golden.py", "tools\package.py")
 }
 
 if ($node) {
     Invoke-Check "runtime 测试" $node @("tests\runtime.test.mjs")
     Invoke-Check "rules 测试" $node @("tests\rules.test.mjs")
     Invoke-Check "search feature 测试" $node @("tests\search-feature.test.mjs")
+
+    if (-not $NoBuild) {
+        Write-Head "合成注入测试"
+        & (Join-Path $PSScriptRoot "test-inject.ps1")
+        if ($LASTEXITCODE -eq 0) { Write-Ok "合成注入测试" } else { Write-Fail "合成注入测试 (exit $LASTEXITCODE)" }
+    }
 
     Write-Head "运行时/OCR JS 语法"
     $jsFiles = @()

@@ -63,7 +63,7 @@ foreach ($page in @($script:PagesDoc.pages)) {
         }
     }
 }
-$script:ZhJsRel = [string]$script:PagesDoc.bundle.deployPath
+$script:ZhJsRel = ([string]$script:PagesDoc.bundle.deployPath).Replace("/", "\")
 $script:ScriptTag = [string]$script:PagesDoc.bundle.scriptTag
 $script:FlagArgs = @(
     "--ow-disable-features=extension-validation,read-opk-from-memory",

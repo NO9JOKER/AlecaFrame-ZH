@@ -76,6 +76,35 @@
   `dict.py check --strict`、`tools/verify.ps1`（PASS=15 FAIL=0）全过。
   真机资源仓库中文搜索复验待确认。
 
+### 修复：掉落来源的任务名未翻译（前缀 / 等级区间 / PHASE / 派系与商人来源）
+
+- **现象**：资源仓库 → 资源详情的「已知掉落来源」里，除最简单的 `星球/节点 (任务), Rotation X`
+  外，其余格式仍是英文，例如：
+  `Dark Refactory, Deimos/Recall: Dactolyst (The Perita Rebellion), Rotation A`、
+  `金星/Orb Vallis (Level 40 - 60 PROFIT-TAKER - PHASE 1) 轮次 C`、
+  `火卫二/Albrecht's Laboratories (Level 115 - 120 Entrati Lab Bounty) 轮次 C`、
+  `Duviri Circuit`、`Extended Granum Void, Rotation A`、`Entrati (Father), Neutral`、`Vox Solaris, Agent`。
+- **修复**：
+  - `src/runtime/rules/index.js` 扩展来源规则并新增 4 条：
+    - `resource.drop-prefixed`：`前缀, 星球/节点 (任务), Rotation X` → `前缀中文，星球/节点（任务中文），轮次 X`；
+    - `resource.drop-location` 括号内支持 `Level X - Y …` 与 `… - PHASE N`，输出
+      `（等级 X - Y 任务中文 - 阶段 N）`；
+    - `resource.source-rotation`：无星球前缀的 `名称, Rotation X` → `名称中文，轮次 X`；
+    - `resource.faction-source`：`派系 (成员), Neutral/Friendly/Hostile` → `派系中文（成员中文），中立/友好/敌对`；
+    - `resource.vendor-source`：`商人, Agent` → `商人中文，代理人`。
+  - `dict/entries/common/ui.tsv` 补 16 条术语词条：`Dark Refactory`/`Dark Refractory`→深溯池、
+    `The Perita Rebellion`→佩里塔叛乱、`Entrati`→英择谛、`Entrati Lab Bounty`→英择谛实验室赏金、
+    `Duviri Circuit`→双衍王境回廊、`Duviri Full Experience`→双衍王境完整体验、
+    `Exemplar Granum Crown Cache`→范本格拉努硬币藏匿处、`Extended Granum Void`→扩展格拉努虚空、
+    `Granum Void`→格拉努虚空、`Bounty`→赏金、`Phase`→阶段、`Father`→父亲、`Friendly`→友好、
+    `Hostile`→敌对、`Hard`→困难（`Level`/`Normal` 上游词典已有，不重复登记）。
+- **验证**：`tests/rules.test.mjs` 新增 4 个用例（前缀+组合任务、等级区间+PHASE、独立来源、
+  未知前缀不半翻），规则表 123 → 127，49 项全过；`build.py`、`golden.py verify`（已 snapshot）、
+  `dict.py check --strict`（entries 25,419 → 25,435）、`tools/verify.ps1`（PASS=15 FAIL=0）全过。
+  真机资源详情页复验待确认。
+- 说明：节点名（地图名）保持英文——官方中文客户端 269 个节点里 192 个也是英文；
+  资源描述翻译（234 条）按约定后续分批做。
+
 ## v1.2.1 (2026-11-08)
 
 ### 修复：OCR 前置安装的体积与幂等性（pip 缓存落到包根 / OpenCV 回溯 / 版本自检失效）

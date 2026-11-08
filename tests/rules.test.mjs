@@ -34,7 +34,19 @@ const index = runtime.dictIndex.buildIndex({
   "Damage to Corpus": "对 Corpus 伤害",
   Mercury: "水星",
   Earth: "地球",
+  Venus: "金星",
+  Deimos: "火卫二",
   Caches: "资源储藏舱",
+  "Dark Refactory": "深溯池",
+  "The Perita Rebellion": "佩里塔叛乱",
+  "Profit-Taker": "利润收割者",
+  "Entrati Lab Bounty": "英择谛实验室赏金",
+  Entrati: "英择谛",
+  Father: "父亲",
+  "Vox Solaris": "索拉里斯之声",
+  "Extended Granum Void": "扩展格拉努虚空",
+  "Duviri Circuit": "双衍王境回廊",
+  "Duviri Full Experience": "双衍王境完整体验",
   "Primary status chance": "主要武器触发几率",
   "Amber Archon Shard": "琥珀执刑官源力石",
   "+25% casting speed": "+25% 技能施放速度",
@@ -101,8 +113,8 @@ function test(name, fn) {
   }
 }
 
-test("rule table size is 123", () => {
-  assert.equal(runtime.rules.list.length, 123);
+test("rule table size is 127", () => {
+  assert.equal(runtime.rules.list.length, 127);
 });
 
 test("composite translates planet only", () => {
@@ -179,6 +191,36 @@ test("resource rotation suffix", () => {
 
 test("resource drop source stays English when the planet is unknown", () => {
   assert.equal(translate("Foo/Bar (Caches), Rotation B"), null);
+});
+
+test("resource drop source with prefix and compound mission", () => {
+  assert.equal(
+    translate("Dark Refactory, Deimos/Recall: Dactolyst (The Perita Rebellion), Rotation A"),
+    "深溯池，火卫二/Recall: Dactolyst（佩里塔叛乱），轮次 A"
+  );
+});
+
+test("resource drop source with level range and phase", () => {
+  assert.equal(
+    translate("Venus/Orb Vallis (Level 40 - 60 PROFIT-TAKER - PHASE 1), Rotation C"),
+    "金星/Orb Vallis（等级 40 - 60 利润收割者 - 阶段 1），轮次 C"
+  );
+  assert.equal(
+    translate("Deimos/Albrecht's Laboratories (Level 115 - 120 Entrati Lab Bounty), Rotation C"),
+    "火卫二/Albrecht's Laboratories（等级 115 - 120 英择谛实验室赏金），轮次 C"
+  );
+});
+
+test("resource standalone sources and vendor/faction formats", () => {
+  assert.equal(translate("Duviri Circuit"), "双衍王境回廊");
+  assert.equal(translate("Duviri Full Experience"), "双衍王境完整体验");
+  assert.equal(translate("Extended Granum Void, Rotation A"), "扩展格拉努虚空，轮次 A");
+  assert.equal(translate("Entrati (Father), Neutral"), "英择谛（父亲），中立");
+  assert.equal(translate("Vox Solaris, Agent"), "索拉里斯之声，代理人");
+});
+
+test("resource prefixed source stays English when the prefix is unknown", () => {
+  assert.equal(translate("Unknown Prefix, Mars/Gradivus (Caches), Rotation B"), null);
 });
 
 // ---- 仲裁实时窗口 / 共享 run-chart 动态文本 ----

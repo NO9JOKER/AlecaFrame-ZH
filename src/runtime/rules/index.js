@@ -27,6 +27,28 @@
     "Pluto", "Sedna", "Ceres", "Eris", "Europa", "Phobos", "Deimos", "Lua", "Void",
     "Duviri", "Zariman", "Kuva Fortress", "Höllvania",
   ]);
+  // 资源「已知掉落来源」括号内的任务描述：(Caches)、(The Perita Rebellion)、
+  // (Level 40 - 60 PROFIT-TAKER - PHASE 1)、(Level 115 - 120 Entrati Lab Bounty)。
+  // 先拆等级/阶段，剩余任务名走词典；任务名未知返回 null（由调用方保留原文）。
+  function translateSourceDetail(detail, tr) {
+    let text = String(detail || "").trim();
+    if (!text) return null;
+    let level = "";
+    const levelMatch = /^Level (\d+(?:\s*-\s*\d+)?)\s+(.+)$/.exec(text);
+    if (levelMatch) {
+      level = "等级 " + levelMatch[1].replace(/\s*-\s*/, " - ");
+      text = levelMatch[2].trim();
+    }
+    let phase = "";
+    const phaseMatch = /^(.+?)\s*-\s*PHASE (\d+)$/i.exec(text);
+    if (phaseMatch) {
+      text = phaseMatch[1].trim();
+      phase = "阶段 " + phaseMatch[2];
+    }
+    const zh = tr(text);
+    if (typeof zh !== "string") return null;
+    return (level ? level + " " : "") + zh + (phase ? " - " + phase : "");
+  }
 
   // ---- 主窗口仲裁规则用的小工具：月份/日期/时间/倒计时/秒标签 ----
   // 主窗口日期来自 toLocaleString(undefined, {...})（宿主是 en-US 格式），
@@ -95,20 +117,55 @@
     rule("shard.installed-on", /^Installed on (\d+) Warframes$/, (m) => "已安装在 " + m[1] + " 个战甲上"),
     rule("generic.copy", /^Copy (\d+)$/, (m) => "复制 " + m[1]),
     // 资源「已知掉落来源」（主窗口 → 资源仓库 → 物品详情）：C# 插件返回的
-    // location 形如 "Mars/Gradivus (Caches), Rotation B"。结构固定为
-    // 「星球名/地图名（任务名），轮次名」；星球名与任务名走词典翻译，
-    // 地图名（节点）保留游戏内英文专名（词库没有官方节点中文名）。
-    // 星球名必须命中词典才处理，否则返回 null，避免误伤普通 "A/B" 文本。
+    // location 形如 "Mars/Gradivus (Caches), Rotation B" 或
+    // "Dark Refactory, Deimos/Recall: Dactolyst (The Perita Rebellion), Rotation A"。
+    // 结构为「[前缀，]星球名/地图名（任务名），轮次名」；星球名、前缀、任务名走词典，
+    // 地图名（节点）保留游戏内英文专名（官方中文客户端 269 个节点里 192 个也是英文）。
+    // 星球名必须命中白名单与词典才处理，避免误伤普通 "A/B" 文本。
+    rule("resource.drop-prefixed", /^([^,]+), ([^\/]+?)\/([^(),]+?)(?: \(([^()]+)\))?(?:, Rotation ([A-Z]))?$/, (m, _rec, tr) => {
+      const prefix = tr(m[1].trim());
+      if (typeof prefix !== "string") return null;
+      const planetKey = m[2].trim();
+      if (!DROP_SOURCE_PLANETS.has(planetKey)) return null;
+      const planet = tr(planetKey);
+      if (typeof planet !== "string") return null;
+      let out = prefix + "，" + planet + "/" + m[3].trim();
+      if (m[4]) {
+        const detail = translateSourceDetail(m[4], tr);
+        out += "（" + (detail === null ? m[4].trim() : detail) + "）";
+      }
+      if (m[5]) out += "，轮次 " + m[5];
+      return out;
+    }),
     rule("resource.drop-location", /^([^\/]+?)\/([^(),]+?)(?: \(([^()]+)\))?(?:, Rotation ([A-Z]))?$/, (m, _rec, tr) => {
       const planetKey = m[1].trim();
       if (!DROP_SOURCE_PLANETS.has(planetKey)) return null;
       const planet = tr(planetKey);
       if (typeof planet !== "string") return null;
-      const mission = m[3] ? tr(m[3].trim()) : null;
       let out = planet + "/" + m[2].trim();
-      if (m[3]) out += "（" + (typeof mission === "string" ? mission : m[3].trim()) + "）";
+      if (m[3]) {
+        const detail = translateSourceDetail(m[3], tr);
+        out += "（" + (detail === null ? m[3].trim() : detail) + "）";
+      }
       if (m[4]) out += "，轮次 " + m[4];
       return out;
+    }),
+    // 无星球前缀的独立来源："Extended Granum Void, Rotation A" -> "扩展格拉努虚空，轮次 A"
+    rule("resource.source-rotation", /^(.+), Rotation ([A-Z])$/, (m, _rec, tr) => {
+      const zh = tr(m[1].trim());
+      return typeof zh === "string" ? zh + "，轮次 " + m[2] : null;
+    }),
+    // 敌人/派系来源："Entrati (Father), Neutral" -> "英择谛（父亲），中立"
+    rule("resource.faction-source", /^([^()]+) \(([^()]+)\), (Neutral|Friendly|Hostile)$/, (m, _rec, tr) => {
+      const faction = tr(m[1].trim());
+      const member = tr(m[2].trim());
+      if (typeof faction !== "string" || typeof member !== "string") return null;
+      return faction + "（" + member + "），" + { Neutral: "中立", Friendly: "友好", Hostile: "敌对" }[m[3]];
+    }),
+    // 商人来源："Vox Solaris, Agent" -> "索拉里斯之声，代理人"（此处 Agent 是商人身份，不是敌人）
+    rule("resource.vendor-source", /^(.+), (Agent)$/, (m, _rec, tr) => {
+      const name = tr(m[1].trim());
+      return typeof name === "string" ? name + "，代理人" : null;
     }),
     rule("resource.rotation", /^Rotation ([A-C])$/, (m) => "轮次 " + m[1]),
     rule("riven.percent-attr", /^([+-]?\d[\d,]*(?:\.\d+)?%)\s+(.+)$/, (m, _rec, tr) => {

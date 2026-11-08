@@ -269,6 +269,21 @@ test("canvas text falls back to the original when translate throws", () => {
   assert.equal(target.measureText("Active").width, "Active".length);
 });
 
+test("attribute translation never rewrites an identical value (MutationObserver loop guard)", () => {
+  // 回归：词典 "Ax-52" -> "AX-52"，小写兜底使 translate("AX-52") 返回自身；
+  // DOM 层若把相同值再写回属性，会触发 MutationObserver 死循环（铸造厂曾整窗卡死）。
+  const loopIndex = runtime.dictIndex.buildIndex({ "Ax-52": "AX-52" });
+  const loopTranslate = runtime.translate.createTranslator(loopIndex).translate;
+  assert.equal(loopTranslate("AX-52"), "AX-52");
+  assert.equal(runtime.dom.nextAttributeValue("AX-52", loopTranslate), null);
+  assert.equal(runtime.dom.nextAttributeValue("Ax-52", loopTranslate), "AX-52");
+
+  // 正常变化的属性仍然写回。
+  const normalIndex = runtime.dictIndex.buildIndex({ Search: "搜索" });
+  const normalTranslate = runtime.translate.createTranslator(normalIndex).translate;
+  assert.equal(runtime.dom.nextAttributeValue("Search", normalTranslate), "搜索");
+});
+
 test("archon cell text rebuilds the sentence without duplicating the icon alt", () => {
   const element = {
     childNodes: [

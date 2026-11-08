@@ -22,6 +22,15 @@
     return DAMAGE_LABELS.has(fixed) ? fixed + "伤害" : label;
   }
 
+  // 属性写回决策：译文必须与当前值不同才写。
+  // 反例：词典 "Ax-52" -> "AX-52"，小写兜底会让 translate("AX-52") 返回自身；
+  // 若把相同值再次 setAttribute，MutationObserver 会再收到 attribute 记录，
+  // 与 translateAttrs 形成死循环（铸造厂 AX-52 卡片 title 属性曾整窗卡死）。
+  function nextAttributeValue(value, translate) {
+    const hit = translate(value);
+    return typeof hit === "string" && hit !== value ? hit : null;
+  }
+
   function inRivenContext(node) {
     let element = node ? node.parentNode : null;
     for (let depth = 0; element && depth < 8; depth++) {
@@ -78,7 +87,7 @@
         let value;
         try { value = element.getAttribute(attr); } catch (_) { continue; }
         if (!value) continue;
-        const hit = translate(value);
+        const hit = nextAttributeValue(value, translate);
         if (hit === null) continue;
         try { element.setAttribute(attr, hit); translated++; } catch (_) { /* ignore */ }
       }
@@ -144,5 +153,5 @@
     return { start: start, walk: walk, scanAll: scanAll, stats: () => ({ translated: translated }) };
   }
 
-  runtime.dom = { create: create };
+  runtime.dom = { create: create, nextAttributeValue: nextAttributeValue };
 })(typeof globalThis !== "undefined" ? globalThis : this);

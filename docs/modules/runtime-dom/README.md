@@ -25,6 +25,10 @@ DOM 翻译层：文本节点、属性、MutationObserver、裂罅上下文判定
 - 纯 DOM 读写；不得联网/读文件/写 secrets；
 - 翻译失败（null）保持原文；
 - 保留原文本首尾空白；
+- **写回必须幂等**：文本节点只有译后整串与原文不同才写；属性用
+  `nextAttributeValue(value, translate)`，译文与当前值相同则不写回。
+  否则“译文恰好等于原文”（如词典 `Ax-52 -> AX-52`，小写兜底让 `AX-52` 也命中自身）
+  会不断触发 `MutationObserver` 的 attribute 记录，形成死循环；
 - 裂罅上下文使用祖先 class 启发式；命中后对伤害标签补“伤害”；
 - MutationObserver 只处理新增/字符/属性变化，避免重复写入；
 - 初始化失败不得抛异常打断页面。
@@ -46,6 +50,9 @@ node tests\runtime.test.mjs
 ## 失败模式
 
 - 选择器过宽 → 误翻工具栏/代码；
+- **属性译文与原文相同却继续写回 → MutationObserver 自触发死循环（整窗卡死/转圈）**：
+  必须走 `nextAttributeValue` 判等；回归测试见 `tests/runtime.test.mjs` 的
+  “attribute translation never rewrites an identical value”；
 - Vue 重渲染覆盖 → MutationObserver 补翻（闪烁正常）；
 - `v-html`/图标拆句 → 逐节点无法匹配，需要 feature 整段处理；
 - observer 回调异常 → 捕获，不影响其他节点。

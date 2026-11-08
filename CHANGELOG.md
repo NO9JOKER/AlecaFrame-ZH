@@ -2,6 +2,23 @@
 
 ## 未发布
 
+### 修复：铸造厂切换分类整窗卡死（属性写回未判等导致 MutationObserver 死循环）
+
+- **现象**：铸造厂页面点击「主武器/副武器/全部/…」等分类后整个界面卡死、加载圈一直转；英文原版正常，
+  补丁版必现（与仲裁界面汉化无关，其他含同名属性的页面也可能触发）。
+- **根因**：词典里有 `Ax-52 -> AX-52`（上游物品名规范化）。翻译链的小写兜底让
+  `translate("AX-52")` 返回**与原文相同**的 `"AX-52"`；DOM 层 `translateAttrs` 只要译文非 `null`
+  就 `setAttribute`，而**把属性设置成相同值同样会产生 MutationObserver 的 attribute 记录**，
+  于是 `translateAttrs → setAttribute → observer → translateAttrs` 无限循环，占死渲染进程主线程。
+  铸造厂 AX-52 卡片带 `title="AX-52"`，切换分类渲染出该卡片时触发。
+- **修复**：`src/runtime/dom/index.js` 增加 `nextAttributeValue(value, translate)`：只有译文存在
+  且与当前属性值不同才写回；`translateAttrs` 统一走该函数。文本节点原本已有同样的判等。
+- **回归**：`tests/runtime.test.mjs` 新增 “attribute translation never rewrites an identical value”
+  用例；无头 Chrome + 真实 foundry 模板/mainFoundry.js/tippy 复现脚本：旧 bundle 注入 AX-52 后
+  HANG >45s，修复后 0.9s 完成 12 次分类切换；本机真实 AlecaFrame（Overwolf 0.314.1.1 /
+  AlecaFrame 3.0.6）诊断构建确认死循环调用栈为 `translateAttrs → MutationObserver`，
+  修复后连续切换 主武器/副武器/全部/战甲 不卡死、渲染进程 CPU 空闲。
+
 ### 仲裁界面汉化补全（实时仲裁窗口 + 主窗口记录/日程）
 
 - **实时仲裁窗口纳入注入**：`pages.json` 的 `arbitrationLive` 由「不注入」改为注入 `translate`，

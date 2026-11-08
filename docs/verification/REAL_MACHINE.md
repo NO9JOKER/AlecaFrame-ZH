@@ -14,6 +14,11 @@
 >   `dom.canvas-text`（Canvas 图例/tooltip/坐标轴）；SIM（构建/契约/golden/单元测试/合成注入与
 >   还原）+ HOST（无头浏览器真实 bundle：合并文本节点与 Canvas 10 行全中文、真实
 >   `arbitrationLive.html` 注入后静态头部中文）通过，**待本清单第 4 节 REAL 复验**。
+> - 铸造厂切换分类卡死修复（2026-11-08）：HOST 复现（无头 Chrome + 真实 foundry 模板/
+>   mainFoundry.js/tippy：旧 bundle 注入 `AX-52` 物品名后 HANG >45s，修复后 0.9s 完成 12 次分类
+>   切换）；本机真实 AlecaFrame（Overwolf 0.314.1.1 / AlecaFrame 3.0.6，诊断构建）确认死循环栈为
+>   `translateAttrs → MutationObserver`，修复后连续切换 主武器/副武器/全部/战甲 不卡死、
+>   renderer CPU 空闲。**待开发者常规操作复验**。
 
 ## 0. 前置
 

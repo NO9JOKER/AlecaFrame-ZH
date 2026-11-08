@@ -1,4 +1,4 @@
-function Test-Patched {
+﻿function Test-Patched {
     param([string]$VersionPath)
     $zhJs = Join-Path $VersionPath $script:ZhJsRel
     $main = Join-Path $VersionPath "web\main.html"

@@ -87,6 +87,16 @@ def copy_tree(src: Path, dst: Path) -> None:
             copy_file(path, dst / path.relative_to(src))
 
 
+def ensure_ps_bom(path: Path) -> None:
+    """PowerShell 5.1 reads BOM-less UTF-8 as ANSI; enforce BOM for scripts."""
+    if path.suffix.lower() not in {".ps1", ".psm1"}:
+        return
+    data = path.read_bytes()
+    if data.startswith(b"\xef\xbb\xbf"):
+        return
+    path.write_bytes(b"\xef\xbb\xbf" + data)
+
+
 def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description="Build a test package under dist/")
     parser.add_argument("--version", default=(ROOT / "VERSION").read_text(encoding="utf-8").strip())
@@ -122,6 +132,9 @@ def main(argv=None) -> int:
     copy_file(bundle, target / "bin" / "alecaframe-zh-cn.js")
     copy_tree(ROOT / "bin" / "ocr", target / "bin" / "ocr")
     copy_tree(ROOT / "scripts", target / "scripts")
+    for path in target.rglob("*"):
+        if path.is_file():
+            ensure_ps_bom(path)
     (target / "使用说明.txt").write_text(INSTRUCTIONS, encoding="utf-8-sig", newline="\n")
 
     info = {

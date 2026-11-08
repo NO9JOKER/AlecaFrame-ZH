@@ -6,7 +6,7 @@
 
 > 当前证据状态（2026-11-08）：
 > - Start/Status/Refresh/Toggle/Restore 已由开发者反馈正常；截图/日志证据待归档。
-> - OCR 前置安装与真实识别仍待验证。
+> - OCR 前置安装完成；`/health` 返回 `ready=true`，server 已停止；实际识别仍待验证。
 > - 新运行时/OCR 其余部分只有 SIM/HOST 证据。
 
 ## 0. 前置

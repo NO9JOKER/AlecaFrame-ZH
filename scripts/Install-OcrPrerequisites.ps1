@@ -1,5 +1,5 @@
-﻿# 移植自 MIOEU/AlecaFrame-ZH（MIT）。仅做路径/命名适配；OCR 协议与 window 全局名保持不变。
-# 工具目录：<包根>\bin\ocr\.tools；状态目录：<包根>\state。详见 docs\OCR集成说明.md。
+﻿# MIOEU/AlecaFrame-ZH (MIT). OCR protocol and window globals are frozen; see src/ocr/CONTRACT.md.
+# 工具目录：<包根>\bin\ocr\.tools；状态目录：<包根>\state。详见 src\ocr\CONTRACT.md。
 [CmdletBinding()]
 param(
     [switch]$Force
@@ -235,7 +235,7 @@ if (Test-PaddleModels) {
 if ($LASTEXITCODE -ne 0) { throw "Node.js 验证失败。" }
 
 Write-Host ""
-Write-Host "OCR 前置组件已准备完成。接下来运行 Start-Chinese.cmd 启动中文界面。" -ForegroundColor Green
+Write-Host "OCR 前置组件已准备完成。接下来运行 启动-中文补丁.cmd 启动中文界面。" -ForegroundColor Green
 Write-Host "缓存位置：$cacheRoot"
 Write-Host "安装日志：$transcriptPath"
 try { Stop-Transcript | Out-Null } catch { }

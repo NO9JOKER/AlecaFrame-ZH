@@ -20,7 +20,7 @@ dict/
 2. 在 `entries/common` 或 `entries/screens` 选目标文件（跨屏 → common；功能专属 → screens）；
 3. 追加 `英文<TAB>中文`；确保与界面文本逐字符一致；
 4. `python tools\dict.py check --strict`；
-5. `python tools\build.py`；真机 `Refresh-Chinese.cmd` 截图。
+5. `python tools\build.py`；真机 `重启补丁.cmd` 截图。
 
 ## 改已有译文
 

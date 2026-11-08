@@ -53,7 +53,7 @@ function Invoke-StartChinese {
     }
     $ocrNote = if ($enableOcr) { "中文 OCR 增强：已开启" } elseif ($ocrRequested) { "中文 OCR 增强：前置未安装，已跳过" } else { "中文 OCR 增强：已关闭" }
     Write-Log "中文界面加载成功（版本 $($verDir.Name)）；$ocrNote"
-    Show-Message "已切换到中文界面。`n`n$ocrNote`n`n要恢复英文，请运行 Restore-English.cmd（或 Toggle-Chinese.cmd 在本次会话内切换）。"
+    Show-Message "已切换到中文界面。`n`n$ocrNote`n`n要恢复英文，请运行 还原-官方英文.cmd（或 中英切换.cmd 在本次会话内切换）。"
 }
 
 function Invoke-RestoreEnglish {
@@ -68,7 +68,7 @@ function Invoke-RestoreEnglish {
     Start-Sleep -Seconds 3
     Launch-AlecaFrame
     Write-Log "已恢复官方英文界面"
-    Show-Message "已恢复英文并重新启动 Overwolf。`n`n下次如需中文，请运行 Start-Chinese.cmd。"
+    Show-Message "已恢复英文并重新启动 Overwolf。`n`n下次如需中文，请运行 启动-中文补丁.cmd。"
 }
 
 function Invoke-Toggle {
@@ -97,7 +97,7 @@ function Invoke-Toggle {
             $patchTime = Get-Date
             Restart-AlecaFrameRenderer
             if (-not (Wait-ZhLoaded -Since $patchTime -TimeoutSeconds 60)) {
-                throw "切换中文失败，请运行 Restore-English.cmd 恢复。"
+                throw "切换中文失败，请运行 还原-官方英文.cmd 恢复。"
             }
             Write-Log "已切换为中文"
             Show-Message "已切换为中文（本次 Overwolf 会话内）。"
@@ -109,7 +109,7 @@ function Invoke-Toggle {
 
 function Invoke-RefreshZh {
     $verDir = Get-AppVersionDir
-    if (-not (Test-FlaggedSession)) { throw "当前 Overwolf 会话不是中文模式启动的，请先运行 Start-Chinese.cmd。" }
+    if (-not (Test-FlaggedSession)) { throw "当前 Overwolf 会话不是中文模式启动的，请先运行 启动-中文补丁.cmd。" }
     Apply-Patch -VersionPath $verDir.FullName
     if ((Get-OcrEnabled) -and ((Test-OcrPrerequisites).Count -eq 0)) {
         Start-OcrHelper
@@ -134,10 +134,10 @@ function Invoke-OcrOn {
         Apply-OcrPatch -VersionPath $verDir.FullName
         $patchTime = Get-Date
         Restart-AlecaFrameRenderer
-        if (-not (Wait-ZhLoaded -Since $patchTime -TimeoutSeconds 60)) { throw "开启 OCR 后重载失败，请运行 Restore-English.cmd。" }
+        if (-not (Wait-ZhLoaded -Since $patchTime -TimeoutSeconds 60)) { throw "开启 OCR 后重载失败，请运行 还原-官方英文.cmd。" }
         Show-Message "中文 OCR 已开启（本次会话内生效）。"
     } else {
-        Show-Message "中文 OCR 已开启，下次用 Start-Chinese.cmd 启动时生效。"
+        Show-Message "中文 OCR 已开启，下次用 启动-中文补丁.cmd 启动时生效。"
     }
 }
 
@@ -150,7 +150,7 @@ function Invoke-OcrOff {
         Apply-Patch -VersionPath $verDir.FullName
         $patchTime = Get-Date
         Restart-AlecaFrameRenderer
-        if (-not (Wait-ZhLoaded -Since $patchTime -TimeoutSeconds 60)) { throw "关闭 OCR 后重载失败，请运行 Restore-English.cmd。" }
+        if (-not (Wait-ZhLoaded -Since $patchTime -TimeoutSeconds 60)) { throw "关闭 OCR 后重载失败，请运行 还原-官方英文.cmd。" }
         Show-Message "中文 OCR 已关闭（界面汉化保留，本次会话内生效）。"
     } else {
         Show-Message "中文 OCR 已关闭。"
@@ -173,7 +173,7 @@ function Invoke-InstallOcr {
         $hint = if ($tail) { "`n`n最近日志：`n$tail" } else { "" }
         throw ("OCR 前置组件安装失败（退出码 $($p.ExitCode)）。" + $hint + "`n`n完整日志：$log")
     }
-    Show-Message "OCR 前置组件安装完成。`n`n现在用 Start-Chinese.cmd 启动即可使用中文遗物/裂罅识别。"
+    Show-Message "OCR 前置组件安装完成。`n`n现在用 启动-中文补丁.cmd 启动即可使用中文遗物/裂罅识别。"
 }
 
 function Invoke-Status {
@@ -205,11 +205,11 @@ function Invoke-Status {
         ("  缺失项: " + $(if ($ocrReady) { "无" } else { $ocrMissing -join ", " })),
         "",
         "用法:",
-        "  Start-Chinese.cmd   中文启动（会重启 Overwolf）",
-        "  Restore-English.cmd 恢复英文（会重启 Overwolf）",
-        "  Toggle-Chinese.cmd  在中文会话内快速切换中/英",
-        "  Refresh-Chinese.cmd 重新注入最新词库",
-        "  Install-Shortcuts.cmd 在桌面创建快捷方式"
+        "  启动-中文补丁.cmd   中文启动（会重启 Overwolf）",
+        "  还原-官方英文.cmd 恢复英文（会重启 Overwolf）",
+        "  中英切换.cmd  在中文会话内快速切换中/英",
+        "  重启补丁.cmd 重新注入最新词库",
+        "  创建桌面快捷方式.cmd 在桌面创建快捷方式"
     ) -join "`r`n"
     Show-Message $text "AlecaFrame-ZH 状态"
 }
@@ -221,17 +221,17 @@ function Invoke-InstallShortcuts {
     $items = @(
         @{
             Name = "AlecaFrame 中文版（启动）"
-            Target = (Join-Path $script:PkgRoot "Start-Chinese.cmd")
+            Target = (Join-Path $script:PkgRoot "启动-中文补丁.cmd")
             Description = "启动 AlecaFrame 中文版。会关闭并重启 Overwolf，加载中文界面与中文 OCR。"
         },
         @{
             Name = "AlecaFrame 英文版（恢复）"
-            Target = (Join-Path $script:PkgRoot "Restore-English.cmd")
+            Target = (Join-Path $script:PkgRoot "还原-官方英文.cmd")
             Description = "恢复官方英文版。会关闭并重启 Overwolf，还原官方文件。"
         },
         @{
             Name = "AlecaFrame 中英切换（不重启）"
-            Target = (Join-Path $script:PkgRoot "Toggle-Chinese.cmd")
+            Target = (Join-Path $script:PkgRoot "中英切换.cmd")
             Description = "在中文会话内切换中/英界面。不会重启 Overwolf，仅重载 AlecaFrame。"
         }
     )

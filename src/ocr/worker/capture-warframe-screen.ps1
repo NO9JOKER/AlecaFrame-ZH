@@ -1,5 +1,5 @@
 ﻿# MIOEU/AlecaFrame-ZH (MIT)。OCR 协议与 window 全局名保持不变。
-# 工具目录：<包根>\bin\ocr\.tools；状态目录：<包根>\state。详见 docs\OCR集成说明.md。
+# 工具目录：<包根>\bin\ocr\.tools；状态目录：<包根>\state。详见 src\ocr\CONTRACT.md。
 param(
     [Parameter(Mandatory = $true)][string]$OutputPath
 )

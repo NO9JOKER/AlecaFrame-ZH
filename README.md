@@ -30,7 +30,7 @@ dist/AlecaFrame-ZH-1.2.0/
 dist/AlecaFrame-ZH-1.2.0.zip
 ```
 
-双击测试包里的 `Start-Chinese.cmd` 启动；`Status.cmd` 查看状态；`Restore-English.cmd` 恢复。详细步骤见 [真机验证指南](docs/verification/REAL_MACHINE.md)。
+双击测试包里的 `启动-中文补丁.cmd` 启动；`版本信息.cmd` 查看状态；`还原-官方英文.cmd` 恢复。详细步骤见 [真机验证指南](docs/verification/REAL_MACHINE.md)。
 
 > 测试包是 development-test，不是 release tag；发布前必须走 verify/真机/合并流程。
 

@@ -42,13 +42,14 @@ src/runtime/
 ## 4. 验证
 
 ```powershell
-node tests\search.test.mjs
+node tests\runtime.test.mjs
 node tests\rules.test.mjs
+node tests\search-feature.test.mjs
 python tools\build.py
 powershell -ExecutionPolicy Bypass -File tools\verify.ps1
 ```
 
-真机：`Refresh-Chinese.cmd` 后看日志 `[AlecaFrame-ZH] loaded translated=...`；受影响页面截图；涉及 hook 时检查 `__AFZH_SEARCH__` 状态。
+真机：`重启补丁.cmd` 后看日志 `[AlecaFrame-ZH] loaded translated=...`；受影响页面截图；涉及 hook 时检查 `__AFZH_SEARCH__` 状态。
 
 ## 5. 不要做
 

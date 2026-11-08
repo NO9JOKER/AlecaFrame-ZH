@@ -43,7 +43,9 @@
 
 ```powershell
 node tests\search-feature.test.mjs
-node tests\search.test.mjs       # 既有回归
+node tests\runtime.test.mjs
+node tests\rules.test.mjs
+node tests\search-feature.test.mjs       # 既有回归
 ```
 
 未覆盖：真实插件/Vue 集成；由真机仓库/铸造厂/赋能/遗物规划器/裂罅界面验证。

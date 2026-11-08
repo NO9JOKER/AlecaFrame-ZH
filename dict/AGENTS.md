@@ -55,7 +55,7 @@ python tools\build.py
 ```
 
 - 加词条后必须确认：没有被更高优先级静默覆盖、没有改到别的语境、build 后 merged 数正确。
-- 真机：`Refresh-Chinese.cmd`，到受影响界面截图；T0 不需要完整 Start/Restore。
+- 真机：`重启补丁.cmd`，到受影响界面截图；T0 不需要完整 Start/Restore。
 - 构建验收见 [docs/project/dictionary-acceptance.md](../docs/project/dictionary-acceptance.md)。
 
 ## 6. 不要做

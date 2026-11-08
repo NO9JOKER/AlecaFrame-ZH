@@ -53,10 +53,10 @@ node tests\search-feature.test.mjs
 真机操作仅 Windows：
 
 ```powershell
-Start-Chinese.cmd       # 冷启动：停 Overwolf -> 还原官方文件 -> 带 flag 启动 -> 注入
-Refresh-Chinese.cmd     # 中文会话内重注入 + 重载渲染进程（改词典/代码后用）
-Restore-English.cmd     # 还原官方文件并正常启动
-Status.cmd              # 查看会话 flag / 注入状态 / OCR 状态
+启动-中文补丁.cmd       # 冷启动：停 Overwolf -> 还原官方文件 -> 带 flag 启动 -> 注入
+重启补丁.cmd     # 中文会话内重注入 + 重载渲染进程（改词典/代码后用）
+还原-官方英文.cmd     # 还原官方文件并正常启动
+版本信息.cmd              # 查看会话 flag / 注入状态 / OCR 状态
 ```
 
 工具以仓库实际文件为准；不要执行不存在的路径。

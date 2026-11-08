@@ -5,7 +5,7 @@
 The package keeps the launcher and bundle at the same relative paths the .cmd
 wrappers expect:
 
-  <pkg>/Start-Chinese.cmd ...
+  <pkg>/启动-中文补丁.cmd ...
   <pkg>/pages.json
   <pkg>/bin/AlecaFrame-ZH.ps1
   <pkg>/bin/lib/*.ps1
@@ -33,17 +33,17 @@ INSTRUCTIONS = """AlecaFrame-ZH 测试包
 页面文件；测试前请结束正在进行的游戏任务、交易等不可中断操作。
 
 一、第一次使用（全部双击，无需命令行）
-1. 双击 Status.cmd，查看 Overwolf/AlecaFrame 版本和当前状态；窗口会暂停，按任意键关闭。
-2. 双击 Start-Chinese.cmd。若 Windows SmartScreen 提示，点“更多信息” -> “仍要运行”。
+1. 双击 版本信息.cmd，查看 Overwolf/AlecaFrame 版本和当前状态；窗口会暂停，按任意键关闭。
+2. 双击 启动-中文补丁.cmd。若 Windows SmartScreen 提示，点“更多信息” -> “仍要运行”。
 3. 等待 Overwolf/AlecaFrame 自动重启；进入主界面后检查中文是否生效。
 4. 如果界面仍是英文，不要反复点 Start；先看 logs\\launcher.log，再双击
    导出诊断包.cmd，把生成的诊断包发给开发者。
 
 二、日常操作
-- 切换中/英（不重启）：Toggle-Chinese.cmd
-- 重新注入最新包内容：Refresh-Chinese.cmd
-- 恢复官方英文：Restore-English.cmd
-- 创建桌面快捷方式：Install-Shortcuts.cmd
+- 切换中/英（不重启）：中英切换.cmd
+- 重新注入最新包内容：重启补丁.cmd
+- 恢复官方英文：还原-官方英文.cmd
+- 创建桌面快捷方式：创建桌面快捷方式.cmd
 - OCR 开关/安装前置组件：使用对应中文名称的 .cmd
 
 三、日志和状态
@@ -52,7 +52,7 @@ INSTRUCTIONS = """AlecaFrame-ZH 测试包
 - PACKAGE-INFO.json（记录 bundle SHA256）
 
 四、如果出错
-- Start 失败或界面异常：双击 Restore-English.cmd。
+- Start 失败或界面异常：双击 还原-官方英文.cmd。
 - 不要手动删除 state 目录；不要手工改官方安装文件。
 - 不要把本测试包当成 1.2.0 正式发布包。
 
@@ -163,7 +163,7 @@ def main(argv=None) -> int:
             archive.unlink()
         shutil.make_archive(str(target.parent / target.name), "zip", root_dir=target.parent, base_dir=target.name)
         print(f"zip: OK {archive}")
-    print(f"start: {target / 'Status.cmd'}")
+    print(f"start: {target / '版本信息.cmd'}")
     return 0
 
 

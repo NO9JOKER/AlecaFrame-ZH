@@ -49,11 +49,11 @@ powershell -ExecutionPolicy Bypass -File tools\verify.ps1
 必须真机：
 
 ```powershell
-Start-Chinese.cmd
-Status.cmd
-Refresh-Chinese.cmd
-Toggle-Chinese.cmd
-Restore-English.cmd
+启动-中文补丁.cmd
+版本信息.cmd
+重启补丁.cmd
+中英切换.cmd
+还原-官方英文.cmd
 ```
 
 - 记录：`logs/launcher.log`、`state/last-session.json`、注入页面数、bundle hash、快照/还原前后 hash。

@@ -43,7 +43,9 @@ git switch --detach pr-<PR号>
 ```powershell
 python tools\build.py
 powershell -ExecutionPolicy Bypass -File tools\verify.ps1
-node tests\search.test.mjs
+node tests\runtime.test.mjs
+node tests\rules.test.mjs
+node tests\search-feature.test.mjs
 ```
 
 - 以 `AGENTS.md` §3 的命令为准；工具尚未落地时使用仓库实际存在的等价命令，并在报告中记录命令与结果。

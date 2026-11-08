@@ -23,21 +23,23 @@
 
 ## 本地检查
 
-以下为目标命令（工具实现后）；工具尚未落地时，以仓库实际存在的脚本为准，并在 PR 中记录实际运行的命令与结果。
+以下命令均可在当前仓库执行；以实际文件为准，并在 PR 中记录实际运行的命令与结果。
 
 ```powershell
 python tools\build.py
 powershell -ExecutionPolicy Bypass -File tools\verify.ps1
-node tests\search.test.mjs
+node tests\runtime.test.mjs
+node tests\rules.test.mjs
+node tests\search-feature.test.mjs
 ```
 
 真机操作：
 
 ```powershell
-Start-Chinese.cmd
-Refresh-Chinese.cmd
-Restore-English.cmd
-Status.cmd
+启动-中文补丁.cmd
+重启补丁.cmd
+还原-官方英文.cmd
+版本信息.cmd
 ```
 
 ## 词典

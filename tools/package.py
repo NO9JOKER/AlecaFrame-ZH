@@ -27,7 +27,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 
-INSTRUCTIONS = """AlecaFrame-ZH 1.2.0-dev 测试包
+INSTRUCTIONS = """AlecaFrame-ZH 测试包
 
 这是测试包，不是正式发布版。Start/Restore 会重启 Overwolf，并临时修改 AlecaFrame
 页面文件；测试前请结束正在进行的游戏任务、交易等不可中断操作。

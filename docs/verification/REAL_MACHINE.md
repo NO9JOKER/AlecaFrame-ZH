@@ -4,6 +4,11 @@
 > 风险：T2。会重启 Overwolf 并临时改写官方页面文件；只能由开发者本人在测试机执行。
 > 当前状态：新运行时只有 SIM 证据，**尚无 REAL 证据**；本清单用于补 REAL。
 
+> 当前证据状态（2026-11-08）：
+> - Start 已由开发者在本机 AlecaFrame 3.0.6 上确认，界面达到重构前效果；截图/日志证据待归档。
+> - Status / Refresh / Toggle / Restore / OCR 全流程仍待补 REAL 证据。
+> - 新运行时/OCR 其余部分只有 SIM/HOST 证据。
+
 ## 0. 前置
 
 - Windows 10/11；

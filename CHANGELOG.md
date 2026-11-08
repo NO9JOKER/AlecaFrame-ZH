@@ -38,6 +38,23 @@
 - **验证**：`dict.py check --strict`、`build.py`、`golden.py verify`、python unittest、
   node runtime/rules/search 测试全过；bundle 中已确认包含新词条；未揭示裂罅页面真机复验待确认。
 
+### 修复：资源掉落来源未翻译（Rotation B）且星球名未匹配
+
+- **现象**：主窗口 → 资源仓库 → 打开资源详情（如合金板），`Known drop sources` 列表整行是英文，
+  例如 `Mars/Gradivus (Caches), Rotation B`：星球名、任务名、轮次名都未翻译。
+- **根因**：该行来自 C# 插件下发的 `location` 字段，页面以单个文本节点渲染
+  （`{{source.location}}`）；词典里只有 `Rotation`、`Caches`、`Mars` 等**碎片**词条，
+  没有整串结构，`Rotation B` 也不在精确匹配里。
+- **修复**（`src/runtime/rules/index.js`）新增两条动态规则：
+  - `resource.drop-location`：解析 `星球/节点 (任务), Rotation X`，输出
+    `星球中文/节点（任务中文），轮次 X`；节点名保留游戏内英文专名（词库没有官方节点中文名），
+    星球名与任务名走词典；用星球白名单避免把 `6 spawns/min` 这类带斜杠的数值串误判为掉落来源；
+  - `resource.rotation`：`Rotation A/B/C` → `轮次 A/B/C`。
+- **验证**：`tests/rules.test.mjs` 新增 4 个用例（星球/任务/轮次组合、无任务/无轮次、纯轮次、
+  未知星球不半翻），规则表 121 → 123；`node tests/rules.test.mjs` 45 项全过；`build.py`、
+  `golden.py verify`、`dict.py check --strict`、runtime/search 测试与 `tools/verify.ps1`
+  （PASS=15 FAIL=0）全过。真机资源详情页复验待确认。
+
 ## v1.2.1 (2026-11-08)
 
 ### 修复：OCR 前置安装的体积与幂等性（pip 缓存落到包根 / OpenCV 回溯 / 版本自检失效）

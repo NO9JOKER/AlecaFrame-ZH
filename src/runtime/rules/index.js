@@ -20,6 +20,13 @@
     "火焰", "冰冻", "寒冷", "毒素", "电击", "切割", "冲击", "穿刺",
     "爆炸", "磁力", "毒气", "病毒", "腐蚀", "辐射",
   ]);
+  // 资源「已知掉落来源」的星球名白名单：只处理 "星球/节点" 结构，避免把
+  // "6 spawns/min" 这类带斜杠的数值串误当成掉落来源。
+  const DROP_SOURCE_PLANETS = new Set([
+    "Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune",
+    "Pluto", "Sedna", "Ceres", "Eris", "Europa", "Phobos", "Deimos", "Lua", "Void",
+    "Duviri", "Zariman", "Kuva Fortress", "Höllvania",
+  ]);
 
   // ---- 主窗口仲裁规则用的小工具：月份/日期/时间/倒计时/秒标签 ----
   // 主窗口日期来自 toLocaleString(undefined, {...})（宿主是 en-US 格式），
@@ -87,6 +94,23 @@
     rule("shard.tauforged", /^Tauforged (.+)$/, (m, _rec, tr) => (tr(m[1]) ?? m[1]) + " TAU源力石"),
     rule("shard.installed-on", /^Installed on (\d+) Warframes$/, (m) => "已安装在 " + m[1] + " 个战甲上"),
     rule("generic.copy", /^Copy (\d+)$/, (m) => "复制 " + m[1]),
+    // 资源「已知掉落来源」（主窗口 → 资源仓库 → 物品详情）：C# 插件返回的
+    // location 形如 "Mars/Gradivus (Caches), Rotation B"。结构固定为
+    // 「星球名/地图名（任务名），轮次名」；星球名与任务名走词典翻译，
+    // 地图名（节点）保留游戏内英文专名（词库没有官方节点中文名）。
+    // 星球名必须命中词典才处理，否则返回 null，避免误伤普通 "A/B" 文本。
+    rule("resource.drop-location", /^([^\/]+?)\/([^(),]+?)(?: \(([^()]+)\))?(?:, Rotation ([A-Z]))?$/, (m, _rec, tr) => {
+      const planetKey = m[1].trim();
+      if (!DROP_SOURCE_PLANETS.has(planetKey)) return null;
+      const planet = tr(planetKey);
+      if (typeof planet !== "string") return null;
+      const mission = m[3] ? tr(m[3].trim()) : null;
+      let out = planet + "/" + m[2].trim();
+      if (m[3]) out += "（" + (typeof mission === "string" ? mission : m[3].trim()) + "）";
+      if (m[4]) out += "，轮次 " + m[4];
+      return out;
+    }),
+    rule("resource.rotation", /^Rotation ([A-C])$/, (m) => "轮次 " + m[1]),
     rule("riven.percent-attr", /^([+-]?\d[\d,]*(?:\.\d+)?%)\s+(.+)$/, (m, _rec, tr) => {
       const raw = m[2].trim();
       const translated = tr(raw);

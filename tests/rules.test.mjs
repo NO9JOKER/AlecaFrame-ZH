@@ -33,6 +33,8 @@ const index = runtime.dictIndex.buildIndex({
   "Critical Damage": "暴击伤害",
   "Damage to Corpus": "对 Corpus 伤害",
   Mercury: "水星",
+  Earth: "地球",
+  Caches: "资源储藏舱",
   "Primary status chance": "主要武器触发几率",
   "Amber Archon Shard": "琥珀执刑官源力石",
   "+25% casting speed": "+25% 技能施放速度",
@@ -99,8 +101,8 @@ function test(name, fn) {
   }
 }
 
-test("rule table size is 121", () => {
-  assert.equal(runtime.rules.list.length, 121);
+test("rule table size is 123", () => {
+  assert.equal(runtime.rules.list.length, 123);
 });
 
 test("composite translates planet only", () => {
@@ -157,6 +159,26 @@ test("date rule via Last record", () => {
 
 test("unknown text stays English (null)", () => {
   assert.equal(translate("Some untranslated UI text"), null);
+});
+
+// ---- 资源掉落来源（星球名/地图名（任务名），轮次名） ----
+
+test("resource drop source composes planet, node, mission and rotation", () => {
+  assert.equal(translate("Mars/Gradivus (Caches), Rotation B"), "火星/Gradivus（资源储藏舱），轮次 B");
+  assert.equal(translate("Mercury/Neruda (Caches), Rotation B"), "水星/Neruda（资源储藏舱），轮次 B");
+});
+
+test("resource drop source without mission or rotation", () => {
+  assert.equal(translate("Earth/Cetus, Rotation A"), "地球/Cetus，轮次 A");
+  assert.equal(translate("Mars/Gradivus (Caches)"), "火星/Gradivus（资源储藏舱）");
+});
+
+test("resource rotation suffix", () => {
+  assert.equal(translate("Rotation C"), "轮次 C");
+});
+
+test("resource drop source stays English when the planet is unknown", () => {
+  assert.equal(translate("Foo/Bar (Caches), Rotation B"), null);
 });
 
 // ---- 仲裁实时窗口 / 共享 run-chart 动态文本 ----

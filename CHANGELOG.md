@@ -105,6 +105,23 @@
 - 说明：节点名（地图名）保持英文——官方中文客户端 269 个节点里 192 个也是英文；
   资源描述翻译（234 条）按约定后续分批做。
 
+### 修复：资源描述（234 条 / 318 行）未翻译
+
+- **现象**：资源仓库 → 资源详情里的英文描述（含 `Location:` 行）全部未翻译，例如
+  `A mark of identification carried by soldiers during The Old War so that their names might be remembered if they never returned home.`
+  与 `Location: Obtained from crates and enemies in Perita Rebellion missions (Dark Refactory).`。
+- **根因**：描述来自 C# 插件下发的 `descriptionHtml`（源数据 `cachedData/json/Resources.json` 的
+  `description` 字段），页面按文本节点渲染；词典里没有这些长句词条，也不适合写成动态规则。
+- **修复**：新增词典文件 `dict/entries/common/resource-descriptions.tsv`
+  （`dict/manifest.tsv` 顺序 120、shared、2 列），收录 234 条资源描述的 **318 个去重行**
+  （含 `Location:` 行），逐行精确匹配；专有名词按官方游戏译名：Sentient 保留英文、
+  Murmur→低语者、Entrati→英择谛、Duviri→双衍王境、Toroids→环型装置、Necramech→殁世机甲，
+  植物/矿石等按 `dict/generated/items.tsv` 的官方译名（塔苏摩、龙旋根、福烁草、延凡草、慧泉嫩芽、
+  密印髓质、萨莫感染石等）。
+- **验证**：`dict.py check --strict` 通过（entries 25,435 → **25,753**，layers 22）、`build.py`、
+  `golden.py verify`（已 snapshot）、`tools/verify.ps1`（PASS=15 FAIL=0）全过；
+  bundle 抽查已包含描述译文。真机资源详情页复验待确认。
+
 ## v1.2.1 (2026-11-08)
 
 ### 修复：OCR 前置安装的体积与幂等性（pip 缓存落到包根 / OpenCV 回溯 / 版本自检失效）

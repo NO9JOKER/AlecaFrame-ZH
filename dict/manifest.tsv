@@ -5,6 +5,7 @@
 40	fixes.tsv	manual	global	5	manual upstream corrections (empty initial)
 100	entries/common/ui.tsv	manual	shared	2	common UI
 110	entries/common/notifications.tsv	manual	shared	2	notifications/changelog
+120	entries/common/resource-descriptions.tsv	manual	shared	2	resource descriptions
 200	entries/screens/arbitration.tsv	manual	screen:arbitration	2	arbitration entries
 210	entries/screens/foundry.tsv	manual	screen:foundry	2	foundry entries
 220	entries/screens/inventory.tsv	manual	screen:inventory	2	inventory entries

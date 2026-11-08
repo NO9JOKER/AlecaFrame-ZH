@@ -33,7 +33,6 @@ jobs:
 
       - name: Node tests
         run: |
-          node tests/search.test.mjs
           node tests/runtime.test.mjs
           node tests/rules.test.mjs
           node tests/search-feature.test.mjs

@@ -13,7 +13,7 @@
 
 - 监听：`127.0.0.1:38147`（仅本机）
 - server 入口：`src/ocr/server/relic-ocr-server.js`
-- 协议/端点：保持现有 server/worker 约定，不在重构中改
+- 协议/端点：保持现有 server/worker 约定，不在本次边界调整中改
 
 ## 全局名
 

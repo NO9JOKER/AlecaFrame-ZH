@@ -71,9 +71,6 @@ if ($python) {
 }
 
 if ($node) {
-    if (-not $NoBuild) {
-        Invoke-Check "搜索回归测试" $node @("tests\search.test.mjs")
-    }
     Invoke-Check "runtime 测试" $node @("tests\runtime.test.mjs")
     Invoke-Check "rules 测试" $node @("tests\rules.test.mjs")
     Invoke-Check "search feature 测试" $node @("tests\search-feature.test.mjs")

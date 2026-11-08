@@ -83,6 +83,22 @@ def load_ocr_manifest(root: Path) -> dict:
     return data
 
 
+def sync_launcher(root: Path) -> dict:
+    """Generate the runnable launcher under bin/ from src/launcher/."""
+    source = root / "src" / "launcher"
+    target = root / "bin"
+    target.mkdir(parents=True, exist_ok=True)
+    (target / "AlecaFrame-ZH.ps1").write_bytes((source / "AlecaFrame-ZH.ps1").read_bytes())
+    lib_source = source / "lib"
+    lib_target = target / "lib"
+    lib_target.mkdir(parents=True, exist_ok=True)
+    files = []
+    for path in sorted(lib_source.glob("*.ps1")):
+        (lib_target / path.name).write_bytes(path.read_bytes())
+        files.append(path.name)
+    return {"entry": "bin/AlecaFrame-ZH.ps1", "lib": files}
+
+
 def validate_ocr_manifest(manifest: dict, pages: list[dict]) -> None:
     page_files = {str(page.get("file")) for page in pages}
     deploy_names: set[str] = set()
@@ -232,11 +248,13 @@ def main(argv=None) -> int:
 
     if not args.no_bundle:
         try:
+            launcher = sync_launcher(root)
             ocr = sync_ocr(root, ocr_manifest)
             bundle, ocr_items, digest = assemble(root, modules, pages, merged, relics)
         except dictlib.DictError as exc:
             print(f"build: INPUT ERROR {exc}")
             return 2
+        report["launcher"] = launcher
         report["ocr"] = ocr
         report["bundle"] = {
             "path": str(bundle.relative_to(root)).replace("\\", "/"),

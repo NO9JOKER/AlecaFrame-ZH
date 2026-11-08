@@ -9,6 +9,8 @@ build-unmatched.txt
 
 # 构建产物（由 python tools/build.py 生成）
 bin/alecaframe-zh-cn.js
+bin/AlecaFrame-ZH.ps1
+bin/lib/
 bin/ocr/*
 bin/ocr/.tools/
 

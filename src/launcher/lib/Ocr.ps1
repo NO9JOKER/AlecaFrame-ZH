@@ -1,4 +1,4 @@
-# ---------------- OCR 增强 ----------------
+﻿# ---------------- OCR 增强 ----------------
 
 function Get-OcrEnabled {
     if (-not (Test-Path $script:SettingsFile)) { return $true }

@@ -27,6 +27,8 @@ desktop.ini
 # OCR 运行期依赖（PaddleOCR/Node/Python 便携版，体积大，不入库）
 bin/ocr/.tools/
 bin/ocr/item-translations.normalized.runtime.json
+# pip 下载缓存（安装器/本机调试时可能落在当前目录，不入库）
+pip/
 # 本机设置（OCR 开关）
 AlecaFrame-ZH.settings.json
 # 测试临时目录

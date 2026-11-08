@@ -2,6 +2,43 @@
 
 ## 未发布
 
+### 修复：OCR 前置安装的体积与幂等性（pip 缓存落到包根 / OpenCV 回溯 / 版本自检失效）
+
+- **现象**：运行 `安装OCR前置组件.cmd` 后，包根出现 `pip\` 目录（单机实测 949.6 MiB / 142 个文件），
+  叠加 `bin\ocr\.tools\` 的 1,016.1 MiB，包目录「已装 OCR」约 1.99 GiB；首次下载约 990 MiB。
+  真正的中文 OCR 模型只有约 16 MB（PP-OCRv4 det 4.70 MB + rec 10 MB + cls 1.38 MB），
+  其余都是 PaddleOCR 的 Python 运行期依赖。另外**每次重跑安装都会重新执行 pip**（不跳过），
+  重新拉取/重装 paddlepaddle 等包。
+- **根因 1（缓存落到包根）**：安装器从未显式指定 pip 缓存目录，而它为了隔离 Paddle 模型会改写
+  `HOME`/`USERPROFILE`；在这种环境下 pip 20.3.4 解析出的缓存目录不是标准用户缓存目录。
+  本机两次真实安装都把缓存落在「运行安装脚本时的当前目录\pip\cache」（一次在包根、一次在开发工作区根，
+  各约 949.6 MiB）。实测显式设置 `PIP_CACHE_DIR` 为绝对路径后，`pip cache dir` 固定返回该路径。
+- **根因 2（依赖回溯）**：`paddleocr==2.9.1` 要求 `numpy<2` 且依赖 `opencv-python` /
+  `opencv-contrib-python`；不钉版时 pip 先取 OpenCV 4.12+（要求 `numpy>=2`）再逐版回退，
+  把 9 个 OpenCV 变体都下载一遍（约 950 MiB），而实际安装集只有约 304 MiB。
+- **根因 3（版本自检失效导致不幂等）**：`Test-PythonPackages` 用 `python -c` 传多行断言，
+  而 Windows PowerShell 5.1 调用原生程序时会丢掉参数里的双引号，Python 收到
+  `assert paddle.__version__ == 2.6.2` 直接 SyntaxError（安装日志可复现），本函数永远返回 false，
+  于是每次运行都重新跑 get-pip + pip install。
+- **修复**：
+  - `scripts/Install-OcrPrerequisites.ps1` 显式设置 `PIP_CACHE_DIR=<tools>\pip-cache`，不再落到当前目录；
+  - 安装成功后删除 `pip-cache`，并回收旧版遗留在 `<包根>\pip` 的缓存（只删除确认是 pip http 缓存的目录，
+    防止误删用户文件）；
+  - 把 `opencv-python` / `opencv-contrib-python` / `opencv-python-headless` 钉到 `4.11.0.86`
+    （与本机已装版本一致，兼容 `numpy==1.26.4`），首次下载由约 990 MiB 降到约 360 MiB；
+  - 版本自检改用单引号字符串，恢复「已安装 → 跳过 pip」的幂等行为；
+  - 安装完成时打印 `bin\ocr\.tools` 实际体积。
+- **结果**：首次下载约 360 MiB；装完 `bin\ocr\.tools\` 约 1.0 GiB，包根不再出现 `pip\`；
+  旧机器重跑一次安装即可回收约 950 MiB（本机包目录 1,987.5 MiB → 1,037.9 MiB）。
+  OCR 协议、端口、识别流程与全局名均未改动。
+- **验证**：
+  - 脚本经 Windows PowerShell 5.1 AST 解析通过（11 个函数）；`pip cache dir` 行为与
+    `Remove-PipCacheIfSafe` 的「清理 pip 缓存 / 保留普通目录」行为用离线脚本验证通过。
+  - 真机（本机 `D:\AlecaFrame-ZH`，v1.2.0 包，OCR 前置已装）：替换脚本后重跑
+    `Install-OcrPrerequisites.ps1`，全部组件「已存在，跳过」，不再执行 pip，5 秒完成
+    （日志 23:19:14→23:19:19），自动清理 `.tools\pip-cache` 并打印运行期体积 1,016 MiB。
+  - 首次全量下载（约 360 MiB）仍需联网机器复验：本会话沙箱不允许外网连接，未执行全量安装。
+
 ### 修复：铸造厂切换分类整窗卡死（属性写回未判等导致 MutationObserver 死循环）
 
 - **现象**：铸造厂页面点击「主武器/副武器/全部/…」等分类后整个界面卡死、加载圈一直转；英文原版正常，

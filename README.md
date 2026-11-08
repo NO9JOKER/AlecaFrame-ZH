@@ -18,7 +18,7 @@
 2. 实现方式是：启动 Overwolf 时传入参数关闭扩展完整性校验（`--ow-disable-features=extension-validation,...` + `--ow-enable-features=force-validation-report-only`），再注入翻译脚本。
 3. 补丁只修改 AlecaFrame 的前端页面，**不修改 Warframe 游戏文件**；DE 对第三方软件的政策是“自担风险（at your own risk）”。
 4. 本仓库**不包含任何 AlecaFrame 源码**（其版权归作者所有），仅包含本项目自己的脚本、词典与文档。
-5. 中文 OCR 是**可选组件**：会在项目目录内下载 Python / Node / PaddleOCR 与中文模型（数百 MB），不装也能正常使用界面汉化与中文搜索。
+5. 中文 OCR 是**可选组件**：首次安装会下载便携 Python / Node / PaddleOCR 与中文模型（约 360 MiB 下载，装完约 1.0 GB），不装也能正常使用界面汉化与中文搜索。
 
 ---
 
@@ -66,6 +66,9 @@
 | 关闭（保留界面汉化） | `关闭中文遗物OCR.cmd` |
 
 - OCR 前置装在 `bin\ocr\.tools\`（便携 Python + Node + PaddleOCR 模型），**不修改系统全局环境**；
+- 已安装的组件会先做版本自检再跳过：重跑 `安装OCR前置组件.cmd` 通常几秒完成，不会再执行 pip；
+- 体积构成：中文 OCR 模型本身只有约 16 MB（PP-OCRv4 det 4.70 MB + rec 10 MB + cls 1.38 MB），其余约 1.0 GB 是 PaddleOCR 的 Python 运行期依赖（`paddle`、`cv2`、`scipy`、`numpy` 等）；
+- 安装器把 pip 缓存固定在 `bin\ocr\.tools\pip-cache` 并在安装成功后删除；旧版安装器遗留在包根的 `pip\` 缓存（单机实测约 950 MiB）会在下次运行 `安装OCR前置组件.cmd` 时自动回收。运行 OCR 不需要这些缓存，确认不再安装后也可以手动删除；
 - 首次识别时 Paddle 模型要加载，可能失败一次后正常（冷启动最长约 2 分钟）；
 - 不装前置也能用界面汉化与中文搜索，启动器会自动跳过 OCR 并在日志里提示。
 

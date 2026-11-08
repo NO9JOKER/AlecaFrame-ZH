@@ -1,6 +1,6 @@
-﻿function Test-Patched {
+function Test-Patched {
     param([string]$VersionPath)
-    $zhJs = Join-Path $VersionPath "web\$($script:ZhJsRel)"
+    $zhJs = Join-Path $VersionPath $script:ZhJsRel
     $main = Join-Path $VersionPath "web\main.html"
     if (-not (Test-Path $zhJs)) { return $false }
     if (-not (Test-Path $main)) { return $false }
@@ -25,9 +25,13 @@ function Apply-Patch {
     param([string]$VersionPath)
     $srcJs = Join-Path $script:BinDir "alecaframe-zh-cn.js"
     if (-not (Test-Path $srcJs)) { throw "补丁文件缺失：$srcJs" }
-    $dstJs = Join-Path $VersionPath "web\$($script:ZhJsRel)"
+    $dstJs = Join-Path $VersionPath $script:ZhJsRel
     New-Item -ItemType Directory -Force -Path (Split-Path -Parent $dstJs) | Out-Null
     Copy-Item -LiteralPath $srcJs -Destination $dstJs -Force
+    if (-not (Test-Path -LiteralPath $dstJs)) {
+        throw "bundle 写入失败：$dstJs"
+    }
+    Write-Log ("已写入 bundle：{0} ({1} bytes)" -f $dstJs, (Get-Item -LiteralPath $dstJs).Length)
     $utf8 = New-Object System.Text.UTF8Encoding($false)
     foreach ($page in $script:Pages) {
         $file = Join-Path $VersionPath "web\$page"

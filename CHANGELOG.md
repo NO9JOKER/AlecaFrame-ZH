@@ -21,6 +21,23 @@
   repo 门禁通过。真实控制台下的 IndexOutOfRangeException 已由用户真机日志（2026-11-09 23:57）复现，
   新写法待下次全新环境安装时做真机复验。
 
+### 修复：裂罅「未揭示裂罅」页未汉化（Unseen (???) rivens / 卡片类型名 / 挑战提示）
+
+- **现象**：主窗口 → 裂罅 → 未揭示裂罅（Veiled stash）页里，分组标题 `Unseen (???) rivens`、
+  卡片名 `Zaw Riven` / `Rifle Riven` / `Kitgun Riven` / `Shotgun Riven` / `Melee Riven` /
+  `Pistol Riven`、提示 `Equip these rivens to reveal their challenge` 仍为英文。
+- **根因**：这些文本不是页面静态文案，而是 C# 插件 `AlecaFrameClientLib.dll` 下发的数据：
+  - 分组标题来自 `group.challengeDescriptionHtml`（未知挑战组的固定文案是 `Unseen (???) rivens`）；
+  - 卡片标题来自 `riven.name`，模板先做 `.replace(' Mod','')`，所以实际显示 `Rifle Riven` 等——
+    词典里只有 `Rifle Riven Mod`，精确匹配不到；
+  - 挑战提示来自 `riven.challengeStringWithComplication`（`Equip these rivens to reveal their challenge`）。
+- **修复**：`dict/entries/screens/riven.tsv` 补 11 条精确词条：分组标题、挑战提示与兜底提示，
+  以及由 `dict/generated/items.tsv` 的 `X Riven Mod` 译文去掉 ` Mod` 得到的 8 种卡片名
+  （步枪/霰弹枪/手枪/近战/组合枪/Zaw/曲翼枪械/同伴武器裂罅）。
+  `tests/golden/build.json` 按词典变更重新 snapshot（entries 25,408 → 25,419，bundle hash 更新）。
+- **验证**：`dict.py check --strict`、`build.py`、`golden.py verify`、python unittest、
+  node runtime/rules/search 测试全过；bundle 中已确认包含新词条；未揭示裂罅页面真机复验待确认。
+
 ## v1.2.1 (2026-11-08)
 
 ### 修复：OCR 前置安装的体积与幂等性（pip 缓存落到包根 / OpenCV 回溯 / 版本自检失效）

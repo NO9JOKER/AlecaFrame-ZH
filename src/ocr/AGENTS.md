@@ -27,6 +27,8 @@ src/ocr/
     relic-ocr-worker.ps1
     capture-warframe-screen.ps1
     paddle-reward-worker.py
+  host-patches/
+    relic-reward-fallback.js
 bin/ocr/
   afzh-items.js          # 构建生成，gitignore
   .tools/                # 便携 Python/Node/Paddle 缓存，gitignore

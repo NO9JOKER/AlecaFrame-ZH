@@ -14,6 +14,7 @@ src/ocr/
   page-scripts/<page>/ # 页面脚本源码（按页面组织仅限 OCR）
   server/              # 本地 OCR HTTP server
   worker/              # 截图/识别 worker 与前置脚本
+  host-patches/        # 注入官方文件的 helper（奖励回退等）
 ```
 
 构建会把页面脚本**平铺**复制到 `bin/ocr/<deployName>`，部署名仍是 `afzh-*.js`；页面通过 `pages.json` 的 `ocrScripts` 注入。`bin/ocr/.tools/` 与 `bin/ocr/afzh-items.js` 是运行期/生成物，不进源码。

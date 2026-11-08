@@ -109,7 +109,7 @@ def sync_ocr(root: Path, manifest: dict) -> dict:
         deploy = runtime_dir / script["deployName"]
         deploy.write_bytes(source.read_bytes())
         copied.append(script["deployName"])
-    for folder in ("server", "worker"):
+    for folder in ("server", "worker", "host-patches"):
         source_dir = ocr_dir / folder
         if not source_dir.is_dir():
             continue

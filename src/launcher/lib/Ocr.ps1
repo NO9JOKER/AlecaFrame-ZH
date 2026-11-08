@@ -1,4 +1,4 @@
-﻿# ---------------- OCR 增强 ----------------
+# ---------------- OCR 增强 ----------------
 
 function Get-OcrEnabled {
     if (-not (Test-Path $script:SettingsFile)) { return $true }
@@ -133,8 +133,8 @@ function Patch-RelicOverlayMain {
     if (-not (Test-Path $main)) { Write-Log "警告：未找到 relicOverlay/main.js，跳过奖励回退补丁"; return }
     $content = [System.IO.File]::ReadAllText($main, [System.Text.Encoding]::UTF8)
     if ($content.Contains("// ALECAFRAME_ZH_CN_REWARD_FALLBACK")) { return }
-    $helperFile = Join-Path $script:PkgRoot "src\relic-reward-fallback.js"
-    if (-not (Test-Path $helperFile)) { Write-Log "警告：缺少 src\relic-reward-fallback.js"; return }
+    $helperFile = Join-Path $script:OcrDir "relic-reward-fallback.js"
+    if (-not (Test-Path $helperFile)) { Write-Log "警告：缺少 bin\ocr\relic-reward-fallback.js"; return }
     $helper = [System.IO.File]::ReadAllText($helperFile, [System.Text.Encoding]::UTF8)
     $anchor = "var relicWindowInitialized = false;"
     if (-not $content.Contains($anchor)) {

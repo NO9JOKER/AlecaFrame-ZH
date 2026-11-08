@@ -12,18 +12,18 @@
 
 ```text
 src/launcher/
-  AlecaFrame-ZH.ps1     # 入口：参数解析 + Action 分派
+  AlecaFrame-ZH.ps1     # 入口：参数解析 + pages.json 加载 + Action 分派
   lib/
-    Logging.psm1
-    Overwolf.psm1       # 路径/进程/flag/加载等待
-    Snapshot.psm1       # 官方文件快照/还原/pristine
-    Patch.psm1          # 页面注入/脚本标签/幂等
-    Ocr.psm1            # OCR 生命周期（只调用 src/ocr/manifest）
-    State.psm1          # settings / last-session / 诊断
-    Cli.psm1            # Action 实现
+    Logging.ps1
+    Overwolf.ps1        # 路径/进程/flag/加载等待
+    Snapshot.ps1        # 官方文件快照/还原/pristine
+    Patch.ps1           # 页面注入/脚本标签/幂等
+    Ocr.ps1             # OCR 生命周期（只调用 src/ocr/manifest）
+    State.ps1           # settings / last-session / 诊断
+    Cli.ps1             # Action 实现
 ```
 
-- 根目录 `.cmd` 包装器保持稳定。
+- lib 模块由入口 dot-source，共享入口的 `$script:` 配置；不要改成 Import-Module（会丢共享状态）。
 - 页面清单来自 `pages.json`；OCR 注入清单来自 `src/ocr/manifest.json`；不要再新增第三份清单。
 - `bin/` 只放生成物；源码不要放这里。
 

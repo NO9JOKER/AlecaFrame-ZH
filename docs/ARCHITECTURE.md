@@ -71,7 +71,7 @@ src/ocr/
 ```text
 src/launcher/
   AlecaFrame-ZH.ps1      入口/Action 分派
-  lib/{Logging,Overwolf,Snapshot,Patch,Ocr,State,Cli}.psm1
+  lib/{Logging,Overwolf,Snapshot,Patch,Ocr,State,Cli}.ps1
 ```
 
 - 页面清单来自 `pages.json`；OCR 清单来自 `src/ocr/manifest.json`。

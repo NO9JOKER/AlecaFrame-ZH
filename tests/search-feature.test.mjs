@@ -16,6 +16,9 @@ const sandbox = {
     "Critical Damage": "暴击伤害",
     "Cold": "冰冻",
     "Status Damage": "状态伤害",
+    "Alloy Plate": "合金板",
+    "Adramal Alloy": "阿德拉玛合金",
+    "Mars": "火星",
   },
   __AFCN_RELIC_REWARDS__: {},
 };
@@ -66,6 +69,24 @@ test("resolveEnglishQuery wrapper", () => {
 
 test("unknown Chinese returns null", () => {
   assert.equal(api.englishForChinese("完全不存在的中文"), null);
+});
+
+test("local list matching supports Chinese and English", () => {
+  assert.equal(api.matchesText("Alloy Plate", "合金"), true);
+  assert.equal(api.matchesText("Alloy Plate", "合金板"), true);
+  assert.equal(api.matchesText("Adramal Alloy", "合金"), true);
+  assert.equal(api.matchesText("Alloy Plate", "alloy"), true);
+  assert.equal(api.matchesText("Alloy Plate", "完全不匹配"), false);
+});
+
+test("local list matching handles name + location rows", () => {
+  assert.equal(api.matchesText("Alloy Plate Mars/Gradivus", "合金板"), true);
+  assert.equal(api.matchesText("Alloy Plate Mars/Gradivus", "合金"), true);
+});
+
+test("local list matching resolves location through reverse index", () => {
+  assert.equal(api.matchesText("Mars/Gradivus (Caches), Rotation B", "火星"), true);
+  assert.equal(api.matchesText("Mercury/Neruda (Caches), Rotation B", "火星"), false);
 });
 
 console.log(`\n${passed} passed, ${failures.length} failed`);

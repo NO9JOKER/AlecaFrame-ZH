@@ -559,6 +559,28 @@
     return ok;
   }
 
+  /**
+   * 资源仓库（main 窗口 → 资源仓库）：该页在前端用
+   * `ResourcePlanner.matches(text, query)` 过滤（resources.js 顶部的 var），
+   * 不调用插件搜索接口；这里包一层，让中文查询走词典索引。
+   * 目标：`window.ResourcePlanner.matches`；只包一次（`__afzhMatchesHook`）。
+   */
+  function installResourcesSearchHook() {
+    const planner = root.ResourcePlanner;
+    if (!planner || typeof planner.matches !== "function") return false;
+    if (planner.__afzhMatchesHook) return true;
+    const original = planner.matches;
+    planner.matches = function (text, query) {
+      if (api.hasChinese(query)) {
+        const matched = safeCall(() => api.matchesText(text, query), false);
+        if (matched) { markHit("ResourcePlanner.matches"); return true; }
+      }
+      return original.call(this, text, query);
+    };
+    planner.__afzhMatchesHook = true;
+    return true;
+  }
+
   function installAppHooks() {
     let attempts = 0;
     const tick = () => {
@@ -566,16 +588,19 @@
       const market = safeCall(installMarketPanelHook, false);
       const arcane = safeCall(installInventoryArcaneHook, false);
       const rivenDiag = safeCall(installRivenListingDiagnostics, false);
+      const resources = safeCall(installResourcesSearchHook, false);
       status.hooks.relicPlanner = !!relic;
       status.hooks.marketPanel = !!market;
       status.hooks.inventoryArcane = !!arcane;
       status.hooks.rivenListing = !!rivenDiag;
-      if (relic && market && arcane) return;
+      status.hooks.resources = !!resources;
+      if (relic && market && arcane && resources) return;
       attempts++;
       if (attempts >= 40) {
         if (!relic) debugOnce("relicPlannerApp", "relicPlannerApp.receiveUpdate 不可用，跳过遗物规划中文过滤");
         if (!market) debugOnce("buySellPanelApp", "buySellPanelApp.updateSearchSuggestions/suggestionClicked 不可用，跳过市场建议中文列表");
         if (!arcane) debugOnce("inventoryApp", "inventoryApp.receiveArcaneProgress 不可用，跳过赋能页中文过滤");
+        if (!resources) debugOnce("resourcePlannerMissing", "ResourcePlanner.matches 不可用，跳过资源仓库中文过滤");
         return;
       }
       setTimeout(tick, 250);

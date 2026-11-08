@@ -280,6 +280,29 @@
       });
     }
 
+    /**
+     * 前端本地过滤用（资源仓库等页面在前端自己过滤，不调插件搜索接口）。
+     * 英文查询按原子串匹配；中文查询先转成「中文字幕名 + 英文原名」再匹配；
+     * 资源计划行是「物品名 + 位置」拼接，会退化为「最长可翻译前缀（物品名）」再匹配。
+     * 纯函数，供 runtime hook 包 `ResourcePlanner.matches` 使用。
+     */
+    function matchesText(text, term) {
+      const raw = String(text == null ? "" : text);
+      const query = String(term == null ? "" : term).trim();
+      if (!query) return true;
+      if (!hasChinese(query)) return raw.toLowerCase().indexOf(query.toLowerCase()) !== -1;
+      const terms = splitTerms(query);
+      const hit = (haystack) => !!haystack && terms.every((single) => haystack.indexOf(single) !== -1);
+      if (hit(searchableName(raw))) return true;
+      const words = raw.split(/\s+/).filter(Boolean);
+      for (let count = words.length - 1; count >= 1; count--) {
+        if (hit(searchableName(words.slice(0, count).join(" ")))) return true;
+      }
+      const english = englishForChinese(query);
+      if (english && !hasChinese(english)) return raw.toLowerCase().indexOf(english.toLowerCase()) !== -1;
+      return false;
+    }
+
     /** 市场搜索建议：从词典里直接找中文/英文子串命中，按 精确 > 前缀 > 包含 排序。 */
     function suggestions(term, limit) {
       const query = normKey(term);
@@ -334,6 +357,7 @@
       englishForChinese,
       englishQueryForChinese,
       filterItems,
+      matchesText,
       suggestions,
       marketSuggestions,
       englishFromMarketMarker,

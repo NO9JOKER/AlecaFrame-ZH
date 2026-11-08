@@ -5,7 +5,7 @@
 中文搜索能力：纯索引/查询 API + 宿主 hook 层。
 
 - `api.js`：`buildIndex`、正向/反向查询、部件组合、Prime 后缀、子串兜底、搜索建议；无 DOM、无定时器。
-- `runtime.js`：插件/应用 hook、市场建议、遗物规划器过滤、源力石页面整段补译、诊断、启动；合并后保留 `__AFZH_SEARCH__` / `__AFZH_SEARCH_API__` 诊断接口。
+- `runtime.js`：插件/应用 hook、市场建议、遗物规划器过滤、源力石页面整段补译、资源仓库前端过滤、诊断、启动；合并后保留 `__AFZH_SEARCH__` / `__AFZH_SEARCH_API__` 诊断接口。
 
 不负责：DOM 翻译（`dom`）、动态规则（`rules`）、页面清单（`pages.json`）、源力石单元格文本重建（`features.archon.text`）。
 
@@ -25,6 +25,9 @@
 ## 契约与不变量
 
 - 中文查询不送原生插件：清空 query JSON 的 `search`，拿完整列表后本地过滤；
+- 前端自己过滤、不调插件接口的列表（资源仓库）则包 `window.ResourcePlanner.matches`
+  （`api.matchesText`）：中文走「中文字幕名 + 英文原名」匹配，`名称 + 位置` 拼接行退化为
+  「最长可翻译前缀（物品名）」；英文/空查询不干预；
 - 本地过滤 0 命中时才尝试英文改写；
 - 英文/空查询不干预；
 - 每个 hook 必须 feature-detect；宿主缺失只 `debugOnce` 并跳过，不抛异常；

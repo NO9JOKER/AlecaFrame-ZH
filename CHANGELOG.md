@@ -55,6 +55,27 @@
   `golden.py verify`、`dict.py check --strict`、runtime/search 测试与 `tools/verify.ps1`
   （PASS=15 FAIL=0）全过。真机资源详情页复验待确认。
 
+### 修复：资源仓库中文模糊搜索未适配
+
+- **现象**：主窗口 → 资源仓库（Resource inventory）的搜索框输入中文（如「合金」）不会过滤，
+  只能输英文；同页资源详情的「已知掉落来源」搜索同样不支持中文。
+- **根因**：该页在前端用 `ResourcePlanner.matches(text, query)` 自己过滤
+  （`web/assets/js/main/resources.js` 顶部的 `var ResourcePlanner`），不调用插件搜索接口，
+  所以既有的「插件 JSON search 钩子」覆盖不到；列表里的资源名是英文（中文只由 DOM 翻译层显示），
+  中文查询自然匹配不到。
+- **修复**：
+  - `src/runtime/features/search/api.js` 新增纯函数 `matchesText(text, term)`：
+    英文按原子串匹配；中文走「中文字幕名 + 英文原名」；`物品名 + 位置` 拼接行退化为
+    「最长可翻译前缀（物品名）」再匹配；位置里的星球名再走一次反向索引（如「火星」→ Mars）；
+  - `src/runtime/features/search/runtime.js` 新增 `installResourcesSearchHook()`：
+    幂等、feature-detect 地包一层 `window.ResourcePlanner.matches`，中文查询命中才接管，
+    其余情况完全走原逻辑；
+  - `docs/modules/features-search/README.md` 补充该 hook 的边界与匹配规则。
+- **验证**：`tests/search-feature.test.mjs` 新增 3 个用例（中英文匹配、名称+位置行、位置反向索引），
+  10 项全过；`runtime` 25 项、`rules` 45 项、`build.py`、`golden.py verify`（已 snapshot）、
+  `dict.py check --strict`、`tools/verify.ps1`（PASS=15 FAIL=0）全过。
+  真机资源仓库中文搜索复验待确认。
+
 ## v1.2.1 (2026-11-08)
 
 ### 修复：OCR 前置安装的体积与幂等性（pip 缓存落到包根 / OpenCV 回溯 / 版本自检失效）

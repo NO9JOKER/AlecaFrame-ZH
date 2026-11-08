@@ -1,0 +1,25 @@
+﻿AlecaFrame-ZH 使用说明
+
+一、第一次使用（全部双击，无需命令行）
+1. 双击 版本信息.cmd，确认检测到的 Overwolf/AlecaFrame 版本与注入状态；窗口会暂停，按任意键关闭。
+2. 双击 启动-中文补丁.cmd。若 Windows SmartScreen 提示，点“更多信息” -> “仍要运行”。
+3. 等待 Overwolf/AlecaFrame 自动重启；进入主界面后检查中文是否生效。
+4. 如果界面仍是英文，不要反复点启动；先看 logs\launcher.log，再双击 导出诊断包.cmd，
+   把生成的诊断包发给维护者。
+
+二、日常操作
+- 切换中/英（不重启）：中英切换.cmd
+- 重新注入最新文件（不重启 Overwolf）：重启补丁.cmd
+- 恢复官方英文：还原-官方英文.cmd
+- 创建桌面快捷方式：创建桌面快捷方式.cmd
+- 中文 OCR（可选）：安装OCR前置组件.cmd / 启用中文遗物OCR.cmd / 关闭中文遗物OCR.cmd
+
+三、中文 OCR（可选）
+- 首次安装需联网下载便携 Python / Node / PaddleOCR 与中文模型（约 360 MiB 下载，装完约 1.0 GB）。
+- 前置装在 bin\ocr\.tools\，不修改系统全局环境；装好后重跑安装脚本通常几秒跳过。
+- 安装器把 pip 缓存固定在 bin\ocr\.tools\pip-cache 并在成功后删除，不会留在包根。
+
+四、如果出错
+- 启动失败或界面异常：双击 还原-官方英文.cmd。
+- 不要手动删除 state 目录；不要手工修改官方安装文件。
+- 排查顺序：版本信息.cmd -> logs\launcher.log -> 导出诊断包.cmd。

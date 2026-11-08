@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Assemble a self-contained test package under dist/.
+"""Assemble a self-contained package under dist/.
 
 The package keeps the launcher and bundle at the same relative paths the .cmd
 wrappers expect:
@@ -27,41 +27,6 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 
-INSTRUCTIONS = """AlecaFrame-ZH 测试包
-
-这是测试包，不是正式发布版。Start/Restore 会重启 Overwolf，并临时修改 AlecaFrame
-页面文件；测试前请结束正在进行的游戏任务、交易等不可中断操作。
-
-一、第一次使用（全部双击，无需命令行）
-1. 双击 版本信息.cmd，查看 Overwolf/AlecaFrame 版本和当前状态；窗口会暂停，按任意键关闭。
-2. 双击 启动-中文补丁.cmd。若 Windows SmartScreen 提示，点“更多信息” -> “仍要运行”。
-3. 等待 Overwolf/AlecaFrame 自动重启；进入主界面后检查中文是否生效。
-4. 如果界面仍是英文，不要反复点 Start；先看 logs\\launcher.log，再双击
-   导出诊断包.cmd，把生成的诊断包发给开发者。
-
-二、日常操作
-- 切换中/英（不重启）：中英切换.cmd
-- 重新注入最新包内容：重启补丁.cmd
-- 恢复官方英文：还原-官方英文.cmd
-- 创建桌面快捷方式：创建桌面快捷方式.cmd
-- OCR 开关/安装前置组件：使用对应中文名称的 .cmd
-
-三、日志和状态
-- logs\\launcher.log
-- state\\last-session.json
-- PACKAGE-INFO.json（记录 bundle SHA256）
-
-四、如果出错
-- Start 失败或界面异常：双击 还原-官方英文.cmd。
-- 不要手动删除 state 目录；不要手工改官方安装文件。
-- 不要把本测试包当成 1.2.0 正式发布包。
-
-五、验证通过标准
-- Status 显示“当前文件已汉化=True”和“本次会话已带校验绕过参数=True”。
-- 主窗口、库存、市场、裂罅、源力石、统计等界面出现中文。
-- 中文搜索可用（例如库存/铸造输入中文）。
-- Toggle/Refresh/Restore 均可正常使用。
-"""
 
 
 def sha256(path: Path) -> str:
@@ -113,6 +78,10 @@ def main(argv=None) -> int:
     if not pages.is_file():
         print("package: missing pages.json", file=sys.stderr)
         return 2
+    instructions = ROOT / "使用说明.txt"
+    if not instructions.is_file():
+        print("package: missing 使用说明.txt", file=sys.stderr)
+        return 2
 
     name = args.name or f"AlecaFrame-ZH-{args.version}"
     target = (ROOT / args.out / name).resolve()
@@ -136,7 +105,7 @@ def main(argv=None) -> int:
     for path in target.rglob("*"):
         if path.is_file():
             ensure_ps_bom(path)
-    (target / "使用说明.txt").write_text(INSTRUCTIONS, encoding="utf-8-sig", newline="\n")
+    copy_file(instructions, target / "使用说明.txt")
 
     info = {
         "schemaVersion": 1,
@@ -150,7 +119,7 @@ def main(argv=None) -> int:
         },
         "launcher": "bin/AlecaFrame-ZH.ps1",
         "pages": "pages.json",
-        "note": "未发布测试包；不要作为 release tag 分发。",
+        "note": "使用说明见 使用说明.txt",
     }
     (target / "PACKAGE-INFO.json").write_text(
         json.dumps(info, ensure_ascii=False, indent=2) + "\n", encoding="utf-8", newline="\n"

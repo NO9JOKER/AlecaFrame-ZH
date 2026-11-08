@@ -1,5 +1,26 @@
 # Changelog
 
+## 未发布
+
+### 修复：OCR 前置安装首次初始化模型会报「索引超出了数组界限」（模型其实已装好）
+
+- **现象**：全新安装首次运行 `安装OCR前置组件.cmd`，模型初始化步骤弹窗“OCR 前置组件安装失败（退出码 1）”，
+  日志显示 `& python -c "from paddleocr import PaddleOCR; ..."` 抛 `索引超出了数组界限`
+  （IndexOutOfRangeException）；但模型文件其实已在同一步下载完成，重跑一次或直接启动即可用。
+- **根因**：PowerShell 5.1 在真实控制台 + `Start-Transcript` 下处理 PaddleOCR 首次下载时的 tqdm
+  进度条输出，会在原生命令输出/转录路径上抛 IndexOutOfRangeException；脚本 trap 随即以退出码 1 结束，
+  并跳过了后面的 pip 缓存清理（本次实测残留 `.tools\pip-cache` 331.6 MB）。
+- **修复**（`scripts/Install-OcrPrerequisites.ps1`）：
+  - 模型初始化改为写临时 `.py` 文件执行（不再用 `-c` 长参数），并把全部输出重定向到
+    `bin\ocr\.tools\downloads\paddleocr-warmup.log`；
+  - 成功判定改为 `Test-PaddleModels`（模型文件齐全即成功），不再以子进程退出码为准；
+  - 失败时把日志末尾 15 行带进错误信息，便于诊断；
+  - 成功后继续执行原有的 pip 缓存清理，不再因这一步提前退出而残留。
+- **验证**：隔离环境（清空模型缓存 → 走首次下载路径）对比验证：新写法（临时 `.py` + 输出重定向）
+  模型下载完成、退出码 0、模型 9 个文件齐全；脚本经 Windows PowerShell 5.1 AST 解析通过（0 错误），
+  repo 门禁通过。真实控制台下的 IndexOutOfRangeException 已由用户真机日志（2026-11-09 23:57）复现，
+  新写法待下次全新环境安装时做真机复验。
+
 ## v1.2.1 (2026-11-08)
 
 ### 修复：OCR 前置安装的体积与幂等性（pip 缓存落到包根 / OpenCV 回溯 / 版本自检失效）

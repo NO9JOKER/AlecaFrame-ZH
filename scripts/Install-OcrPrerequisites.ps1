@@ -271,9 +271,37 @@ if (Test-PaddleModels) {
     Write-Step "PaddleOCR 中文模型已存在且完整，跳过下载。"
 } else {
     Write-Step "PaddleOCR 中文模型缺失，将初始化下载。"
-    & $pythonExe -c "from paddleocr import PaddleOCR; PaddleOCR(lang='ch', use_angle_cls=True, show_log=False, use_mkldnn=False); print('PaddleOCR ready')"
-    if ($LASTEXITCODE -ne 0) { throw "PaddleOCR 模型初始化失败。请保留安装输出并使用兼容性诊断报告反馈。" }
-    if (-not (Test-PaddleModels)) { throw "PaddleOCR 初始化完成后，中文模型文件仍不完整。" }
+    # PowerShell 5.1 在真实控制台 + Start-Transcript 下用 `& python -c` 跑 PaddleOCR
+    # 首次下载时，tqdm 进度条输出会抛 IndexOutOfRangeException（实测 2026-11-09 首次
+    # 安装：模型其实已下载完成，却报「索引超出了数组界限」并退出码 1）。
+    # 改为临时 .py 文件 + 全部输出重定向到日志文件，且最终以「模型文件是否齐全」判定成功，
+    # 避免“实际已装好却报错”。
+    $warmupScript = Join-Path $downloadRoot "paddleocr-warmup.py"
+    $warmupLog = Join-Path $downloadRoot "paddleocr-warmup.log"
+    $warmupCode = @'
+from paddleocr import PaddleOCR
+
+PaddleOCR(lang="ch", use_angle_cls=True, show_log=False, use_mkldnn=False)
+print("PaddleOCR ready")
+'@
+    [System.IO.File]::WriteAllText($warmupScript, $warmupCode, (New-Object System.Text.UTF8Encoding($false)))
+    $oldEap = $ErrorActionPreference
+    $ErrorActionPreference = "Continue"
+    try {
+        & $pythonExe $warmupScript *> $warmupLog
+    } catch {
+        Write-Step ("模型初始化命令异常（继续按模型文件校验）：" + $_.Exception.Message)
+    } finally {
+        $ErrorActionPreference = $oldEap
+    }
+    if (-not (Test-PaddleModels)) {
+        $warmupTail = ""
+        if (Test-Path -LiteralPath $warmupLog) {
+            $warmupTail = (Get-Content -LiteralPath $warmupLog -Encoding UTF8 -Tail 15 -ErrorAction SilentlyContinue) -join "`r`n"
+        }
+        throw ("PaddleOCR 初始化完成后，中文模型文件仍不完整。" + $(if ($warmupTail) { "`r`n最近日志（" + $warmupLog + "）：`r`n" + $warmupTail } else { "" }))
+    }
+    Write-Step "PaddleOCR 中文模型已就绪。"
 }
 
 & $nodeExe --version

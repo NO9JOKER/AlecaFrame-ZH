@@ -102,6 +102,7 @@ def main(argv=None) -> int:
     parser.add_argument("--version", default=(ROOT / "VERSION").read_text(encoding="utf-8").strip())
     parser.add_argument("--name", default=None, help="package directory name")
     parser.add_argument("--out", default="dist")
+    parser.add_argument("--zip", action="store_true", help="also create <name>.zip next to the package")
     args = parser.parse_args(argv)
 
     bundle = ROOT / "bin" / "alecaframe-zh-cn.js"
@@ -156,6 +157,12 @@ def main(argv=None) -> int:
     )
     print(f"package: OK {target}")
     print(f"bundle sha256: {info['bundle']['sha256']}")
+    if args.zip:
+        archive = target.parent / (target.name + ".zip")
+        if archive.exists():
+            archive.unlink()
+        shutil.make_archive(str(target.parent / target.name), "zip", root_dir=target.parent, base_dir=target.name)
+        print(f"zip: OK {archive}")
     print(f"start: {target / 'Status.cmd'}")
     return 0
 

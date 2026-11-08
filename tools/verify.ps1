@@ -17,6 +17,7 @@
 param(
     [string]$Python = "",
     [string]$Node = "",
+    [string]$Git = "",
     [switch]$Package,
     [switch]$NoBuild
 )
@@ -96,7 +97,7 @@ if ($node) {
 
 Write-Head "PowerShell BOM / 语法"
 $psFiles = @(Get-ChildItem -Path "." -Recurse -File -Include *.ps1,*.psm1 |
-    Where-Object { $_.FullName -notmatch '\\\.git\\' })
+    Where-Object { $_.FullName -notmatch '\\\.git\\|\\dist\\|\\build\\|\\bin\\ocr\\\.tools' })
 $badBom = 0
 $badSyntax = 0
 foreach ($file in $psFiles) {
@@ -115,11 +116,11 @@ if ($badBom -eq 0) { Write-Ok "PowerShell BOM $($psFiles.Count) 个" }
 if ($badSyntax -eq 0) { Write-Ok "PowerShell 语法 $($psFiles.Count) 个" }
 
 Write-Head "生成物未跟踪"
-$git = Get-Command git -ErrorAction SilentlyContinue
+$git = Resolve-Tool $Git "GIT" @("git")
 if ($git) {
-    $tracked = @(& $git.Source ls-files "bin/alecaframe-zh-cn.js" "bin/ocr" 2>$null)
+    $tracked = @(& $git ls-files "bin/alecaframe-zh-cn.js" "bin/ocr" 2>$null)
     if ($tracked.Count -gt 0) { Write-Fail "生成物被跟踪：$($tracked -join ', ')" } else { Write-Ok "bin 生成物未跟踪" }
-    $dirty = @(& $git.Source status --porcelain 2>$null)
+    $dirty = @(& $git status --porcelain 2>$null)
     if ($dirty.Count -gt 0) { Write-Ok "工作树有未提交修改（不影响本地验证）" } else { Write-Ok "工作树干净" }
 } else {
     Write-Fail "找不到 git，无法检查生成物"

@@ -1,5 +1,25 @@
 # Changelog
 
+## v1.2.0 (2026-11-08)
+
+新架构发布：能力优先模块、manifest 驱动词典/构建/启动器、单 bundle、OCR 边界。
+
+### 新增
+
+- 词典：`dict/manifest.tsv` 唯一加载清单，generated/upstream/人工词条/overrides/keep-english 分层；
+  `tools/dict.py`（lookup/check/report）、严格校验、未登记文件检查。
+- 构建：`tools/build.py` 合并词典、组装单 bundle、同步 OCR 资产、生成构建报告；
+  `tools/package.py` 生成自包含测试包/zip。
+- 运行时：`src/runtime/` 的 core / rules / dom / features / adapters / entry；
+  中文搜索、动态规则、Archon 整段、页面上下文注册表 `__AFCN_PAGES__`。
+- 启动器：`src/launcher/` 拆分入口与 lib 模块；页面、bundle、OCR 清单由 manifest 驱动。
+- OCR：源码迁入 `src/ocr/`，`manifest.json` 为唯一注册表；页面脚本保持 `afzh-*.js` 部署名。
+- 门禁：`tools/verify.ps1`、CI build/release workflow、测试包与真机验证文档。
+
+### 验证
+
+- 词典 strict、契约、Python/Node 测试、bundle 构建与真机 Start 已验证；OCR 前置未装时自动跳过。
+
 ## v1.1.11 (2026-11-07)
 
 执刑官源力石页面完整汉化 + 重构交接文档。

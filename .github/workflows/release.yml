@@ -1,4 +1,5 @@
 name: release
+
 on:
   push:
     tags:
@@ -12,13 +13,45 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-      - name: Build dictionary
-        run: python src/build.py
-      - name: Package zip
-        run: python scripts/package.py
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Tag and version contract
+        run: |
+          VERSION="$(cat VERSION)"
+          test "$GITHUB_REF_NAME" = "v$VERSION" || {
+            echo "tag $GITHUB_REF_NAME != v$VERSION" >&2
+            exit 1
+          }
+          git fetch origin main --depth=1
+          git merge-base --is-ancestor "$GITHUB_SHA" origin/main || {
+            echo "tag commit is not on main" >&2
+            exit 1
+          }
+          echo "version=$VERSION"
+
+      - name: Build and test
+        run: |
+          python tools/build.py
+          python tools/check_contracts.py
+          python tools/dict.py check --strict
+          python -m unittest discover -s tests -p "test_dictlib.py"
+          node tests/search.test.mjs
+          node tests/runtime.test.mjs
+          node tests/rules.test.mjs
+          node tests/search-feature.test.mjs
+
+      - name: Package
+        run: |
+          VERSION="$(cat VERSION)"
+          python tools/package.py --version "$VERSION" --name "AlecaFrame-ZH-$VERSION" --out dist --zip
+
       - name: Create release
         uses: softprops/action-gh-release@v2
         with:

@@ -21,7 +21,7 @@ src/ocr/manifest.json ──> launcher（OCR 脚本复制/注入/启停）
 |---|---|---|
 | `src/runtime/core` | 规范化、词典索引、翻译决策链 | DOM、宿主 hook、页面名 |
 | `src/runtime/rules` | 动态文本规则（每条可测） | 词条、DOM 遍历 |
-| `src/runtime/dom` | 遍历/属性/观察器/上下文判定 | 搜索索引、页面清单 |
+| `src/runtime/dom` | 遍历/属性/观察器/上下文判定；Canvas 2D 文本翻译 | 搜索索引、页面清单 |
 | `src/runtime/features` | 搜索、源石、遗物奖励等能力 | 页面名、launcher |
 | `src/runtime/adapters` | 页面/DOM 特判 | 全局规则、词典 |
 | `src/launcher` | 快照/还原/启动/注入/OCR 生命周期 | 翻译/搜索逻辑 |

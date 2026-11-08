@@ -107,6 +107,16 @@ test("composites run before rules", () => {
   assert.equal(tr("Lares, Mercury"), "Lares，水星");
 });
 
+test("composite translates a known prefix label and keeps the node name", () => {
+  const index = runtime.dictIndex.buildIndex({ Mercury: "水星", Recording: "录制中" });
+  const tr = runtime.translate.createTranslator(index, {
+    composites: [runtime.composite.translateComposite],
+  }).translate;
+  assert.equal(tr("Recording Lares, Mercury"), "录制中 Lares，水星");
+  assert.equal(tr("Lares, Mercury"), "Lares，水星");
+  assert.equal(tr("Foo Lares, Mercury"), "Foo Lares，水星");
+});
+
 test("rules run after dictionary and receive translate()", () => {
   const index = runtime.dictIndex.buildIndex({ "Critical Damage": "暴击伤害" });
   const tr = runtime.translate.createTranslator(index, {
@@ -130,6 +140,133 @@ test("all rules miss -> null (keeps English)", () => {
   const index = runtime.dictIndex.buildIndex({});
   const tr = runtime.translate.createTranslator(index, { rules: [() => null] }).translate;
   assert.equal(tr("Unknown UI text"), null);
+});
+
+function makeCanvasTarget() {
+  const target = { calls: [] };
+  target.fillText = function (text) {
+    target.calls.push({ method: "fillText", text: text, x: arguments[1], y: arguments[2], maxWidth: arguments[3], count: arguments.length, self: this });
+    return "fill-return";
+  };
+  target.strokeText = function (text) {
+    target.calls.push({ method: "strokeText", text: text, x: arguments[1], y: arguments[2], maxWidth: arguments[3], count: arguments.length, self: this });
+    return "stroke-return";
+  };
+  target.measureText = function (text) {
+    target.calls.push({ method: "measureText", text: text, count: arguments.length, self: this });
+    return { width: String(text).length };
+  };
+  return target;
+}
+
+function canvasTranslator(source) {
+  const index = runtime.dictIndex.buildIndex(source);
+  return runtime.translate.createTranslator(index).translate;
+}
+
+test("canvas text translates chart strings and keeps this/args/return", () => {
+  assert.equal(typeof runtime.canvasText.create, "function");
+  const target = makeCanvasTarget();
+  const api = runtime.canvasText.create({
+    translate: canvasTranslator({ "Total interval": "总间隔", Active: "活跃", Intermission: "间歇" }),
+    target: target,
+  });
+  assert.equal(api.install(), true);
+
+  assert.equal(target.fillText("Total interval", 10, 20), "fill-return");
+  assert.equal(target.calls[0].text, "总间隔");
+  assert.equal(target.calls[0].x, 10);
+  assert.equal(target.calls[0].y, 20);
+  assert.equal(target.calls[0].maxWidth, undefined);
+  assert.equal(target.calls[0].count, 3);
+  assert.equal(target.calls[0].self, target);
+
+  assert.equal(target.strokeText("Intermission", 1, 2, 80), "stroke-return");
+  assert.equal(target.calls[1].text, "间歇");
+  assert.equal(target.calls[1].x, 1);
+  assert.equal(target.calls[1].y, 2);
+  assert.equal(target.calls[1].maxWidth, 80);
+});
+
+test("canvas text keeps misses, numbers, Chinese and non-string args unchanged", () => {
+  let translateCalls = 0;
+  const translate = canvasTranslator({ "Total interval": "总间隔" });
+  const target = makeCanvasTarget();
+  const api = runtime.canvasText.create({ translate: (text) => { translateCalls++; return translate(text); }, target: target });
+  api.install();
+
+  target.fillText("Unknown UI text", 0, 0);
+  target.fillText("0", 0, 0);
+  target.fillText("总间隔", 0, 0);
+  target.fillText(42, 0, 0);
+
+  assert.equal(target.calls.length, 4);
+  assert.equal(target.calls[0].text, "Unknown UI text");
+  assert.equal(target.calls[1].text, "0");
+  assert.equal(target.calls[2].text, "总间隔");
+  assert.equal(target.calls[3].text, 42);
+  assert.equal(translateCalls, 3, "non-string text must not reach translate()");
+});
+
+test("canvas text keeps the original when translate returns the same string", () => {
+  const target = makeCanvasTarget();
+  const api = runtime.canvasText.create({ translate: (text) => text, target: target });
+  api.install();
+  target.fillText("Status Damage", 5, 6);
+  assert.equal(target.calls[0].text, "Status Damage");
+  assert.equal(target.calls[0].x, 5);
+});
+
+test("canvas measureText measures the translated text", () => {
+  const target = makeCanvasTarget();
+  const api = runtime.canvasText.create({ translate: canvasTranslator({ "Total interval": "总间隔" }), target: target });
+  api.install();
+
+  const metrics = target.measureText("Total interval");
+  assert.equal(target.calls[0].method, "measureText");
+  assert.equal(target.calls[0].text, "总间隔");
+  assert.equal(metrics.width, 3);
+
+  const miss = target.measureText("Unknown UI text");
+  assert.equal(target.calls[1].text, "Unknown UI text");
+  assert.equal(miss.width, "Unknown UI text".length);
+});
+
+test("canvas install is idempotent and does not double translate", () => {
+  let translateCalls = 0;
+  const translate = canvasTranslator({ Active: "活跃" });
+  const target = makeCanvasTarget();
+  const originalFill = target.fillText;
+  const api = runtime.canvasText.create({ translate: (text) => { translateCalls++; return translate(text); }, target: target });
+
+  assert.equal(api.install(), true);
+  const wrappedFill = target.fillText;
+  assert.notEqual(wrappedFill, originalFill);
+  assert.equal(api.install(), false);
+  assert.equal(target.fillText, wrappedFill);
+
+  target.fillText("Active", 1, 2);
+  assert.equal(target.calls[0].text, "活跃");
+  assert.equal(target.calls[0].x, 1);
+  assert.equal(translateCalls, 1);
+});
+
+test("canvas module is a no-op without CanvasRenderingContext2D", () => {
+  const api = runtime.canvasText.create({ translate: canvasTranslator({ Active: "活跃" }) });
+  assert.equal(api.install(), false);
+  assert.equal(api.translateText("Active"), "活跃");
+  assert.equal(api.translateText(7), 7);
+  assert.equal(api.translateText("Unknown UI text"), "Unknown UI text");
+});
+
+test("canvas text falls back to the original when translate throws", () => {
+  const target = makeCanvasTarget();
+  const api = runtime.canvasText.create({ translate: () => { throw new Error("boom"); }, target: target });
+  assert.equal(api.install(), true);
+  assert.equal(target.fillText("Total interval", 3, 4), "fill-return");
+  assert.equal(target.calls[0].text, "Total interval");
+  assert.equal(target.calls[0].x, 3);
+  assert.equal(target.measureText("Active").width, "Active".length);
 });
 
 test("archon cell text rebuilds the sentence without duplicating the icon alt", () => {

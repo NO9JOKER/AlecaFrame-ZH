@@ -40,6 +40,7 @@ ADR/指南/页面卡/契约 schema。
 | `runtime-core` | `src/runtime/core/` | active（W2 基础） |
 | `runtime-rules` | `src/runtime/rules/` | active（规则表） |
 | `runtime-dom` | `src/runtime/dom/` | active（DOM 翻译） |
+| `runtime-canvas-text` | `src/runtime/dom/canvas-text.js` | active（Canvas 2D 文本） |
 | `features-search` | `src/runtime/features/search/` | active（纯 API + 宿主 hook） |
 | `features-archon` | `src/runtime/features/archon/` | active（源力石 v-html 整段） |
 | `runtime-adapters` | `src/runtime/adapters/` | active（页面上下文） |

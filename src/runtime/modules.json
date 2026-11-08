@@ -50,6 +50,14 @@
       "notes": "DOM 文本/属性翻译、观察器、裂罅上下文"
     },
     {
+      "id": "dom.canvas-text",
+      "file": "dom/canvas-text.js",
+      "layer": "dom",
+      "deps": ["core.normalize"],
+      "risk": "T1",
+      "notes": "Canvas 2D 文本翻译：包装 fillText/strokeText/measureText，覆盖图表图例/提示/坐标轴与自定义画布文字"
+    },
+    {
       "id": "features.search.api",
       "file": "features/search/api.js",
       "layer": "features",
@@ -85,7 +93,7 @@
       "id": "entry",
       "file": "entry.js",
       "layer": "entry",
-      "deps": ["core.normalize", "core.dict-index", "core.composite", "rules.index", "core.translate", "dom.index", "features.search.api", "features.search.runtime", "adapters.index"],
+      "deps": ["core.normalize", "core.dict-index", "core.composite", "rules.index", "core.translate", "dom.index", "dom.canvas-text", "features.search.api", "features.search.runtime", "adapters.index"],
       "risk": "T1",
       "notes": "组合根：构建 translator、暴露兼容全局、启动 DOM"
     }

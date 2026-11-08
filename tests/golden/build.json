@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
   "dictionary": {
-    "sha256": "2eb3ac63abf34b435ba3128c3eac587bca2d00d4715e5fce91fb71aad900a387",
-    "bytes": 1169862,
-    "entries": 25304
+    "sha256": "a5d3cb1c6d3ae2c256364a550a659ea0c778fa99d8e6a89500f55e15f51d39bb",
+    "bytes": 1177920,
+    "entries": 25408
   },
   "bundle": {
-    "sha256": "3b8aa05d91f5793c5864356e9871e3dc148ad0a10e6660c0c88906fefddf1dbb",
-    "bytes": 1269090
+    "sha256": "6d23c39518af5ef1e51ee0c9bb56ea12d16e901a63f0eda197b527e66d1aa71e",
+    "bytes": 1301996
   },
   "pages": [
     {
@@ -96,8 +96,10 @@
     {
       "id": "arbitrationLive",
       "file": "arbitrationLive.html",
-      "inject": false,
-      "features": []
+      "inject": true,
+      "features": [
+        "translate"
+      ]
     },
     {
       "id": "debugTools",
@@ -125,6 +127,7 @@
     "rules.index",
     "core.translate",
     "dom.index",
+    "dom.canvas-text",
     "features.search.api",
     "features.archon.text",
     "features.search.runtime",

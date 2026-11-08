@@ -31,6 +31,17 @@
     skipSelector: pageFeatures.indexOf("archon") !== -1 ? ARCHON_SKIP : "",
   });
 
+  // Chart legends/tooltips/axis labels are painted on the canvas 2D context and
+  // are invisible to the DOM layer. Install the canvas text wrapper before the
+  // host-only DOM startup branch; without a canvas environment it is a no-op.
+  if (runtime.canvasText) {
+    try {
+      runtime.canvasText.create({ translate: translator.translate }).install();
+    } catch (_) {
+      /* canvas text translation must never break the page */
+    }
+  }
+
   if (typeof document === "undefined") {
     return;
   }

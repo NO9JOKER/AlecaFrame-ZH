@@ -2,7 +2,7 @@
 
 ## 职责
 
-按顺序执行的动态文本规则表：裂罅百分比/倍率/符号、源力石数量、统计日期、通用数字/日期/段位等。每条规则是 `{ id, match(text, translate) => string|null }`，首个命中即返回。
+按顺序执行的动态文本规则表：裂罅百分比/倍率/符号、源力石数量、统计日期、通用数字/日期/段位，以及仲裁实时窗口/运行记录的 Vue 合并文本节点与 run-chart Canvas 提示格式。每条规则是 `{ id, match(text, translate) => string|null }`，首个命中即返回。
 
 不负责：静态词条、DOM 遍历、搜索 hook、页面适配。
 
@@ -30,6 +30,9 @@
 
 - 新增/修改规则 → 本文件 + `tests/rules.test.mjs`；
 - 需要词条配合时，在 `dict/entries` 补词条，不要硬编码数字；
+- 仲裁/Vue 合并文本节点（如 `Waves completed`、`, Defense`、`Wave 3 complete`）与 run-chart Canvas 提示（如
+  `Total interval: 2:30`、`Drone spawn rate: 6 spawns/min`）也走本规则表；Canvas 字符串由
+  `dom.canvas-text` 在绘制时交给 `translate()`，规则在这里定义，不要在 canvas 模块里另写匹配逻辑；
 - 复杂 DOM/上下文规则 → 放到 `features` 或 `dom`，不要塞进规则表。
 
 ## 测试
@@ -39,7 +42,7 @@ node tests\rules.test.mjs
 node tests\runtime.test.mjs
 ```
 
-覆盖：规则表数量、复合文本、裂罅百分比/倍率、源力石、段位、日期、未知文本。
+覆盖：规则表数量、复合文本、裂罅百分比/倍率、源力石、段位、日期、仲裁合并文本节点（波次/计数/头部后缀/速率单位）、run-chart Canvas 提示格式、未知文本保持英文（非半翻）。
 
 ## 失败模式
 

@@ -21,6 +21,7 @@ Add conditions segment	添加条件分段
 Add favorites	添加收藏
 Advance notice	提前通知
 Agent composition	单位构成
+agents	个
 Alerts	警报
 All Arbitration missions	全部仲裁任务
 All days	全部日期
@@ -49,6 +50,8 @@ Average drone spawns per minute of gameplay, including intermissions and excludi
 Back to charts	返回图表
 Back to history	返回历史
 Base drop probability	基础掉落概率
+Break	间歇
+Building your baseline	正在建立基准
 Cached forecast	缓存的预测
 Cancel	取消
 Capture:	采集：
@@ -87,6 +90,7 @@ Copy summary	复制摘要
 Cumulative Arbitration drone spawn events observed by this log. Does not measure drone kills or drops.	此日志观测到的累计仲裁无人机生成事件。不代表无人机击杀或掉落。
 Cumulative enemy spawn events observed by this log. Does not measure kills or enemies currently alive.	此日志观测到的累计敌人生成事件。不代表击杀或当前存活敌人数。
 Current forecast	当前预测
+Current wave	当前波次
 Current wave time	当前波次时间
 Custom range	自定义范围
 Date unavailable	日期不可用
@@ -108,6 +112,7 @@ Drone spawns per minute of active wave time. Compared with the duration-weighted
 drones / min	无人机 / 分钟
 Drones per interval	每个间隔的无人机数
 Drones spawned	已生成无人机
+drones/min	无人机/分钟
 Drop blessing expired	掉落祝福已过期
 Drop blessing, confirmation missing	掉落祝福，缺少确认
 Drop blessing, unknown	掉落祝福，未知
@@ -128,6 +133,7 @@ Enter a whole Vitus amount from 0 to 1,000,000, or leave it blank.	请输入 0 �
 Enter the Vitus collected in a run. Inventory balance changes are tracked separately.	输入一局中收集的生息精华。仓库余额变化单独记录。
 Entire run	整局
 Essence / hour	生息精华 / 小时
+Estimate unavailable for this run	本局无法估算
 Estimated fraction of eligible drops you collect. Use 1 only if assuming all drops are collected.	你采集到的符合条件掉落的估算比例。仅在假设全部掉落都被采集时使用 1。
 Events	事件
 Expand interval chart	展开间隔图表
@@ -150,6 +156,7 @@ Filter saved runs	筛选已保存记录
 Filters	筛选器
 Final interval	最后一个间隔
 Finalizing run report	正在完成记录报告
+Finalizing your run report	正在完成你的记录报告
 Find a node	查找节点
 Find your next Arbitration	查找下一场仲裁
 First 100 intervals	前 100 个间隔
@@ -166,8 +173,10 @@ From	起始
 From, seconds	起始（秒）
 Front, Y / Z	正面，Y / Z
 Game information is unavailable.	游戏信息不可用。
+game units	游戏单位
 Gameplay time, excluding preparation and ending at extraction when observed	游玩时间，不含准备阶段，并在观测到撤离时结束
 Gameplay time, including intermissions	游玩时间（含间隔）
+Gameplay, including intermissions	游玩（含间隔）
 Host	主机
 Hourly rates use observed gameplay time, including intermissions.	每小时速率使用观测到的游玩时间，包含间隔。
 Image preview	图片预览
@@ -178,6 +187,7 @@ Imported report	已导入报告
 Include all nodes	包含所有节点
 Include non-favorite nodes	包含非收藏节点
 Include player names where available	尽可能包含玩家名称
+Includes the expected reward-cycle contribution earned in this wave.	包含本波次获得的预期奖励周期贡献
 Includes time between rewards	包含奖励之间的时间
 Increments in the mission's Spawned counter, separate from named agent creations. These are not kills or the number of enemies alive.	任务中“已生成”计数器的增量，与具名单位的创建分开计算。不代表击杀数或存活敌人数。
 Inspect spawns	查看生成情况
@@ -200,6 +210,8 @@ Last 30 days	最近 30 天
 Last 5 minutes	最近 5 分钟
 Last 7 days	最近 7 天
 Last 90 days	最近 90 天
+Last drone	上次无人机
+Last wave	上一波次
 Last wave time	上一波次时间
 left to enter	剩余进入
 Live Arbitration	实时仲裁
@@ -209,6 +221,7 @@ Loading Arbitrations	正在加载仲裁…
 Loading run report	正在加载记录报告
 Loading saved runs	正在加载已保存记录
 Loading saved runs…	正在加载已保存记录…
+Loading the current run	正在加载当前运行
 Local time	本地时间
 Longest first	最长优先
 Longest observed gaps	观测到的最长间隔
@@ -239,6 +252,7 @@ Named creations observed in the log, including unclassified agents. This is sepa
 Newest first	最新优先
 Next mission unavailable	下一任务不可用
 Next seven days	未来七天
+No active Arbitration	无进行中的仲裁
 No complete interval boundaries were recorded	未记录到完整的间隔边界
 No complete interval timings in this capture	本次采集中没有完整的间隔计时
 No complete interval timings in this range	该范围内没有完整的间隔计时
@@ -300,6 +314,8 @@ Preparing	准备中
 Preview your matches	预览匹配结果
 Primary	主武器
 Readable summary	可读摘要
+Recent	最近
+Recent uses a 90-second rolling average; All time uses a 5-minute rolling average. The start of the run uses the elapsed portion of each window.	最近使用 90 秒滚动平均；全部时间使用 5 分钟滚动平均。本局开始时使用各窗口已过去的部分。
 Reconnecting	正在重新连接
 Recorded	已记录
 Recorded here	记录于此
@@ -322,9 +338,11 @@ Retry	重试
 Retrying automatically	正在自动重试
 Role, entered by you	角色，由你填写
 Rotation time	轮次时间
+Rotations	轮次
 Run	记录
 Run added to favorites.	记录已加入收藏。
 Run average	平均每局
+Run data is unavailable	运行数据不可用
 Run data is unavailable. Retrying automatically.	运行数据不可用，正在自动重试。
 Run earnings could not be loaded.	无法加载运行收益。
 Run earnings could not be saved. Your edits are still here.	无法保存运行收益。你的修改仍保留在此。
@@ -349,6 +367,7 @@ Schedule data sourced from	日程数据来源
 Search node, mode, role, or notes	搜索节点、模式、角色或备注
 Search nodes, planets, or mission types	搜索节点、星球或任务类型
 Secondary	副武器
+seconds	秒
 Select any number of choices in each group. Empty groups include everything. Changes save automatically	每组可任意多选。留空表示包含全部。更改会自动保存。
 Show 50 more	再显示 50 条
 Show 80 more	再显示 80 条
@@ -356,6 +375,7 @@ Show all	显示全部
 Show in Timers	在计时器中显示
 Show more runs	显示更多记录
 Side, X / Y	侧面，X / Y
+Since last drone	距上次无人机
 Slower	更慢
 Slower sections	较慢的分段
 Slowest	最慢
@@ -365,6 +385,7 @@ Spawn counts are observed events, not kills or drops.	生成计数是观测到�
 Spawn map	生成地图
 Spawn phase	生成阶段
 Spawns	生成
+spawns	次
 spawns/min	生成/分钟
 Specific nodes	指定节点
 Split kills into segments when conditions change. Other Vitus is a fixed amount you explicitly include, such as rotation earnings.	条件变化时将击杀拆分为分段。“其他生息精华”是你明确计入的固定数量，例如轮次收益。
@@ -414,6 +435,9 @@ This reminder has already been delivered or the rotation has started.	此提醒�
 This report has no captured player names. Original log export preserves game evidence, including any names in the original text.	此报告没有采集到玩家名称。导出原始日志会保留游戏证据，包括原始文本中的任何名称。
 This run could not be opened.	无法打开此记录。
 This wave	本次波次
+This wave estimate includes drone drops only; its reward-cycle contribution is unconfirmed.	本波次估算仅包含无人机掉落；其奖励周期贡献尚未确认
+This wave, drops + rewards	本次波次，掉落 + 奖励
+This wave, drops only	本次波次，仅掉落
 Time left to enter	剩余进入时间
 Time since the last reward	距上次奖励的时间
 Time since the wave ended	距波次结束的时间
@@ -441,12 +465,20 @@ Up next	接下来
 Use no more than 16 segments.	最多使用 16 个分段。
 Use the amount attributable to this run. A blank value means unknown, 0 means none collected.	使用归因于本次运行的数量。留空表示未知，0 表示未收集。
 Use the bell beside a future rotation to save a reminder. Recurring alerts can stay off.	点击未来轮次旁的铃铛保存提醒。定期提醒可以保持关闭。
+Uses the arbi.guide model with resource and drop-chance boosters, Resourceful Retriever at 18%, and every observed drone killed and collected. Your Retriever cannot be confirmed from the log. An unknown blessing shows a range.	使用 arbi.guide 模型：计入资源与掉落几率加成、富足寻回者 18%，并假设观测到的每个无人机都被击杀并采集。日志无法确认你的富足寻回者。祝福未知时会显示范围
+VE / min	生息精华 / 分钟
 Version	版本
 Visible	可见
 Vitus	生息精华
 Vitus / hour	生息精华 / 小时
 Vitus collected	已收集的生息精华
 Vitus per successful collected drop, before an optional companion double.	每次成功采集掉落的生息精华，在可选的同伴双倍之前。
+vs earlier waves	对比先前波次
+Waiting	等待中
+Waiting for an Arbitration	正在等待仲裁
+Waiting for drone observations	正在等待无人机观测
+Waiting for gameplay and reward timing	正在等待游玩与奖励计时
+Waiting for gameplay to begin	正在等待游玩开始
 Waiting for run data	正在等待运行数据
 Waiting for the gameplay start	正在等待游玩开始
 Waiting for the next Arbitration	正在等待下一场仲裁
@@ -454,13 +486,85 @@ Waiting for wave 1	正在等待第 1 波
 Wave recap	波次回顾
 Wave span starts at the first observed wave and includes its intermissions. Full capture also includes setup and the final decision or extraction.	波次区间从首个观测到的波次开始，并包含其间隔。完整采集还包含准备阶段与最终决策或撤离。
 Wave time	波次时间
+Waves	波次
 Year	年
 Your alert preferences	你的提醒偏好
 Your Arbitration preferences could not be saved. Retrying automatically.	无法保存你的仲裁偏好，正在自动重试。
 Your Arbitration preferences could not be saved. Try again.	无法保存你的仲裁偏好，请重试。
 Your estimate of eligible killed drones. Observed spawns do not establish kills.	你对符合条件已击杀无人机的估计。观测到的生成不能证明击杀。
+Your mission will appear here when AlecaFrame receives its Arbitration log events.	当 AlecaFrame 收到仲裁日志事件后，你的任务会显示在这里。
 Your notes	你的备注
 Your preferences have no matches in the next seven days	未来七天内没有符合你偏好的内容
+Your report is available in Arbitration history.	你的报告可在仲裁历史记录中查看。
 Zoom	变焦
 Zoom in	放大
 Zoom out	缩小
+Agent population reported by game log samples. May include entities other than enemies; no enemy limit is inferred.	游戏日志采样报告的单位数量。可能包含敌人以外的实体；不会据此推断敌人上限。
+Any node	任意节点
+At least two observed drones are needed to measure their spacing.	至少需要观测到两架无人机才能测量其间隔。
+Batch import supports .log, .txt, .gz, .zip, and AlecaFrame run JSON	批量导入支持 .log、.txt、.gz、.zip 与 AlecaFrame 记录 JSON
+Cannot delete a run while it is recording	录制中的记录无法删除
+Capture needs attention	采集需要关注
+Choose a format, then a destination folder. Each export gets a new filename; existing files are kept.	选择格式，然后选择目标文件夹。每次导出都会使用新文件名；现有文件会保留。
+Delete run	删除记录
+Delete saved run	删除已保存记录
+Deleting…	正在删除…
+Details & notes	详情与备注
+Drones	无人机
+Edit preferences	编辑偏好
+Enable notification delivery in Settings	请在设置中开启通知推送
+Enemy and drone coordinates recorded in this log.	此日志记录到的敌人与无人机坐标。
+Enemy spawn	敌人生成
+Enemy spawn coordinates observed during each complete interval. Separate from the mission spawn counter.	每个完整间隔内观测到的敌人生成坐标，与任务生成计数器分开计算。
+Enemy spawn coordinates, drone positions are not present in this log.	此日志没有无人机位置，仅记录敌人生成坐标。
+Favorite this node	收藏此节点
+Highest Essence/hour	每小时生息精华最高
+Imported	已导入
+Importing logs	正在导入日志
+Load a forecast to preview missions matching these preferences.	加载预测以预览符合这些偏好的任务。
+No complete boundaries	无完整边界
+No forecast rotations match these conditions. Try fewer choices or add favorite nodes.	没有符合这些条件的预测轮次。请减少选项或添加收藏节点。
+No rotations match these choices	没有符合这些选项的轮次
+No runs match these choices	没有符合这些选项的记录
+No runs match your search.	没有符合搜索的记录。
+Observed duration	观测时长
+Open in arbi.guide	在 arbi.guide 中打开
+Opening…	正在打开…
+Personal notes, separate from observed evidence	个人备注，与观测证据分开
+Play an Arbitration with AlecaFrame running, or import existing game logs and structured run reports	在 AlecaFrame 运行时游玩仲裁，或导入现有游戏日志与结构化记录报告
+Recorded and imported runs will appear here.	已记录与已导入的记录会显示在这里。
+Recorded locally	本地记录
+Remind me about this rotation	提醒我此轮次
+Remove favorite run	取消收藏记录
+Report image (.png)	报告图片（.png）
+Rotation pace	轮次节奏
+Run history could not be loaded.	无法加载历史记录。
+Save earnings	保存收益
+Save notes	保存备注
+Saved with this run	已随此记录保存
+Saving…	正在保存…
+Setup, positioning, interruptions, or anything to remember	准备、站位、中断，或任何需要记住的事项
+Show fewer types	显示更少类型
+Spawn density	生成密度
+Spawns & map	生成与地图
+Star nodes on the schedule to add favorites	在日程中给节点加星即可添加收藏
+Structured report (.json)	结构化报告（.json）
+The current mission will appear here when its log events are observed.	当观测到当前任务的日志事件时，它会显示在这里。
+The forecast is unavailable	预测不可用
+The schedule will retry automatically. Your preferences are kept.	日程将自动重试。你的偏好设置会保留。
+This capture has no exact drone spawn timestamps in the selected range.	本次采集在所选范围内没有精确的无人机生成时间戳。
+This rotation has already started	此轮次已开始
+Time between consecutive observed spawns. Gaps include intermissions; they do not measure kills or drops.	相邻观测生成之间的时间。间隔包含间歇；不代表击杀或掉落。
+Total interval includes the active wave and its observed intermission. Missing timing classifications stay unknown.	间隔总计包含活动波次及其观测到的间歇。缺失的时间分类保持未知。
+Try another day, a different mission type, or fewer filters.	请尝试其他日期、其他任务类型或减少筛选条件。
+Try fewer filters or another search	尝试减少筛选条件或更换搜索
+Unique drone creations observed during each complete interval, not drone kills or drops.	每个完整间隔内观测到的唯一无人机创建，不代表无人机击杀或掉落。
+Unsaved changes	未保存的更改
+Unsaved edits	未保存的修改
+Wave pace	波次节奏
+Wave span	波次区间
+Your first run starts here	你的第一条记录从这里开始
+Your preferences	你的偏好
+drone	无人机
+enemy	敌人
+objective	目标

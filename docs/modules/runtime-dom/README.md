@@ -52,5 +52,6 @@ node tests\runtime.test.mjs
 
 ## 关联
 
+- [runtime-canvas-text](../runtime-canvas-text/README.md)（Canvas 2D 文本，DOM 层覆盖不到的部分）
 - [src/runtime/AGENTS.md](../../../src/runtime/AGENTS.md)
 - [ADR 0001](../../decisions/0001-capability-first-architecture.md)

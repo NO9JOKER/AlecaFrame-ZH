@@ -2,9 +2,34 @@
 
 ## 未发布
 
+### 仲裁界面汉化补全（实时仲裁窗口 + 主窗口记录/日程）
+
+- **实时仲裁窗口纳入注入**：`pages.json` 的 `arbitrationLive` 由「不注入」改为注入 `translate`，
+  `arbitrationLive.html` 与主窗口仲裁记录共用同一词典/规则链；合成注入测试覆盖该页
+  （注入标签、幂等、bundle 页面注册）。
+- **新增运行时模块 `dom.canvas-text`（T1）**：包装 Canvas 2D `fillText/strokeText/measureText`，
+  把 Chart.js 图例、tooltip、坐标轴与自定义画布文字接入 `translate()`；`measureText` 使用译文测量，
+  避免中文图例/tooltip 与布局错位；无 canvas 环境安全 no-op；附模块 README 与单元测试。
+- **词典**：仲裁相关新增 104 条人工词条（实时窗口 + 主窗口运行记录/历史/导入导出/备注/日程提醒页），
+  保持 2 列 TSV、精确匹配、查重。
+- **规则**：新增 76 条动态/拼接文本规则（45→121），覆盖 Vue 合并文本节点
+  （`Waves completed`、`, Defense`、`Defense, Nov 4, 2026, 09:14 PM, Perspective unknown`、
+  `5:42 full capture`、`— / capture min`）、日期时间/倒计时、run-chart Canvas 提示
+  （`Total interval: 2:30`、`Drone spawn rate: 6 spawns/min`）、生成地图 `100 game units` 等；
+  未知值/未知标签保持英文，不半翻。
+- **复合文本**：`core.composite` 支持「状态词 + 节点名, 星球」（如 `Recording Lares, Mercury`
+  → `录制中 Lares，水星`），节点名保持英文。
+- **启动器快照升级路径**：注入清单新增页面后，旧 `state/official` 快照缺页时 `Restore` 会用当前
+  官方原版补齐；无 opk 缓存且当前文件已注入时精确剥离注入标签兜底，并在还原后回写快照；
+  `tools/test-inject.ps1` 增加合成注入/还原用例。
+- **兼容性快照**：按本机实际更新为 AlecaFrame `3.0.6` / Overwolf `0.314.1.1`
+  （原 `0.311.1.6` 已过期）。
+
+### 源力石页面汉化修复
+
 修复源力石页面（效果指南/详情/卡片摘要/融合配方/槽位提示）汉化不完整。
 
-### 修复
+#### 修复
 
 - **v-html 效果单元格整段匹配失败**：伤害图标前后的正文已包含图标英文名，旧逻辑无条件把
   `<img alt>` 再拼进整段，得到 `Toxin Toxin …`，所有单元格都查不到精确词条。改为
@@ -16,12 +41,16 @@
 - 补齐源力石动态规则：槽位提示「源力石名, 效果名」、`Empty slot N`、`N Stela`、
   复制战甲的 `Copy N, …` 前缀。
 
-### 验证
+#### 验证
 
 - `python tools\build.py`、`tools\check_contracts.py`、`tools\golden.py verify`、
   `dict.py check --strict`、Node/Python 测试通过；无头浏览器合成注入验证 27 行效果单元格全部中文、
   20 个行内图标保留。真机（Overwolf + AlecaFrame 3.0.6）待开发者按
   `docs/verification/REAL_MACHINE.md` 复验。
+- 仲裁界面：构建/契约/golden/词典 strict/Node+Python 测试全过；`tools/test-inject.ps1`
+  合成注入与还原场景全过（注入页面含 `arbitrationLive.html`）；无头浏览器（真实构建 bundle）
+  验证合并文本节点 + Canvas 图例/tooltip/地图刻度 10 行全部中文，`arbitrationLive.html`
+  注入后静态头部为中文。真机待按 `docs/verification/REAL_MACHINE.md` 第 4 节复验。
 
 ## v1.2.0 (2026-11-08)
 

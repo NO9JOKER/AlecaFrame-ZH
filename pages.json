@@ -3,7 +3,7 @@
   "project": "AlecaFrame-ZH",
   "host": {
     "alecaframe": "3.0.6",
-    "overwolf": "0.311.1.6",
+    "overwolf": "0.314.1.1",
     "verifiedAt": "2026-11-08"
   },
   "appId": "afmcagbpgggkpdkokjhjkllpegnadmkignlonpjm",
@@ -153,13 +153,12 @@
       "file": "arbitrationLive.html",
       "windowKind": "overlay",
       "nativeWindow": true,
-      "inject": false,
-      "features": [],
+      "inject": true,
+      "features": ["translate"],
       "adapter": null,
       "ocrScripts": [],
       "hostPatches": [],
-      "reason": "未纳入初始汉化注入范围",
-      "notes": "仲裁直播/统计窗口"
+      "notes": "仲裁直播/统计窗口（原文误标为未注入；已纳入汉化注入范围）"
     },
     {
       "id": "debugTools",

@@ -20,7 +20,9 @@
 - `dictIndex.buildIndex(dict) -> { map, lowerMap }`：Map；first-wins；纯拉丁键额外建小写索引。
 - `translate.createTranslator(index, { composites, rules }) -> { translate(text) }`：
   - 决策链：归一 → 精确 → 小写兜底 → composites → rules → null；
-  - composite：`(text, translate) => string|null`；
+  - composite：`(text, translate) => string|null`；内置复合只处理「节点, 星球」文本：
+    星球文本翻成中文，前缀整体/前导 1–2 个词能命中词条时翻成中文（如 `Recording Lares, Mercury`
+    → `录制中 Lares，水星`），节点名保持英文；
   - rule：`(text, translate) => string|null` 或 `{ id, match(text, translate) }`。
 
 ## 契约与不变量

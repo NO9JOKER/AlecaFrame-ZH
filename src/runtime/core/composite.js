@@ -23,7 +23,25 @@
     if (!PLANET_NAMES.has(planet)) return null;
     const hit = translate(planet);
     if (hit === null) return null;
-    return match[1] + "，" + hit;
+    let prefix = match[1];
+    // 前缀可能是「状态词 + 节点名」（如 "Recording Lares"）：先整体试词条，再尝试
+    // 前导 1–2 个词；其余部分（节点名）保持英文，与「只翻星球」策略一致。
+    const whole = translate(prefix);
+    if (typeof whole === "string") {
+      prefix = whole;
+    } else {
+      const words = prefix.split(" ");
+      const limit = Math.min(2, words.length - 1);
+      for (let count = limit; count >= 1; count--) {
+        const head = words.slice(0, count).join(" ");
+        const headHit = translate(head);
+        if (typeof headHit === "string") {
+          prefix = headHit + " " + words.slice(count).join(" ");
+          break;
+        }
+      }
+    }
+    return prefix + "，" + hit;
   }
 
   runtime.composite = { translateComposite: translateComposite };

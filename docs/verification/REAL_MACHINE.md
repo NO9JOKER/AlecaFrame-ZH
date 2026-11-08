@@ -10,6 +10,10 @@
 > - 新运行时其余部分只有 SIM/HOST 证据。
 > - 源力石效果指南/详情修复（2026-11-08）：SIM + 无头浏览器合成注入通过（27 行单元格全中文、
 >   20 个行内图标保留、卡片摘要/融合配方/槽位提示中文），**待本清单第 4 节 REAL 复验**。
+> - 仲裁界面汉化（2026-11-08）：`pages.json` 启用 `arbitrationLive` 注入 + 词典/规则 +
+>   `dom.canvas-text`（Canvas 图例/tooltip/坐标轴）；SIM（构建/契约/golden/单元测试/合成注入与
+>   还原）+ HOST（无头浏览器真实 bundle：合并文本节点与 Canvas 10 行全中文、真实
+>   `arbitrationLive.html` 注入后静态头部中文）通过，**待本清单第 4 节 REAL 复验**。
 
 ## 0. 前置
 
@@ -81,6 +85,16 @@ Get-Content (Join-Path $pkg 'PACKAGE-INFO.json')
   - 槽位悬停提示为「源力石名，效果名」，空槽位为「空槽位 N」；
   - 打开战甲详情，槽位效果描述为中文且图标保留；
 - 通知/世界状态/计时器；
+- 仲裁界面（本次修复重点，主窗口 + 实时仲裁窗口）：
+  - 主窗口「仲裁 → 运行记录」：记录详情的任务/日期/视角行（`Defense, Nov 4, 2026, 09:14 PM, Perspective unknown`）、
+    统计卡片（Observed duration / Wave span、`N / capture min`、`N full capture`、No complete boundaries）、
+    波次节奏（Wave pace/Rotation pace、Faster/Slower）、间隔分析（Canvas 图例 Total interval/Active/Intermission 及脚注）、
+    生成地图（Spawns & map、`N game units`）、详情/备注/导入导出按钮均为中文；
+  - 打开实时仲裁窗口（Arbitration Live）：标题、状态、指标卡（Preparing/Mission time/Since last drone/Expected VE）、
+    图表下拉（Last 1/5/10 minutes）、图表 Canvas 图例/tooltip（`Drone spawn rate: N spawns/min`）、
+    波次回顾、完成摘要均为中文；
+  - 两窗口 DevTools（如可开）：`__AFCN_PAGE__` 的 `id` 分别为 `main` 与 `arbitrationLive`，features 含 `translate`；
+    图表坐标轴/图例文字为中文，且图表布局不重叠、tooltip 不截断。
 - 控制台（如可开 DevTools）：
   - `__AFCN_PAGE__` 的 `id`/`features` 与当前页面一致；
   - `__AFZH_SEARCH__` 有 `started`、`hooks`、`hits`；

@@ -287,15 +287,22 @@ Ensure-PortablePython
 if (-not (Test-PythonPackages) -or $Force) {
     $getPipPath = Join-Path $downloadRoot "get-pip.py"
     Get-DownloadFileFromMirrors -Urls $getPipUrls -Destination $getPipPath
-    Write-Step "安装 pip（阿里云 PyPI 镜像）"
-    & $pythonExe $getPipPath --no-warn-script-location
-    if ($LASTEXITCODE -ne 0) { throw "pip 安装失败。" }
+    # get-pip.py 默认从 files.pythonhosted.org 拉包，国内网络经常超时（实测 10 KB/s）；
+    # 必须显式把 -i 传给 get-pip.py（它会把 pip 参数透传给 pip install），并加大重试/超时。
+    $pipInstalled = $false
+    foreach ($mirror in $pypiMirrors) {
+        Write-Step "安装 pip（镜像：$mirror）"
+        & $pythonExe $getPipPath --no-warn-script-location --retries 5 --timeout 120 -i $mirror
+        if ($LASTEXITCODE -eq 0) { $pipInstalled = $true; break }
+        Write-Step "该镜像不可用，尝试下一个。"
+    }
+    if (-not $pipInstalled) { throw "pip 安装失败：所有镜像均不可用，请检查网络。" }
 
     $paddleInstalled = $false
     foreach ($mirror in $paddleCpuMirrors) {
         Write-Step "安装 PaddlePaddle CPU 2.6.2（镜像：$mirror）"
         & $pythonExe -m pip install --disable-pip-version-check --no-warn-script-location --upgrade `
-            "paddlepaddle==2.6.2" -i $mirror
+            "paddlepaddle==2.6.2" --retries 5 --timeout 120 -i $mirror
         if ($LASTEXITCODE -eq 0) { $paddleInstalled = $true; break }
         Write-Step "该镜像不可用，尝试下一个。"
     }
@@ -310,7 +317,7 @@ if (-not (Test-PythonPackages) -or $Force) {
         & $pythonExe -m pip install --disable-pip-version-check --no-warn-script-location --upgrade `
             "paddleocr==2.9.1" "numpy==1.26.4" "pillow==12.3.0" `
             "opencv-python==4.11.0.86" "opencv-contrib-python==4.11.0.86" "opencv-python-headless==4.11.0.86" `
-            -i $mirror
+            --retries 5 --timeout 120 -i $mirror
         if ($LASTEXITCODE -eq 0) { $ocrDepsInstalled = $true; break }
         Write-Step "该镜像不可用，尝试下一个。"
     }

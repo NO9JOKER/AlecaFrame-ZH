@@ -31,15 +31,35 @@ $nodeVersion = "20.18.0"
 
 # Mirrors are intentionally explicit so users in mainland China do not need
 # to download Python/Node/PyPI packages from overseas default endpoints.
-$pythonZipUrl = "https://mirrors.huaweicloud.com/python/$pythonVersion/python-$pythonVersion-embed-amd64.zip"
-$nodeZipUrl = "https://npmmirror.com/mirrors/node/v$nodeVersion/node-v$nodeVersion-win-x64.zip"
-$getPipUrl = "https://mirrors.aliyun.com/pypi/get-pip.py"
-$pypiMirror = "https://mirrors.aliyun.com/pypi/simple"
+# 下载源全部做成「多源回退」：任一源 404/超时/502 时自动换下一个，最后一个源失败才报错。
+$pythonZipUrls = @(
+    "https://mirrors.huaweicloud.com/python/$pythonVersion/python-$pythonVersion-embed-amd64.zip",
+    "https://npmmirror.com/mirrors/python/$pythonVersion/python-$pythonVersion-embed-amd64.zip",
+    "https://mirrors.aliyun.com/python-release/windows/python-$pythonVersion-embed-amd64.zip"
+)
+$nodeZipUrls = @(
+    "https://npmmirror.com/mirrors/node/v$nodeVersion/node-v$nodeVersion-win-x64.zip",
+    "https://mirrors.huaweicloud.com/nodejs/v$nodeVersion/node-v$nodeVersion-win-x64.zip",
+    "https://mirrors.tuna.tsinghua.edu.cn/nodejs-release/v$nodeVersion/node-v$nodeVersion-win-x64.zip",
+    "https://mirrors.ustc.edu.cn/nodejssource/v$nodeVersion/node-v$nodeVersion-win-x64.zip"
+)
+$getPipUrls = @(
+    "https://mirrors.aliyun.com/pypi/get-pip.py",
+    "https://bootstrap.pypa.io/get-pip.py"
+)
+$pypiMirrors = @(
+    "https://mirrors.aliyun.com/pypi/simple",
+    "https://pypi.tuna.tsinghua.edu.cn/simple",
+    "https://mirrors.ustc.edu.cn/pypi/simple",
+    "https://mirrors.cloud.tencent.com/pypi/simple"
+)
 # PaddlePaddle 官方镜像 2026-11-10 实测 502 Bad Gateway，pip 会报
-# "No matching distribution found"；因此按 阿里云 PyPI → 清华 PyPI → 官方 回退。
+# "No matching distribution found"；按 阿里云/清华/中科大/腾讯 PyPI → 官方 回退。
 $paddleCpuMirrors = @(
     "https://mirrors.aliyun.com/pypi/simple",
     "https://pypi.tuna.tsinghua.edu.cn/simple",
+    "https://mirrors.ustc.edu.cn/pypi/simple",
+    "https://mirrors.cloud.tencent.com/pypi/simple",
     "https://www.paddlepaddle.org.cn/packages/stable/cpu/"
 )
 
@@ -95,6 +115,25 @@ function Get-DownloadFile {
     }
     Write-Step "下载：$Url"
     Invoke-WebRequest -Uri $Url -OutFile $Destination -UseBasicParsing
+}
+
+function Get-DownloadFileFromMirrors {
+    param([string[]]$Urls, [string]$Destination)
+    if ((Test-Path -LiteralPath $Destination) -and (Get-Item -LiteralPath $Destination).Length -gt 0) {
+        Write-Step "复用已下载文件：$(Split-Path -Leaf $Destination)"
+        return
+    }
+    foreach ($url in $Urls) {
+        try {
+            Write-Step "下载（源）：$url"
+            Invoke-WebRequest -Uri $url -OutFile $Destination -UseBasicParsing -ErrorAction Stop
+            if ((Test-Path -LiteralPath $Destination) -and (Get-Item -LiteralPath $Destination).Length -gt 0) { return }
+        } catch {
+            Write-Step ("该源失败，自动换源：" + $_.Exception.Message)
+            if (Test-Path -LiteralPath $Destination) { Remove-Item -LiteralPath $Destination -Force -ErrorAction SilentlyContinue }
+        }
+    }
+    throw "所有下载源均失败：$(Split-Path -Leaf $Destination)"
 }
 
 function Expand-ArchiveReplace {
@@ -188,7 +227,7 @@ function Ensure-PortablePython {
         }
     }
     $zipPath = Join-Path $downloadRoot "python-$pythonVersion-embed-amd64.zip"
-    Get-DownloadFile -Url $pythonZipUrl -Destination $zipPath
+    Get-DownloadFileFromMirrors -Urls $pythonZipUrls -Destination $zipPath
     Expand-ArchiveReplace -ZipPath $zipPath -Destination $pythonRoot
     $pthPath = Join-Path $pythonRoot "python311._pth"
     $pth = @("python311.zip", ".", "Lib\\site-packages", "", "import site")
@@ -213,7 +252,7 @@ function Ensure-PortableNode {
     }
     $zipPath = Join-Path $downloadRoot "node-v$nodeVersion-win-x64.zip"
     $extractRoot = Join-Path $downloadRoot "node-v$nodeVersion-win-x64"
-    Get-DownloadFile -Url $nodeZipUrl -Destination $zipPath
+    Get-DownloadFileFromMirrors -Urls $nodeZipUrls -Destination $zipPath
     if (Test-Path -LiteralPath $extractRoot) { Remove-Item -LiteralPath $extractRoot -Recurse -Force }
     Expand-Archive -LiteralPath $zipPath -DestinationPath $downloadRoot -Force
     if (-not (Test-Path -LiteralPath (Join-Path $extractRoot "node.exe"))) {
@@ -247,7 +286,7 @@ Ensure-PortablePython
 
 if (-not (Test-PythonPackages) -or $Force) {
     $getPipPath = Join-Path $downloadRoot "get-pip.py"
-    Get-DownloadFile -Url $getPipUrl -Destination $getPipPath
+    Get-DownloadFileFromMirrors -Urls $getPipUrls -Destination $getPipPath
     Write-Step "安装 pip（阿里云 PyPI 镜像）"
     & $pythonExe $getPipPath --no-warn-script-location
     if ($LASTEXITCODE -ne 0) { throw "pip 安装失败。" }
@@ -265,12 +304,17 @@ if (-not (Test-PythonPackages) -or $Force) {
     # OpenCV 必须钉在 4.11：4.12 起要求 numpy>=2，与 paddleocr 的 numpy<2 冲突，
     # 不钉版时 pip 会为解析依赖下载 9 个 OpenCV 变体（首次下载约 950 MiB，
     # 钉版后约 304 MiB），而且装完还要回溯。
-    Write-Step "安装 PaddleOCR、NumPy 和 Pillow（阿里云 PyPI 镜像）"
-    & $pythonExe -m pip install --disable-pip-version-check --no-warn-script-location --upgrade `
-        "paddleocr==2.9.1" "numpy==1.26.4" "pillow==12.3.0" `
-        "opencv-python==4.11.0.86" "opencv-contrib-python==4.11.0.86" "opencv-python-headless==4.11.0.86" `
-        -i $pypiMirror
-    if ($LASTEXITCODE -ne 0) { throw "PaddleOCR 依赖安装失败。请检查网络或镜像可用性。" }
+    $ocrDepsInstalled = $false
+    foreach ($mirror in $pypiMirrors) {
+        Write-Step "安装 PaddleOCR、NumPy 和 Pillow（镜像：$mirror）"
+        & $pythonExe -m pip install --disable-pip-version-check --no-warn-script-location --upgrade `
+            "paddleocr==2.9.1" "numpy==1.26.4" "pillow==12.3.0" `
+            "opencv-python==4.11.0.86" "opencv-contrib-python==4.11.0.86" "opencv-python-headless==4.11.0.86" `
+            -i $mirror
+        if ($LASTEXITCODE -eq 0) { $ocrDepsInstalled = $true; break }
+        Write-Step "该镜像不可用，尝试下一个。"
+    }
+    if (-not $ocrDepsInstalled) { throw "PaddleOCR 依赖安装失败：所有镜像均不可用，请检查网络。" }
 } else {
     Write-Step "Python OCR 依赖及版本已符合要求，跳过安装。"
 }

@@ -5,7 +5,7 @@
   页面、注入脚本、宿主补丁和 bundle 路径均来自 pages.json。
 #>
 param(
-    [ValidateSet("Start", "Restore", "Toggle", "Status", "InstallShortcuts", "Refresh", "OcrOn", "InstallOcr")]
+    [ValidateSet("Start", "Restore", "Toggle", "Status", "Refresh", "OcrOn", "InstallOcr")]
     [string]$Action = "Status",
     [switch]$NoGui
 )
@@ -113,8 +113,7 @@ try {
         "Restore" { Invoke-RestoreEnglish }
         "Toggle" { Invoke-Toggle }
         "Status" { Invoke-Status }
-        "InstallShortcuts" { Invoke-InstallShortcuts }
-        "Refresh" { Invoke-RefreshZh }
+            "Refresh" { Invoke-RefreshZh }
         "OcrOn" { Invoke-OcrOn }
             "InstallOcr" { Invoke-InstallOcr }
     }

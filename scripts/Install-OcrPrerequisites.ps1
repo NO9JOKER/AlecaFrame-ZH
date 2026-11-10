@@ -369,7 +369,7 @@ Remove-PipCacheIfSafe -Path (Join-Path $pkgRoot "pip") -Label "旧版安装器�
 
 $toolsSize = Get-DirectorySize $toolsRoot
 Write-Host ""
-Write-Host "OCR 前置组件已准备完成。接下来运行 启动-中文补丁.cmd 启动中文界面。" -ForegroundColor Green
+Write-Host "OCR 前置组件已准备完成。接下来运行 1-启动-中文补丁.cmd 启动中文界面。" -ForegroundColor Green
 Write-Host ("OCR 运行期目录：{0}（{1} MB）" -f $toolsRoot, [Math]::Round($toolsSize / 1MB, 0))
 Write-Host "缓存位置：$cacheRoot"
 Write-Host "安装日志：$transcriptPath"

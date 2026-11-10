@@ -47,7 +47,7 @@ node tests\runtime.test.mjs
 
 覆盖：假 target 下命中词条翻译、未命中/纯数字/纯中文/非字符串原样、`measureText` 用译文且返回值不变、`this`/参数/返回值保留、重复 `install` 幂等、无 canvas 环境 no-op、`translate()` 抛异常回退原文。
 
-未覆盖：真实浏览器 / Chart.js / Overwolf 渲染进程（需真机 `重启补丁.cmd` 后看图表图例、tooltip、坐标轴与地图 `game units`）；`OffscreenCanvasRenderingContext2D`。
+未覆盖：真实浏览器 / Chart.js / Overwolf 渲染进程（需真机 `4-重启补丁.cmd` 后看图表图例、tooltip、坐标轴与地图 `game units`）；`OffscreenCanvasRenderingContext2D`。
 
 ## 失败模式
 

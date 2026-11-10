@@ -36,10 +36,10 @@ node tests\search-feature.test.mjs
 真机操作：
 
 ```powershell
-启动-中文补丁.cmd
-重启补丁.cmd
-还原-官方英文.cmd
-版本信息.cmd
+1-启动-中文补丁.cmd
+4-重启补丁.cmd
+2-还原-官方英文.cmd
+5-版本信息.cmd
 ```
 
 ## 词典

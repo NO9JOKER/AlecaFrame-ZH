@@ -35,7 +35,7 @@
 
 ## 4. 第三方 OCR 运行时
 
-`安装OCR前置组件.cmd` 会按需在本项目目录 `bin/ocr/.tools` 内安装：
+`6-安装OCR前置组件.cmd` 会按需在本项目目录 `bin/ocr/.tools` 内安装：
 
 - Node.js（官方发行版，MIT）
 - Python 3.11 便携版（PSF License）

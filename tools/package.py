@@ -5,7 +5,7 @@
 The package keeps the launcher and bundle at the same relative paths the .cmd
 wrappers expect:
 
-  <pkg>/启动-中文补丁.cmd ...
+  <pkg>/1-启动-中文补丁.cmd ...
   <pkg>/pages.json
   <pkg>/bin/AlecaFrame-ZH.ps1
   <pkg>/bin/lib/*.ps1
@@ -132,7 +132,7 @@ def main(argv=None) -> int:
             archive.unlink()
         shutil.make_archive(str(target.parent / target.name), "zip", root_dir=target.parent, base_dir=target.name)
         print(f"zip: OK {archive}")
-    print(f"start: {target / '版本信息.cmd'}")
+    print(f"start: {target / '1-启动-中文补丁.cmd'}")
     return 0
 
 

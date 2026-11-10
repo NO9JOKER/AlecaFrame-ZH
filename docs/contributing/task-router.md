@@ -18,7 +18,7 @@
 | Tier | T0 |
 | 必读 | [AGENTS.md](../../AGENTS.md) → 本表 → `dict/AGENTS.md` → `dict/manifest.tsv` 对应行 → 目标词条文件头部 |
 | 可改 | `dict/entries/common/*.tsv` 或 `dict/entries/screens/*.tsv`；不得改 `dict/generated/**` || 不要改 | `bin/**`、生成报告、`dict/upstream/**` |
-| 验证 | `python tools\dict.py lookup/check` → `python tools\build.py` → `重启补丁.cmd`；受影响界面截图 || 证据 | SIM 命令输出 + T0 截图；不需要 REAL |
+| 验证 | `python tools\dict.py lookup/check` → `python tools\build.py` → `4-重启补丁.cmd`；受影响界面截图 || 证据 | SIM 命令输出 + T0 截图；不需要 REAL |
 
 ## 2. 词典：改已有译文 / override
 

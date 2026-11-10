@@ -49,7 +49,7 @@ python tools\build.py
 powershell -ExecutionPolicy Bypass -File tools\verify.ps1
 ```
 
-真机：`重启补丁.cmd` 后看日志 `[AlecaFrame-ZH] loaded translated=...`；受影响页面截图；涉及 hook 时检查 `__AFZH_SEARCH__` 状态。
+真机：`4-重启补丁.cmd` 后看日志 `[AlecaFrame-ZH] loaded translated=...`；受影响页面截图；涉及 hook 时检查 `__AFZH_SEARCH__` 状态。
 
 ## 5. 不要做
 

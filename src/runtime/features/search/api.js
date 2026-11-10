@@ -303,6 +303,52 @@
       return false;
     }
 
+    /**
+     * 裂罅列表（已揭示 / 未揭示）本地过滤：payload 是
+     * `[{ challengeDescription, challengeDescriptionHtml, rivens: [...] }]`。
+     * 中文查询需要匹配 裂罅名（含去 " Mod" 的卡片名重新补回）、武器名、挑战文案、
+     * 分组标题以及词条属性描述；英文查询同样支持子串。空分组会被移除。
+     */
+    function filterRivenGroups(groups, term) {
+      if (!Array.isArray(groups)) return null;
+      const terms = splitTerms(term);
+      if (!terms.length) return groups;
+      const match = (texts) => {
+        const haystack = texts.filter((v) => typeof v === "string" && v).map((v) => searchableName(v)).join(" ").toLowerCase();
+        if (!haystack) return false;
+        for (const single of terms) {
+          if (haystack.indexOf(single) !== -1) continue;
+          const english = englishForChinese(single);
+          if (!english || hasChinese(english) || haystack.indexOf(english.toLowerCase()) === -1) return false;
+        }
+        return true;
+      };
+      const rivenTexts = (riven) => {
+        const texts = [riven.name, riven.weaponName, riven.challengeStringWithComplication, riven.challengeDescription];
+        // 卡片名是 riven.name.replace(' Mod','')；搜索要按带 " Mod" 的原名查词典。
+        if (typeof riven.name === "string" && / Riven$/.test(riven.name)) texts.push(riven.name + " Mod");
+        for (const weapon of Array.isArray(riven.statsPerWeapon) ? riven.statsPerWeapon : []) {
+          for (const level of Array.isArray(weapon && weapon.byLevel) ? weapon.byLevel : []) {
+            for (const trait of [...(level.positiveTraits || []), ...(level.negativeTraits || [])]) {
+              if (trait && typeof trait.description === "string") texts.push(trait.description);
+              if (trait && typeof trait.name === "string") texts.push(trait.name);
+            }
+          }
+        }
+        return texts;
+      };
+      const out = [];
+      for (const group of groups) {
+        if (!group || typeof group !== "object") continue;
+        const groupTexts = [group.challengeDescription, group.challengeDescriptionHtml, group.weaponName, group.name]
+          .map((v) => (typeof v === "string" ? v.replace(/<[^>]*>/g, " ") : v));
+        const rivens = (Array.isArray(group.rivens) ? group.rivens : []).filter((riven) =>
+          riven && typeof riven === "object" && match(groupTexts.concat(rivenTexts(riven))));
+        if (rivens.length) out.push(Object.assign({}, group, { rivens }));
+      }
+      return out;
+    }
+
     /** 市场搜索建议：从词典里直接找中文/英文子串命中，按 精确 > 前缀 > 包含 排序。 */
     function suggestions(term, limit) {
       const query = normKey(term);
@@ -358,6 +404,7 @@
       englishQueryForChinese,
       filterItems,
       matchesText,
+      filterRivenGroups,
       suggestions,
       marketSuggestions,
       englishFromMarketMarker,

@@ -243,6 +243,52 @@
   }
 
   /**
+   * 裂罅列表搜索（已揭示 / 未揭示）：调用点
+   * `GetFilteredUnveiledRivensInfo(JSON.stringify(filters), receive)` /
+   * `GetFilteredVeiledRivensInfo(JSON.stringify(filters), receive)`。
+   * 返回的是「分组数组」（每组含 rivens），不是平铺物品，所以不能用
+   * hookJsonSearchMethod；中文查询清空 search 取全量后交给 api.filterRivenGroups
+   * 本地过滤（裂罅名/武器名/挑战文案/分组标题/词条属性），英文查询不干预。
+   */
+  function hookRivenListSearch(native, methodName) {
+    const original = native[methodName];
+    if (typeof original !== "function") {
+      debugOnce("missing:" + methodName, methodName + "() 不存在，跳过裂罅列表搜索钩子");
+      return false;
+    }
+    if (original.__afzhWrapped) return true;
+
+    const wrapper = function (query, callback) {
+      const nativeThis = this;
+      let filters = null;
+      safeCall(() => { filters = JSON.parse(query); }, null);
+      if (!filters || typeof filters !== "object") return original.apply(nativeThis, arguments);
+      const term = typeof filters.search === "string" ? filters.search.trim() : "";
+      if (!term || !api.hasChinese(term)) return original.apply(nativeThis, arguments);
+
+      const args = Array.prototype.slice.call(arguments);
+      args[0] = JSON.stringify(Object.assign({}, filters, { search: "" }));
+      const callbackIndex = args.length - 1;
+      if (typeof args[callbackIndex] !== "function") return original.apply(nativeThis, arguments);
+
+      args[callbackIndex] = function (success, data) {
+        if (!success) return callback(success, data);
+        const parsed = safeCall(() => JSON.parse(data), null);
+        const filtered = safeCall(() => api.filterRivenGroups(parsed, term), null);
+        if (Array.isArray(filtered)) {
+          markHit(methodName + ":本地过滤");
+          return callback(true, JSON.stringify(filtered));
+        }
+        return callback(success, data);
+      };
+      return original.apply(nativeThis, args);
+    };
+    wrapper.__afzhWrapped = true;
+    native[methodName] = wrapper;
+    return native[methodName] === wrapper;
+  }
+
+  /**
    * GetWFMarketSearchSuggestions(query, callback)：中文先换成最可能的英文物品名，
    * 再把返回的英文名翻成中文用于显示（urlName 保持官方 slug，点击链路不变）。
    */
@@ -302,8 +348,10 @@
     // WFM 订单/合同：ordersAndContracts.js:92 `plugin.get()[orders?'GetWFMOrders':'GetWFMContracts'](...)`
     (native) => hookJsonSearchMethod(native, "GetWFMOrders", ["name"]),
     (native) => hookJsonSearchMethod(native, "GetWFMContracts", ["weaponName", "name"]),
-    // 已揭示裂罅：已揭示裂罅调用点 `GetFilteredUnveiledRivensInfo(JSON.stringify(filters), receive)`
-    (native) => hookJsonSearchMethod(native, "GetFilteredUnveiledRivensInfo", ["weaponName", "name"]),
+    // 已揭示裂罅：`GetFilteredUnveiledRivensInfo(JSON.stringify(filters), receive)` 返回分组数组
+    (native) => hookRivenListSearch(native, "GetFilteredUnveiledRivensInfo"),
+    // 未揭示裂罅：`GetFilteredVeiledRivensInfo(JSON.stringify(filters), receive)` 返回分组数组
+    (native) => hookRivenListSearch(native, "GetFilteredVeiledRivensInfo"),
     // 裂罅探索器武器搜索：裂罅探索器调用点 `GetRivenWeapons(this.weaponSearchString, cb)`
     hookRivenWeapons,
     // 市场搜索建议（"Create an order" 选择器 warframeMarket/ui.js:98 也会走这里）

@@ -19,6 +19,10 @@ const sandbox = {
     "Alloy Plate": "合金板",
     "Adramal Alloy": "阿德拉玛合金",
     "Mars": "火星",
+    "Rifle Riven Mod": "步枪裂罅 Mod",
+    "Riven": "裂罅",
+    "Veiled rivens": "未揭示裂罅",
+    "Critical Chance": "暴击几率",
   },
   __AFCN_RELIC_REWARDS__: {},
 };
@@ -87,6 +91,40 @@ test("local list matching handles name + location rows", () => {
 test("local list matching resolves location through reverse index", () => {
   assert.equal(api.matchesText("Mars/Gradivus (Caches), Rotation B", "火星"), true);
   assert.equal(api.matchesText("Mercury/Neruda (Caches), Rotation B", "火星"), false);
+});
+
+// ---- 裂罅列表搜索（已揭示 / 未揭示）----
+const rivenGroups = () => [
+  {
+    challengeDescription: "Veiled rivens",
+    rivens: [
+      {
+        name: "Rifle Riven",
+        challengeStringWithComplication: "Equip these rivens to reveal their challenge",
+        statsPerWeapon: [{ byLevel: [{ positiveTraits: [{ description: "Critical Chance" }], negativeTraits: [] }] }],
+      },
+    ],
+  },
+  {
+    challengeDescription: "Unveiled rivens",
+    rivens: [{ name: "Zaw Riven", statsPerWeapon: [] }],
+  },
+];
+
+test("riven group search matches Chinese card names and group headings", () => {
+  assert.equal(api.filterRivenGroups(rivenGroups(), "步枪")[0].rivens.length, 1);
+  assert.equal(api.filterRivenGroups(rivenGroups(), "未揭示")[0].rivens.length, 1);
+  assert.equal(api.filterRivenGroups(rivenGroups(), "暴击")[0].rivens.length, 1);
+});
+
+test("riven group search keeps English substring queries", () => {
+  assert.equal(api.filterRivenGroups(rivenGroups(), "rifle")[0].rivens.length, 1);
+  assert.equal(api.filterRivenGroups(rivenGroups(), "zaw")[0].rivens.length, 1);
+});
+
+test("riven group search drops empty groups and unknown terms", () => {
+  assert.equal(api.filterRivenGroups(rivenGroups(), "完全不存在").length, 0);
+  assert.equal(api.filterRivenGroups(rivenGroups(), "").length, 2);
 });
 
 console.log(`\n${passed} passed, ${failures.length} failed`);

@@ -35,7 +35,13 @@ $pythonZipUrl = "https://mirrors.huaweicloud.com/python/$pythonVersion/python-$p
 $nodeZipUrl = "https://npmmirror.com/mirrors/node/v$nodeVersion/node-v$nodeVersion-win-x64.zip"
 $getPipUrl = "https://mirrors.aliyun.com/pypi/get-pip.py"
 $pypiMirror = "https://mirrors.aliyun.com/pypi/simple"
-$paddleCpuMirror = "https://www.paddlepaddle.org.cn/packages/stable/cpu/"
+# PaddlePaddle 官方镜像 2026-11-10 实测 502 Bad Gateway，pip 会报
+# "No matching distribution found"；因此按 阿里云 PyPI → 清华 PyPI → 官方 回退。
+$paddleCpuMirrors = @(
+    "https://mirrors.aliyun.com/pypi/simple",
+    "https://pypi.tuna.tsinghua.edu.cn/simple",
+    "https://www.paddlepaddle.org.cn/packages/stable/cpu/"
+)
 
 # 全过程写入日志，失败时窗口停留并提示日志位置（否则安装窗口一闪而过，用户拿不到信息）
 $transcriptPath = Join-Path $pkgRoot "logs\ocr-install.log"
@@ -246,10 +252,15 @@ if (-not (Test-PythonPackages) -or $Force) {
     & $pythonExe $getPipPath --no-warn-script-location
     if ($LASTEXITCODE -ne 0) { throw "pip 安装失败。" }
 
-    Write-Step "安装 PaddlePaddle CPU 2.6.2（Paddle 国内镜像）"
-    & $pythonExe -m pip install --disable-pip-version-check --no-warn-script-location --upgrade `
-        "paddlepaddle==2.6.2" -i $paddleCpuMirror
-    if ($LASTEXITCODE -ne 0) { throw "PaddlePaddle 安装失败。请检查网络或镜像可用性。" }
+    $paddleInstalled = $false
+    foreach ($mirror in $paddleCpuMirrors) {
+        Write-Step "安装 PaddlePaddle CPU 2.6.2（镜像：$mirror）"
+        & $pythonExe -m pip install --disable-pip-version-check --no-warn-script-location --upgrade `
+            "paddlepaddle==2.6.2" -i $mirror
+        if ($LASTEXITCODE -eq 0) { $paddleInstalled = $true; break }
+        Write-Step "该镜像不可用，尝试下一个。"
+    }
+    if (-not $paddleInstalled) { throw "PaddlePaddle 安装失败：所有镜像均不可用，请检查网络。" }
 
     # OpenCV 必须钉在 4.11：4.12 起要求 numpy>=2，与 paddleocr 的 numpy<2 冲突，
     # 不钉版时 pip 会为解析依赖下载 9 个 OpenCV 变体（首次下载约 950 MiB，

@@ -48,7 +48,7 @@
 
 1. 从本仓库的 **Releases** 下载最新 `AlecaFrame-ZH-v*.zip`；
 2. 解压到任意本地目录（例如 `D:\AlecaFrame-ZH`）；
-3. （可选）双击 `6-安装OCR前置组件.cmd` 装中文 OCR；
+3. （可选）双击 `5-安装OCR前置组件.cmd` 装中文 OCR；
 4. 以后直接双击 `1-启动-中文补丁.cmd`（中文模式启动，会重启 Overwolf）。
 
 > 不需要快捷方式：文件夹里的命令直接双击就能用。想要桌面快捷方式的话，右键对应 `.cmd` →「发送到」→「桌面快捷方式」；之后右键快捷方式 →「重命名」（或按 F2）改成喜欢的名字即可（只改显示名，不影响脚本）。
@@ -61,13 +61,13 @@
 
 | 操作 | 命令 |
 |---|---|
-| 安装前置（一次性，需联网） | `6-安装OCR前置组件.cmd` |
-| 开启（默认开） | `7-启用中文遗物OCR.cmd` |
+| 安装前置（一次性，需联网） | `5-安装OCR前置组件.cmd` |
+| 开启（默认开） | `6-启用中文遗物OCR.cmd` |
 
 - OCR 前置装在 `bin\ocr\.tools\`（便携 Python + Node + PaddleOCR 模型），**不修改系统全局环境**；
-- 已安装的组件会先做版本自检再跳过：重跑 `6-安装OCR前置组件.cmd` 通常几秒完成，不会再执行 pip；
+- 已安装的组件会先做版本自检再跳过：重跑 `5-安装OCR前置组件.cmd` 通常几秒完成，不会再执行 pip；
 - 体积构成：中文 OCR 模型本身只有约 16 MB（PP-OCRv4 det 4.70 MB + rec 10 MB + cls 1.38 MB），其余约 1.0 GB 是 PaddleOCR 的 Python 运行期依赖（`paddle`、`cv2`、`scipy`、`numpy` 等）；
-- 安装器把 pip 缓存固定在 `bin\ocr\.tools\pip-cache` 并在安装成功后删除；旧版安装器遗留在包根的 `pip\` 缓存（单机实测约 950 MiB）会在下次运行 `6-安装OCR前置组件.cmd` 时自动回收。运行 OCR 不需要这些缓存，确认不再安装后也可以手动删除；
+- 安装器把 pip 缓存固定在 `bin\ocr\.tools\pip-cache` 并在安装成功后删除；旧版安装器遗留在包根的 `pip\` 缓存（单机实测约 950 MiB）会在下次运行 `5-安装OCR前置组件.cmd` 时自动回收。运行 OCR 不需要这些缓存，确认不再安装后也可以手动删除；
 - 首次识别时 Paddle 模型要加载，可能失败一次后正常（冷启动最长约 2 分钟）；
 - 不装前置也能用界面汉化与中文搜索，启动器会自动跳过 OCR 并在日志里提示。
 
@@ -194,7 +194,7 @@ powershell -ExecutionPolicy Bypass -File tools\verify.ps1
 先确认 `bin\alecaframe-zh-cn.js` 是最新的（`python src\build.py`），并在 `Status.cmd` 里确认当前是中文会话；搜索只在中文会话注入的页面里生效。
 
 **Q：OCR 开了但遗物/裂罅不显示中文？**
-按顺序排查：`6-安装OCR前置组件.cmd` 是否成功 → `bin/ocr/afzh-items.js` 是否存在（跑 `python src\build.py`）→ `Status.cmd` 看缺失项 → `state\RelicChineseOcr\helper.err.log`。
+按顺序排查：`5-安装OCR前置组件.cmd` 是否成功 → `bin/ocr/afzh-items.js` 是否存在（跑 `python src\build.py`）→ `Status.cmd` 看缺失项 → `state\RelicChineseOcr\helper.err.log`。
 
 **Q：更新后中文没了怎么办？**
 运行 `Start-Chinese.cmd`。仍不行看 `logs\launcher.log`，或 `Restore` 后重试。

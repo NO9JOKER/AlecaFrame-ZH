@@ -37,9 +37,9 @@ node tests\search-feature.test.mjs
 
 ```powershell
 1-启动-中文补丁.cmd
-4-重启补丁.cmd
-2-还原-官方英文.cmd
-5-版本信息.cmd
+3-重启补丁.cmd
+7-还原-官方英文.cmd
+4-版本信息.cmd
 ```
 
 ## 词典

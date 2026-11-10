@@ -78,9 +78,9 @@ def main(argv=None) -> int:
     if not pages.is_file():
         print("package: missing pages.json", file=sys.stderr)
         return 2
-    instructions = ROOT / "使用说明.txt"
+    instructions = ROOT / "0-使用说明.txt"
     if not instructions.is_file():
-        print("package: missing 使用说明.txt", file=sys.stderr)
+        print("package: missing 0-使用说明.txt", file=sys.stderr)
         return 2
 
     name = args.name or f"AlecaFrame-ZH-{args.version}"
@@ -105,7 +105,7 @@ def main(argv=None) -> int:
     for path in target.rglob("*"):
         if path.is_file():
             ensure_ps_bom(path)
-    copy_file(instructions, target / "使用说明.txt")
+    copy_file(instructions, target / "0-使用说明.txt")
 
     info = {
         "schemaVersion": 1,
@@ -119,7 +119,7 @@ def main(argv=None) -> int:
         },
         "launcher": "bin/AlecaFrame-ZH.ps1",
         "pages": "pages.json",
-        "note": "使用说明见 使用说明.txt",
+        "note": "使用说明见 0-使用说明.txt",
     }
     (target / "PACKAGE-INFO.json").write_text(
         json.dumps(info, ensure_ascii=False, indent=2) + "\n", encoding="utf-8", newline="\n"

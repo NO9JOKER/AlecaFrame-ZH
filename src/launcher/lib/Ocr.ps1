@@ -63,7 +63,7 @@ function Stop-OcrHelper {
 
 function Start-OcrHelper {
     $node = Get-LocalNode
-    if (-not $node) { throw "未找到 Node.js，请先运行 6-安装OCR前置组件.cmd" }
+    if (-not $node) { throw "未找到 Node.js，请先运行 5-安装OCR前置组件.cmd" }
     $python = Join-Path $script:OcrDir ".tools\python311-portable\python.exe"
     $server = Join-Path $script:OcrDir "relic-ocr-server.js"
     $worker = Join-Path $script:OcrDir "relic-ocr-worker.ps1"

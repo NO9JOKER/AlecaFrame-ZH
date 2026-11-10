@@ -53,7 +53,7 @@ function Invoke-StartChinese {
     }
     $ocrNote = if ($enableOcr) { "中文 OCR 增强：已开启" } elseif ($ocrRequested) { "中文 OCR 增强：前置未安装，已跳过" } else { "中文 OCR 增强：已关闭" }
     Write-Log "中文界面加载成功（版本 $($verDir.Name)）；$ocrNote"
-    Show-Message "已切换到中文界面。`n`n$ocrNote`n`n要恢复英文，请运行 2-还原-官方英文.cmd（或 3-中英切换.cmd 在本次会话内切换）。"
+    Show-Message "已切换到中文界面。`n`n$ocrNote`n`n要恢复英文，请运行 7-还原-官方英文.cmd（或 2-中英切换.cmd 在本次会话内切换）。"
 }
 
 function Invoke-RestoreEnglish {
@@ -97,7 +97,7 @@ function Invoke-Toggle {
             $patchTime = Get-Date
             Restart-AlecaFrameRenderer
             if (-not (Wait-ZhLoaded -Since $patchTime -TimeoutSeconds 60)) {
-                throw "切换中文失败，请运行 2-还原-官方英文.cmd 恢复。"
+                throw "切换中文失败，请运行 7-还原-官方英文.cmd 恢复。"
             }
             Write-Log "已切换为中文"
             Show-Message "已切换为中文（本次 Overwolf 会话内）。"
@@ -125,7 +125,7 @@ function Invoke-OcrOn {
     Set-OcrEnabled -Enabled $true
     $missing = Test-OcrPrerequisites
     if ($missing.Count -gt 0) {
-        Show-Message ("OCR 已开启，但前置组件未装齐：`n" + ($missing -join "`n") + "`n`n请先运行 6-安装OCR前置组件.cmd，然后重启中文版。")
+        Show-Message ("OCR 已开启，但前置组件未装齐：`n" + ($missing -join "`n") + "`n`n请先运行 5-安装OCR前置组件.cmd，然后重启中文版。")
         return
     }
     if (Test-FlaggedSession) {
@@ -134,7 +134,7 @@ function Invoke-OcrOn {
         Apply-OcrPatch -VersionPath $verDir.FullName
         $patchTime = Get-Date
         Restart-AlecaFrameRenderer
-        if (-not (Wait-ZhLoaded -Since $patchTime -TimeoutSeconds 60)) { throw "开启 OCR 后重载失败，请运行 2-还原-官方英文.cmd。" }
+        if (-not (Wait-ZhLoaded -Since $patchTime -TimeoutSeconds 60)) { throw "开启 OCR 后重载失败，请运行 7-还原-官方英文.cmd。" }
         Show-Message "中文 OCR 已开启（本次会话内生效）。"
     } else {
         Show-Message "中文 OCR 已开启，下次用 1-启动-中文补丁.cmd 启动时生效。"
@@ -191,10 +191,10 @@ function Invoke-Status {
         "",
         "用法:",
         "  1-启动-中文补丁.cmd   中文启动（会重启 Overwolf）",
-        "  2-还原-官方英文.cmd 恢复英文（会重启 Overwolf）",
-        "  3-中英切换.cmd  在中文会话内快速切换中/英",
-        "  4-重启补丁.cmd 重新注入最新词库",
-        "  5-版本信息.cmd 查看状态"
+        "  7-还原-官方英文.cmd 恢复英文（会重启 Overwolf）",
+        "  2-中英切换.cmd  在中文会话内快速切换中/英",
+        "  3-重启补丁.cmd 重新注入最新词库",
+        "  4-版本信息.cmd 查看状态"
     ) -join "`r`n"
     Show-Message $text "AlecaFrame-ZH 状态"
 }

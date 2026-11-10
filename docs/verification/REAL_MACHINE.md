@@ -52,7 +52,7 @@ Get-Content (Join-Path $pkg 'PACKAGE-INFO.json')
 ## 2. Status（只读）
 
 ```powershell
-& (Join-Path $pkg '5-版本信息.cmd')
+& (Join-Path $pkg '4-版本信息.cmd')
 ```
 
 检查：
@@ -72,7 +72,7 @@ Get-Content (Join-Path $pkg 'PACKAGE-INFO.json')
 
 - `logs\launcher.log`：出现页面注入、bundle、加载等待日志；
 - `state\last-session.json`：存在且有 `schemaVersion`/版本/时间；
-- 再次 `5-版本信息.cmd`：“当前文件已汉化=True”“本次会话已带校验绕过参数=True”。
+- 再次 `4-版本信息.cmd`：“当前文件已汉化=True”“本次会话已带校验绕过参数=True”。
 
 ## 4. 页面与功能检查
 
@@ -120,8 +120,8 @@ OCR（如已启用）：
 ## 5. Refresh / Toggle
 
 ```powershell
-& (Join-Path $pkg '4-重启补丁.cmd')
-& (Join-Path $pkg '3-中英切换.cmd')
+& (Join-Path $pkg '3-重启补丁.cmd')
+& (Join-Path $pkg '2-中英切换.cmd')
 ```
 
 检查：
@@ -132,13 +132,13 @@ OCR（如已启用）：
 ## 6. Restore
 
 ```powershell
-& (Join-Path $pkg '2-还原-官方英文.cmd')
+& (Join-Path $pkg '7-还原-官方英文.cmd')
 ```
 
 检查：
 
 - Overwolf 重启后 AlecaFrame 为英文；
-- `5-版本信息.cmd`：“当前文件已汉化=False”；
+- `4-版本信息.cmd`：“当前文件已汉化=False”；
 - `state\official\<版本>\web` 快照仍在；
 - 抽样对比官方页面文件（可记录 hash）与备份一致。
 
@@ -146,7 +146,7 @@ OCR（如已启用）：
 
 - `git rev-parse HEAD`；
 - `PACKAGE-INFO.json`（bundle sha256）；
-- `5-版本信息.cmd` 输出截图/文本（Start 前后、Restore 后）；
+- `4-版本信息.cmd` 输出截图/文本（Start 前后、Restore 后）；
 - `logs\launcher.log` 尾部；
 - `state\last-session.json`；
 - 受影响页面截图（至少主窗口 + background 搜索结果 + 一个动态规则页面）；
@@ -157,5 +157,5 @@ OCR（如已启用）：
 
 - 测试包版本号当前来自 `VERSION`；不要把它当 1.2.0 release。
 - 若要测试最新源码，重跑 `build.py` + `package.py`；`Refresh` 只重注入**当前测试包**内的 bundle。
-- 如果 Start 失败：先看日志，再运行同包 `2-还原-官方英文.cmd`；不要手工删除 `state/`。
+- 如果 Start 失败：先看日志，再运行同包 `7-还原-官方英文.cmd`；不要手工删除 `state/`。
 - 首次测试前确认没有其他程序占用 Overwolf 安装目录；路径含中文/空格时不要手动改脚本。

@@ -40,7 +40,7 @@ python tools\dict.py add "No preferences set" "未设置偏好" --file entries/c
 python tools\dict.py check --strict
 python tools\build.py
 ```
-真机：`4-重启补丁.cmd`，到受影响界面截图；T0 不需要完整 Start/Restore。
+真机：`3-重启补丁.cmd`，到受影响界面截图；T0 不需要完整 Start/Restore。
 
 ## 4. 写对格式
 

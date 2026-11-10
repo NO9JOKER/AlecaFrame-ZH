@@ -16,8 +16,9 @@ This is a development/test package, not the release tag. Run tools/build.py
 first so the bundle exists.
 
 Local build naming convention: AlecaFrame-ZH-dev-<YYYYMMDD>-<serial>, e.g.
-AlecaFrame-ZH-dev-20261111-1. Bump the serial for every build and KEEP older
-serials (1, 2, 3 ...) for comparison; never overwrite or delete them.
+AlecaFrame-ZH-dev-20261111-1. During one development round, bump the serial for
+every build and keep earlier serials (1, 2, 3 ...) for comparison/rollback; after
+pushing, older local packages may be deleted and the next round starts again at -1.
 
 """
 from __future__ import annotations

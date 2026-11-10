@@ -664,6 +664,57 @@
     return true;
   }
 
+  /**
+   * 裂罅列表页（已揭示 / 未揭示）的**应用级**兜底：
+   * 无论插件方法是否被成功包装，都在 Vue 应用层把中文查询换成「先取全量、再本地过滤」。
+   * 做法：refresh 前把 selectedSearch 临时置空（页面输入框在同一 tick 内恢复中文），
+   * 数据回来后过滤 items/itemGroups 并写回。
+   */
+  function hookRivenApp(app, dataKey) {
+    if (!app || typeof app.refresh !== "function" || typeof app.$watch !== "function") return false;
+    if (app.__afzhRivenSearch) return true;
+    const originalRefresh = app.refresh;
+    app.refresh = function () {
+      const term = typeof this.selectedSearch === "string" ? this.selectedSearch.trim() : "";
+      if (!term || !api.hasChinese(term)) {
+        this.__afzhRivenTerm = "";
+        return originalRefresh.apply(this, arguments);
+      }
+      this.__afzhRivenTerm = term;
+      this.selectedSearch = "";
+      try {
+        return originalRefresh.apply(this, arguments);
+      } finally {
+        // 同一 tick 内恢复，Vue 渲染时输入框仍是用户输入的中文
+        this.selectedSearch = term;
+      }
+    };
+    app.$watch(dataKey, function (value) {
+      const term = app.__afzhRivenTerm;
+      if (!term || app.__afzhRivenApplying) return;
+      const parsed = Array.isArray(value) ? value : [];
+      const filtered = dataKey === "itemGroups"
+        ? api.filterRivenGroups(parsed, term)
+        : api.filterRivenItems(parsed, term);
+      if (!Array.isArray(filtered) || filtered.length === parsed.length) return;
+      app.__afzhRivenApplying = true;
+      try {
+        app[dataKey] = filtered;
+      } finally {
+        app.__afzhRivenApplying = false;
+      }
+    });
+    app.__afzhRivenSearch = true;
+    markHit("rivenApp:" + dataKey);
+    return true;
+  }
+
+  function installRivenAppSearchHooks() {
+    const unveiled = safeCall(() => hookRivenApp(root.unveiledRivensApp, "items"), false);
+    const veiled = safeCall(() => hookRivenApp(root.veiledRivensApp, "itemGroups"), false);
+    return !!unveiled || !!veiled;
+  }
+
   function installAppHooks() {
     let attempts = 0;
     const tick = () => {
@@ -672,18 +723,21 @@
       const arcane = safeCall(installInventoryArcaneHook, false);
       const rivenDiag = safeCall(installRivenListingDiagnostics, false);
       const resources = safeCall(installResourcesSearchHook, false);
+      const rivenSearch = safeCall(installRivenAppSearchHooks, false);
       status.hooks.relicPlanner = !!relic;
       status.hooks.marketPanel = !!market;
       status.hooks.inventoryArcane = !!arcane;
       status.hooks.rivenListing = !!rivenDiag;
       status.hooks.resources = !!resources;
-      if (relic && market && arcane && resources) return;
+      status.hooks.rivenSearch = !!rivenSearch;
+      if (relic && market && arcane && resources && rivenSearch) return;
       attempts++;
       if (attempts >= 40) {
         if (!relic) debugOnce("relicPlannerApp", "relicPlannerApp.receiveUpdate 不可用，跳过遗物规划中文过滤");
         if (!market) debugOnce("buySellPanelApp", "buySellPanelApp.updateSearchSuggestions/suggestionClicked 不可用，跳过市场建议中文列表");
         if (!arcane) debugOnce("inventoryApp", "inventoryApp.receiveArcaneProgress 不可用，跳过赋能页中文过滤");
         if (!resources) debugOnce("resourcePlannerMissing", "ResourcePlanner.matches 不可用，跳过资源仓库中文过滤");
+        if (!rivenSearch) debugOnce("rivenAppMissing", "unveiledRivensApp/veiledRivensApp 不可用，跳过裂罅页面中文过滤");
         return;
       }
       setTimeout(tick, 250);
@@ -808,5 +862,5 @@
     start();
   }
 
-  runtime.features.searchRuntime = { start: start, status: status };
+  runtime.features.searchRuntime = { start: start, status: status, hookRivenApp: hookRivenApp, installRivenAppSearchHooks: installRivenAppSearchHooks };
 })(typeof globalThis !== "undefined" ? globalThis : this);

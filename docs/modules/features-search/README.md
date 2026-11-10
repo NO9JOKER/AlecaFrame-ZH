@@ -50,6 +50,8 @@ node tests\search-feature.test.mjs
 node tests\runtime.test.mjs
 node tests\rules.test.mjs
 node tests\search-feature.test.mjs       # 既有回归
+node tests\riven-search-coverage.test.mjs # 全词典裂罅模糊搜索覆盖
+node tests\riven-app-hook.test.mjs        # 裂罅页面应用级兜底
 ```
 
 未覆盖：真实插件/Vue 集成；由真机仓库/铸造厂/赋能/遗物规划器/裂罅界面验证。

@@ -312,6 +312,30 @@
       const push = (value) => {
         if (typeof value === "string" && value) texts.push(value);
       };
+      // 裂罅词条描述是「+336.4% Damage」「-50.6% Zoom」「x1.54 Damage to Corpus」这种
+      // 带数值/HTML 的字符串，直接整串查词典永远匹配不到中文；这里再拆出纯属性名。
+      const pushTraitLabel = (value) => {
+        if (typeof value !== "string" || !value) return;
+        const rawText = value.replace(/<[^>]*>/g, " ").trim();
+        const clean = rawText.replace(/\s+/g, " ");
+        if (!clean) return;
+        texts.push(clean);
+        if (rawText && rawText !== clean) texts.push(rawText);
+        const label = clean
+          .replace(/^[x×]?\s*[+-]?[\d.,]+\s*%?\s*/i, "")
+          .replace(/\s*\([^)]*\)\s*$/, "")
+          .replace(/\s+for\s+.*$/i, "")
+          .trim();
+        if (label && label !== clean) texts.push(label);
+        // 形如「损坏的殁世机甲引擎：+114.9% 射速」这类多段文本，逐段尝试属性名。
+        for (const part of clean.split(/[、，,;；]/)) {
+          const partLabel = part
+            .replace(/^[x×]?\s*[+-]?[\d.,]+\s*%?\s*/i, "")
+            .replace(/\s*\([^)]*\)\s*$/, "")
+            .trim();
+          if (partLabel && partLabel !== part) texts.push(partLabel);
+        }
+      };
       push(riven.name);
       // 卡片名是 riven.name.replace(' Mod','')；搜索要按带 " Mod" 的原名查词典。
       if (typeof riven.name === "string" && / Riven$/.test(riven.name)) texts.push(riven.name + " Mod");
@@ -322,8 +346,9 @@
       for (const weapon of Array.isArray(riven.statsPerWeapon) ? riven.statsPerWeapon : []) {
         for (const level of Array.isArray(weapon && weapon.byLevel) ? weapon.byLevel : []) {
           for (const trait of [...(level.positiveTraits || []), ...(level.negativeTraits || [])]) {
-            if (trait && typeof trait.description === "string") texts.push(trait.description);
-            if (trait && typeof trait.name === "string") texts.push(trait.name);
+            if (trait && typeof trait.description === "string") pushTraitLabel(trait.description);
+            if (trait && typeof trait.descriptionHtml === "string") pushTraitLabel(trait.descriptionHtml);
+            if (trait && typeof trait.name === "string") push(trait.name);
           }
         }
       }
@@ -351,19 +376,37 @@
     }
 
     /** 裂罅文本匹配：中文字幕名/英文原名都参与；中文没命中时再用反向索引找英文候选。 */
-    function matchRivenTexts(texts, terms) {
+    function matchRivenTexts(texts, term) {
       const haystack = texts
         .filter((value) => typeof value === "string" && value)
         .map((value) => searchableName(value))
         .join(" ")
         .toLowerCase();
       if (!haystack) return false;
-      for (const single of terms) {
-        if (haystack.indexOf(single) !== -1) continue;
-        const english = englishForChinese(single);
-        if (!english || hasChinese(english) || haystack.indexOf(english.toLowerCase()) === -1) return false;
-      }
-      return true;
+      const englishHit = (needle) => {
+        const candidates = [];
+        try {
+          const key = normKey(needle);
+          const bucket = index && index.reverse && index.reverse.get(key);
+          if (bucket) for (const english of bucket) candidates.push(english);
+        } catch (_) { /* ignore */ }
+        try {
+          const english = englishForChinese(needle);
+          if (english) candidates.push(english);
+        } catch (_) { /* ignore */ }
+        for (const english of candidates) {
+          if (!english || hasChinese(english)) continue;
+          if (haystack.indexOf(String(english).toLowerCase()) !== -1) return true;
+        }
+        return false;
+      };
+      const raw = String(term == null ? "" : term).trim().toLowerCase();
+      if (!raw) return true;
+      // 先按整串查（中文词条里常带空格/括号，按空格拆词会让整条短语匹配不到）
+      if (haystack.indexOf(raw) !== -1 || englishHit(raw)) return true;
+      const terms = splitTerms(term);
+      if (terms.length <= 1) return false;
+      return terms.every((single) => haystack.indexOf(single) !== -1 || englishHit(single));
     }
 
     /**
@@ -375,7 +418,7 @@
       const terms = splitTerms(term);
       if (!terms.length) return items;
       return items.filter((riven) =>
-        !!riven && typeof riven === "object" && matchRivenTexts(rivenSearchTexts(riven), terms));
+        !!riven && typeof riven === "object" && matchRivenTexts(rivenSearchTexts(riven), term));
     }
 
     /**
@@ -393,7 +436,7 @@
           .map((value) => (typeof value === "string" ? value.replace(/<[^>]*>/g, " ") : value));
         const rivens = (Array.isArray(group.rivens) ? group.rivens : []).filter((riven) =>
           !!riven && typeof riven === "object" &&
-          matchRivenTexts(groupTexts.concat(rivenSearchTexts(riven)), terms));
+          matchRivenTexts(groupTexts.concat(rivenSearchTexts(riven)), term));
         if (rivens.length) out.push(Object.assign({}, group, { rivens }));
       }
       return out;

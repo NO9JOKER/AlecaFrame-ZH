@@ -46,6 +46,8 @@ jobs:
           node tests/runtime.test.mjs
           node tests/rules.test.mjs
           node tests/search-feature.test.mjs
+          node tests/riven-search-coverage.test.mjs
+          node tests/riven-app-hook.test.mjs
 
       - name: Package
         run: |

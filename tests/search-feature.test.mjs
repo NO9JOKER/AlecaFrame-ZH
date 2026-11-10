@@ -103,7 +103,7 @@ const rivenGroups = () => [
       {
         name: "Rifle Riven",
         challengeStringWithComplication: "Equip these rivens to reveal their challenge",
-        statsPerWeapon: [{ byLevel: [{ positiveTraits: [{ description: "Critical Chance" }], negativeTraits: [] }] }],
+        statsPerWeapon: [{ byLevel: [{ positiveTraits: [{ description: "+121.9% Critical Chance" }], negativeTraits: [] }] }],
       },
     ],
   },
@@ -139,14 +139,24 @@ const rivenItems = () => [
   {
     name: "Kitgun Riven",
     weaponName: "Catchmoon",
-    statsPerWeapon: [{ byLevel: [{ positiveTraits: [{ description: "Critical Damage" }], negativeTraits: [] }] }],
+    statsPerWeapon: [{ byLevel: [{ positiveTraits: [{ description: "+105.5% Critical Damage" }], negativeTraits: [] }] }],
   },
   {
     name: "Melee Riven",
     weaponName: "Gram Prime",
-    statsPerWeapon: [{ byLevel: [{ positiveTraits: [{ description: "Range" }, { description: "Headshot Damage" }], negativeTraits: [] }] }],
+    statsPerWeapon: [{ byLevel: [{ positiveTraits: [{ description: "+114.9% Range" }, { description: "+100% Headshot Damage" }], negativeTraits: [] }] }],
   },
 ];
+
+test("flat riven item search strips percent/html from trait descriptions", () => {
+  const wrapped = [{
+    name: "Rifle Riven",
+    weapons: [],
+    statsPerWeapon: [{ byLevel: [{ positiveTraits: [{ description: "<span>+121.9% Critical Damage</span>" }], negativeTraits: [] }] }],
+  }];
+  assert.equal(api.filterRivenItems(wrapped, "暴击").length, 1);
+  assert.equal(api.filterRivenItems(wrapped, "crit").length, 1);
+});
 
 test("flat riven item search covers card name, weapon, traits and English", () => {
   assert.equal(api.filterRivenItems(rivenItems(), "暴击").length, 2);

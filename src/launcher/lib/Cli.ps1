@@ -141,21 +141,6 @@ function Invoke-OcrOn {
     }
 }
 
-function Invoke-OcrOff {
-    Set-OcrEnabled -Enabled $false
-    Stop-OcrHelper
-    if (Test-FlaggedSession) {
-        $verDir = Get-AppVersionDir
-        Restore-OfficialFiles -AppVersion $verDir.Name -VersionPath $verDir.FullName
-        Apply-Patch -VersionPath $verDir.FullName
-        $patchTime = Get-Date
-        Restart-AlecaFrameRenderer
-        if (-not (Wait-ZhLoaded -Since $patchTime -TimeoutSeconds 60)) { throw "关闭 OCR 后重载失败，请运行 还原-官方英文.cmd。" }
-        Show-Message "中文 OCR 已关闭（界面汉化保留，本次会话内生效）。"
-    } else {
-        Show-Message "中文 OCR 已关闭。"
-    }
-}
 
 function Invoke-InstallOcr {
     $installer = Join-Path $script:PkgRoot "scripts\Install-OcrPrerequisites.ps1"

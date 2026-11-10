@@ -1,4 +1,4 @@
-﻿AlecaFrame-ZH 使用说明
+AlecaFrame-ZH 使用说明
 
 一、第一次使用（全部双击，无需命令行）
 1. 双击 版本信息.cmd，确认检测到的 Overwolf/AlecaFrame 版本与注入状态；窗口会暂停，按任意键关闭。
@@ -12,7 +12,7 @@
 - 重新注入最新文件（不重启 Overwolf）：重启补丁.cmd
 - 恢复官方英文：还原-官方英文.cmd
 - 创建桌面快捷方式：创建桌面快捷方式.cmd
-- 中文 OCR（可选）：安装OCR前置组件.cmd / 启用中文遗物OCR.cmd / 关闭中文遗物OCR.cmd
+- 中文 OCR（可选）：安装OCR前置组件.cmd / 启用中文遗物OCR.cmd
 
 三、中文 OCR（可选）
 - 首次安装需联网下载便携 Python / Node / PaddleOCR 与中文模型（约 360 MiB 下载，装完约 1.0 GB）。

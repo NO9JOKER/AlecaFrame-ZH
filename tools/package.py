@@ -14,6 +14,11 @@ wrappers expect:
 
 This is a development/test package, not the release tag. Run tools/build.py
 first so the bundle exists.
+
+Local build naming convention: AlecaFrame-ZH-dev-<YYYYMMDD>-<serial>, e.g.
+AlecaFrame-ZH-dev-20261111-1; never overwrite an older package, bump the serial
+and delete older local packages after pushing.
+
 """
 from __future__ import annotations
 

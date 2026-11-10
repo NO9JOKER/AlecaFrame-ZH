@@ -23,6 +23,8 @@ const sandbox = {
     "Riven": "裂罅",
     "Veiled rivens": "未揭示裂罅",
     "Critical Chance": "暴击几率",
+    "Range": "攻击范围",
+    "Headshot Damage": "爆头伤害",
   },
   __AFCN_RELIC_REWARDS__: {},
 };
@@ -139,14 +141,21 @@ const rivenItems = () => [
     weaponName: "Catchmoon",
     statsPerWeapon: [{ byLevel: [{ positiveTraits: [{ description: "Critical Damage" }], negativeTraits: [] }] }],
   },
+  {
+    name: "Melee Riven",
+    weaponName: "Gram Prime",
+    statsPerWeapon: [{ byLevel: [{ positiveTraits: [{ description: "Range" }, { description: "Headshot Damage" }], negativeTraits: [] }] }],
+  },
 ];
 
 test("flat riven item search covers card name, weapon, traits and English", () => {
   assert.equal(api.filterRivenItems(rivenItems(), "暴击").length, 2);
   assert.equal(api.filterRivenItems(rivenItems(), "步枪").length, 1);
+  assert.equal(api.filterRivenItems(rivenItems(), "范围").length, 1);
+  assert.equal(api.filterRivenItems(rivenItems(), "爆头").length, 1);
   assert.equal(api.filterRivenItems(rivenItems(), "soma").length, 1);
   assert.equal(api.filterRivenItems(rivenItems(), "完全不存在").length, 0);
-  assert.equal(api.filterRivenItems(rivenItems(), "").length, 3);
+  assert.equal(api.filterRivenItems(rivenItems(), "").length, 4);
 });
 
 console.log(`\n${passed} passed, ${failures.length} failed`);

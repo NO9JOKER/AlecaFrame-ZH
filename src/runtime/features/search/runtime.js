@@ -280,11 +280,20 @@
           const grouped = parsed.some((entry) => entry && typeof entry === "object" && Array.isArray(entry.rivens));
           filtered = safeCall(() => (grouped ? api.filterRivenGroups(parsed, term) : api.filterRivenItems(parsed, term)), null);
         }
-        if (Array.isArray(filtered)) {
+        if (Array.isArray(filtered) && filtered.length > 0) {
           markHit(methodName + ":本地过滤");
           return callback(true, JSON.stringify(filtered));
         }
-        return callback(success, data);
+        // 本地文本没命中（例如属性字段没带出来）：用中文→英文候选让原生再搜一次。
+        const english = safeCall(() => resolveEnglishQuery(term), null);
+        if (english && !api.hasChinese(english)) {
+          markHit(methodName + ":本地0命中→英文改写");
+          const retry = args.slice();
+          retry[0] = JSON.stringify(Object.assign({}, filters, { search: english }));
+          retry[callbackIndex] = callback;
+          return original.apply(nativeThis, retry);
+        }
+        return callback(true, JSON.stringify(Array.isArray(filtered) ? filtered : []));
       };
       return original.apply(nativeThis, args);
     };
@@ -384,6 +393,26 @@
   }
 
 
+  /**
+   * 部分窗口（尤其 main）每次 plugin.get() 返回的是新的桥接对象；
+   * 只包装安装时那一个实例会让页面后续调用绕过中文过滤。这里包一层 plugin.get，
+   * 每次拿到对象就补装钩子，保证所有调用点都能命中。
+   */
+  function ensurePatchedPluginGet(native) {
+    const plugin = root.plugin;
+    if (!plugin || typeof plugin.get !== "function" || plugin.__afzhGetWrapped) return false;
+    const originalGet = plugin.get;
+    plugin.get = function () {
+      const value = originalGet.apply(this, arguments);
+      safeCall(() => {
+        if (value && typeof value === "object") installPluginHooks(value);
+      }, false);
+      return value;
+    };
+    plugin.__afzhGetWrapped = true;
+    return true;
+  }
+
   function whenPluginReady() {
     // background 窗口 的插件对象是本地的（background 脚本）；main 窗口 是跨窗口引用。
     // 插件初始化是异步的（sharedOverwolfStuff.js:23-61），所以轮询最多 60 秒。
@@ -396,6 +425,7 @@
       const native = safeCall(getNativePlugin, null);
       if (native) {
         installPluginHooks(native);
+        ensurePatchedPluginGet(native);
         return;
       }
       attempts++;

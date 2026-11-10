@@ -274,7 +274,12 @@
       args[callbackIndex] = function (success, data) {
         if (!success) return callback(success, data);
         const parsed = safeCall(() => JSON.parse(data), null);
-        const filtered = safeCall(() => api.filterRivenGroups(parsed, term), null);
+        let filtered = null;
+        if (Array.isArray(parsed)) {
+          // 已揭示裂罅是平铺数组；未揭示裂罅是分组数组（每组含 rivens）。
+          const grouped = parsed.some((entry) => entry && typeof entry === "object" && Array.isArray(entry.rivens));
+          filtered = safeCall(() => (grouped ? api.filterRivenGroups(parsed, term) : api.filterRivenItems(parsed, term)), null);
+        }
         if (Array.isArray(filtered)) {
           markHit(methodName + ":本地过滤");
           return callback(true, JSON.stringify(filtered));

@@ -304,46 +304,96 @@
     }
 
     /**
-     * 裂罅列表（已揭示 / 未揭示）本地过滤：payload 是
-     * `[{ challengeDescription, challengeDescriptionHtml, rivens: [...] }]`。
-     * 中文查询需要匹配 裂罅名（含去 " Mod" 的卡片名重新补回）、武器名、挑战文案、
-     * 分组标题以及词条属性描述；英文查询同样支持子串。空分组会被移除。
+     * 裂罅搜索文本：卡片名（补回 " Mod" 查词典）、武器名、挑战文案、属性词条，
+     * 以及对象内的其它短字符串（跳过 id/图片/链接类字段，覆盖后续新增字段）。
+     */
+    function rivenSearchTexts(riven) {
+      const texts = [];
+      const push = (value) => {
+        if (typeof value === "string" && value) texts.push(value);
+      };
+      push(riven.name);
+      // 卡片名是 riven.name.replace(' Mod','')；搜索要按带 " Mod" 的原名查词典。
+      if (typeof riven.name === "string" && / Riven$/.test(riven.name)) texts.push(riven.name + " Mod");
+      push(riven.weaponName);
+      push(riven.modName);
+      push(riven.challengeStringWithComplication);
+      push(riven.challengeDescription);
+      for (const weapon of Array.isArray(riven.statsPerWeapon) ? riven.statsPerWeapon : []) {
+        for (const level of Array.isArray(weapon && weapon.byLevel) ? weapon.byLevel : []) {
+          for (const trait of [...(level.positiveTraits || []), ...(level.negativeTraits || [])]) {
+            if (trait && typeof trait.description === "string") texts.push(trait.description);
+            if (trait && typeof trait.name === "string") texts.push(trait.name);
+          }
+        }
+      }
+      // 兜底扫描：把对象里其余可读短字符串也纳入，避免新增字段漏搜。
+      const skipKey = /(^id$|id$|image|icon|link|url|uid|randomid|uniquename)/i;
+      const walk = (value, depth) => {
+        if (depth > 3 || value == null) return;
+        if (typeof value === "string") {
+          if (value.length <= 120) texts.push(value);
+          return;
+        }
+        if (Array.isArray(value)) {
+          for (const item of value.slice(0, 50)) walk(item, depth + 1);
+          return;
+        }
+        if (typeof value === "object") {
+          for (const key of Object.keys(value)) {
+            if (skipKey.test(key)) continue;
+            walk(value[key], depth + 1);
+          }
+        }
+      };
+      walk(riven, 0);
+      return texts;
+    }
+
+    /** 裂罅文本匹配：中文字幕名/英文原名都参与；中文没命中时再用反向索引找英文候选。 */
+    function matchRivenTexts(texts, terms) {
+      const haystack = texts
+        .filter((value) => typeof value === "string" && value)
+        .map((value) => searchableName(value))
+        .join(" ")
+        .toLowerCase();
+      if (!haystack) return false;
+      for (const single of terms) {
+        if (haystack.indexOf(single) !== -1) continue;
+        const english = englishForChinese(single);
+        if (!english || hasChinese(english) || haystack.indexOf(english.toLowerCase()) === -1) return false;
+      }
+      return true;
+    }
+
+    /**
+     * 已揭示裂罅：payload 是**平铺的裂罅数组**（unveiled.js: `items = RivenUI.list(...)`）。
+     * 中文查询清空 search 取全量后在这里本地过滤。
+     */
+    function filterRivenItems(items, term) {
+      if (!Array.isArray(items)) return null;
+      const terms = splitTerms(term);
+      if (!terms.length) return items;
+      return items.filter((riven) =>
+        !!riven && typeof riven === "object" && matchRivenTexts(rivenSearchTexts(riven), terms));
+    }
+
+    /**
+     * 未揭示裂罅：payload 是**分组数组**（每组含 rivens），
+     * 分组标题（challengeDescription/HTML）也参与匹配；空分组会被移除。
      */
     function filterRivenGroups(groups, term) {
       if (!Array.isArray(groups)) return null;
       const terms = splitTerms(term);
       if (!terms.length) return groups;
-      const match = (texts) => {
-        const haystack = texts.filter((v) => typeof v === "string" && v).map((v) => searchableName(v)).join(" ").toLowerCase();
-        if (!haystack) return false;
-        for (const single of terms) {
-          if (haystack.indexOf(single) !== -1) continue;
-          const english = englishForChinese(single);
-          if (!english || hasChinese(english) || haystack.indexOf(english.toLowerCase()) === -1) return false;
-        }
-        return true;
-      };
-      const rivenTexts = (riven) => {
-        const texts = [riven.name, riven.weaponName, riven.challengeStringWithComplication, riven.challengeDescription];
-        // 卡片名是 riven.name.replace(' Mod','')；搜索要按带 " Mod" 的原名查词典。
-        if (typeof riven.name === "string" && / Riven$/.test(riven.name)) texts.push(riven.name + " Mod");
-        for (const weapon of Array.isArray(riven.statsPerWeapon) ? riven.statsPerWeapon : []) {
-          for (const level of Array.isArray(weapon && weapon.byLevel) ? weapon.byLevel : []) {
-            for (const trait of [...(level.positiveTraits || []), ...(level.negativeTraits || [])]) {
-              if (trait && typeof trait.description === "string") texts.push(trait.description);
-              if (trait && typeof trait.name === "string") texts.push(trait.name);
-            }
-          }
-        }
-        return texts;
-      };
       const out = [];
       for (const group of groups) {
         if (!group || typeof group !== "object") continue;
         const groupTexts = [group.challengeDescription, group.challengeDescriptionHtml, group.weaponName, group.name]
-          .map((v) => (typeof v === "string" ? v.replace(/<[^>]*>/g, " ") : v));
+          .map((value) => (typeof value === "string" ? value.replace(/<[^>]*>/g, " ") : value));
         const rivens = (Array.isArray(group.rivens) ? group.rivens : []).filter((riven) =>
-          riven && typeof riven === "object" && match(groupTexts.concat(rivenTexts(riven))));
+          !!riven && typeof riven === "object" &&
+          matchRivenTexts(groupTexts.concat(rivenSearchTexts(riven)), terms));
         if (rivens.length) out.push(Object.assign({}, group, { rivens }));
       }
       return out;
@@ -404,6 +454,7 @@
       englishQueryForChinese,
       filterItems,
       matchesText,
+      filterRivenItems,
       filterRivenGroups,
       suggestions,
       marketSuggestions,

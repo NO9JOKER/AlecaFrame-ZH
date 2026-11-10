@@ -127,5 +127,27 @@ test("riven group search drops empty groups and unknown terms", () => {
   assert.equal(api.filterRivenGroups(rivenGroups(), "").length, 2);
 });
 
+const rivenItems = () => [
+  {
+    name: "Rifle Riven",
+    weaponName: "Soma Prime",
+    statsPerWeapon: [{ byLevel: [{ positiveTraits: [{ description: "Critical Chance" }], negativeTraits: [] }] }],
+  },
+  { name: "Zaw Riven", weaponName: "Cyath", statsPerWeapon: [] },
+  {
+    name: "Kitgun Riven",
+    weaponName: "Catchmoon",
+    statsPerWeapon: [{ byLevel: [{ positiveTraits: [{ description: "Critical Damage" }], negativeTraits: [] }] }],
+  },
+];
+
+test("flat riven item search covers card name, weapon, traits and English", () => {
+  assert.equal(api.filterRivenItems(rivenItems(), "暴击").length, 2);
+  assert.equal(api.filterRivenItems(rivenItems(), "步枪").length, 1);
+  assert.equal(api.filterRivenItems(rivenItems(), "soma").length, 1);
+  assert.equal(api.filterRivenItems(rivenItems(), "完全不存在").length, 0);
+  assert.equal(api.filterRivenItems(rivenItems(), "").length, 3);
+});
+
 console.log(`\n${passed} passed, ${failures.length} failed`);
 if (failures.length) process.exitCode = 1;

@@ -5,7 +5,7 @@
 中文搜索能力：纯索引/查询 API + 宿主 hook 层。
 
 - `api.js`：`buildIndex`、正向/反向查询、部件组合、Prime 后缀、子串兜底、搜索建议；无 DOM、无定时器。
-- `runtime.js`：插件/应用 hook、市场建议、遗物规划器过滤、裂罅列表/武器搜索、源力石页面整段补译、资源仓库前端过滤、诊断、启动；合并后保留 `__AFZH_SEARCH__` / `__AFZH_SEARCH_API__` 诊断接口。
+- `runtime.js`：插件/应用 hook、市场建议、遗物规划器过滤、裂罅列表（已揭示平铺 / 未揭示分组）/武器搜索、源力石页面整段补译、资源仓库前端过滤、诊断、启动；合并后保留 `__AFZH_SEARCH__` / `__AFZH_SEARCH_API__` 诊断接口。
 
 不负责：DOM 翻译（`dom`）、动态规则（`rules`）、页面清单（`pages.json`）、源力石单元格文本重建（`features.archon.text`）。
 

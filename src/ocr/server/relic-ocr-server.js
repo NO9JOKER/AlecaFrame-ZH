@@ -347,11 +347,66 @@ let paddleBuffer = "";
 let paddleStartPromise = null;
 const paddleRequests = [];
 const paddleStartupTimeoutMs = 120000;
+// PaddleOCR keeps its models and inference buffers resident for the whole
+// worker process.  The worker is started together with the service, but it is
+// only used while a reward/riven screen is visible; otherwise it pins its
+// entire footprint (observed at multi-GB after a long session) until the
+// service itself restarts.  Recycle it after this much idle time; the next OCR
+// request respawns it through startPaddleWorker().  Set
+// AFZH_PADDLE_IDLE_TIMEOUT_MS=0 to disable recycling (old keep-alive behaviour).
+const paddleIdleTimeoutMs = Number(process.env.AFZH_PADDLE_IDLE_TIMEOUT_MS || 600000);
+const paddleIdleKillGraceMs = 3000;
+let paddleIdleTimer = null;
 
 function rejectPaddleRequests(reason) {
   while (paddleRequests.length) {
     paddleRequests.shift().resolve({ success: false, reason });
   }
+}
+
+function clearPaddleIdleTimer() {
+  if (!paddleIdleTimer) return;
+  clearTimeout(paddleIdleTimer);
+  paddleIdleTimer = null;
+}
+
+// Detach the current worker and let it exit on stdin EOF, so Paddle releases
+// the model buffers instead of keeping them resident.  A grace timer force-kills
+// a worker that ignores the EOF.
+function stopIdlePaddleWorker() {
+  const child = paddleChild;
+  if (!child) return;
+  // Detach first: a request arriving during the graceful shutdown must spawn a
+  // fresh worker instead of writing into a stdin that is being closed.
+  paddleChild = null;
+  paddleReady = false;
+  paddleStartPromise = null;
+  clearPaddleIdleTimer();
+  audit("PADDLE_IDLE_EXIT", `idleMs=${paddleIdleTimeoutMs}`);
+  try {
+    child.stdin.end();
+  } catch {
+    // stdin is already gone; the grace timer below still reaps the process.
+  }
+  const killTimer = setTimeout(() => {
+    try {
+      child.kill();
+    } catch {
+      // The worker already exited.
+    }
+  }, paddleIdleKillGraceMs);
+  if (typeof killTimer.unref === "function") killTimer.unref();
+}
+
+function schedulePaddleIdleExit() {
+  clearPaddleIdleTimer();
+  if (!(paddleIdleTimeoutMs > 0)) return;
+  paddleIdleTimer = setTimeout(() => {
+    paddleIdleTimer = null;
+    if (paddleRequests.length > 0 || !paddleChild) return;
+    stopIdlePaddleWorker();
+  }, paddleIdleTimeoutMs);
+  if (typeof paddleIdleTimer.unref === "function") paddleIdleTimer.unref();
 }
 
 function startPaddleWorker() {
@@ -369,17 +424,26 @@ function startPaddleWorker() {
       }
     });
     paddleChild = child;
+    // Line framing is per worker process; a recycled worker must not leave a
+    // partial line in the shared buffer for its replacement.
+    paddleBuffer = "";
     let settled = false;
     const finish = (ready) => {
       if (settled) return;
       settled = true;
       paddleStartPromise = null;
       paddleReady = ready;
-      audit(ready ? "PADDLE_READY" : "PADDLE_UNAVAILABLE");
+      audit(ready ? "PADDLE_READY" : "PADDLE_UNAVAILABLE", ready ? `pid=${child.pid}` : "");
+      // Also reap a worker that was started but never used: the service starts
+      // it eagerly, so an idle game-less session must not keep it forever.
+      if (ready) schedulePaddleIdleExit();
       resolve(ready);
     };
     child.stdout.setEncoding("utf8");
     child.stdout.on("data", (chunk) => {
+      // Ignore output from a worker that was detached by an idle recycle; its
+      // replacement may already own the pending request queue.
+      if (paddleChild !== child) return;
       paddleBuffer += chunk;
       let newline;
       while ((newline = paddleBuffer.indexOf("\n")) >= 0) {
@@ -406,11 +470,18 @@ function startPaddleWorker() {
       rejectPaddleRequests(error.message);
     });
     child.on("exit", (code) => {
-      paddleChild = null;
-      paddleReady = false;
-      paddleStartPromise = null;
+      // An idle recycle detaches the worker before it exits, and a replacement
+      // may already be starting.  Only the child that is still current may reset
+      // shared state or fail requests that belong to its successor.
+      const wasCurrentWorker = paddleChild === child;
+      if (wasCurrentWorker) {
+        paddleChild = null;
+        paddleReady = false;
+        paddleStartPromise = null;
+        clearPaddleIdleTimer();
+      }
       audit("PADDLE_EXIT", String(code));
-      rejectPaddleRequests("Paddle worker exited.");
+      if (wasCurrentWorker) rejectPaddleRequests("Paddle worker exited.");
     });
     // Paddle can load its Chinese recognition models noticeably slower after
     // a cold AlecaFrame restart. Do not permanently mark a still-running
@@ -429,7 +500,10 @@ async function runPaddleWorker(imagePath, crop = null, extra = {}) {
   if (!(await startPaddleWorker()) || !paddleChild || !paddleReady) {
     return { success: false, reason: "Paddle worker is unavailable." };
   }
-  return new Promise((resolve) => {
+  // A request keeps the worker alive and restarts the idle countdown when it
+  // finishes, so recycling only happens after the last screenshot is handled.
+  clearPaddleIdleTimer();
+  const result = await new Promise((resolve) => {
     const request = { resolve };
     paddleRequests.push(request);
     try {
@@ -439,6 +513,8 @@ async function runPaddleWorker(imagePath, crop = null, extra = {}) {
       resolve({ success: false, reason: error.message });
     }
   });
+  schedulePaddleIdleExit();
+  return result;
 }
 
 function appendPaddleLaneCandidates(lane, candidates, options = {}) {

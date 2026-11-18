@@ -4,6 +4,7 @@
 |---|---|---|
 | [0001](0001-capability-first-architecture.md) | 能力优先的运行时架构与页面矩阵 | Proposed |
 | [0002](0002-contribution-and-review-model.md) | 贡献与复核模型（fork PR + 维护者手动合并 + 开发者真机责任） | Proposed |
+| [0003](0003-ocr-worker-idle-recycle.md) | OCR Paddle worker 空闲回收（释放常驻内存） | Proposed |
 
 ## 约定
 

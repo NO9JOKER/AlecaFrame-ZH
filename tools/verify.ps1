@@ -77,6 +77,7 @@ if ($node) {
     Invoke-Check "search feature 测试" $node @("tests\search-feature.test.mjs")
 Invoke-Check "riven 搜索覆盖测试" $node @("tests\riven-search-coverage.test.mjs")
 Invoke-Check "riven 应用级兜底测试" $node @("tests\riven-app-hook.test.mjs")
+    Invoke-Check "OCR 空闲回收测试" $node @("tests\ocr-idle-recycle.test.mjs")
 
     if (-not $NoBuild) {
         Write-Head "合成注入测试"

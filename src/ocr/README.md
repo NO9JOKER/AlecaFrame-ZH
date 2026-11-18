@@ -26,6 +26,12 @@ src/ocr/
 - 识别逻辑变更另立项目/ADR，不在本目录做；
 - 真机 OCR 需要 Node/Python/PaddleOCR 前置；没有前置时记录“未验证”，不要伪造成功。
 
+## 运行期 worker 生命周期
+
+- server 启动即拉起 Paddle worker；一次 OCR 请求完成（或 worker 刚 ready）后开始空闲计时，默认 **600000 ms（10 分钟）** 无请求就回收，下一次请求自动重生（冷启动约 4-5 s）。
+- `AFZH_PADDLE_IDLE_TIMEOUT_MS` 可覆盖空闲阈值；设为 `0` 关闭回收（恢复旧的常驻行为）。
+- 审计事件：`PADDLE_READY pid=...`、`PADDLE_IDLE_EXIT idleMs=...`、`PADDLE_EXIT <code>`；决策见 [ADR 0003](../../docs/decisions/0003-ocr-worker-idle-recycle.md)，回归见 `tests/ocr-idle-recycle.test.mjs`。
+
 ## 验证
 
 ```powershell

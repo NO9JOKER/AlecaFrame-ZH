@@ -116,6 +116,9 @@ OCR（如已启用）：
 - 遗物奖励叠加层中文显示；
 - 裂罅 OCR 叠加层不崩；
 - 若 OCR 未装齐，记录缺失项，不把它当运行时失败。
+- 空闲回收（ADR 0003，1.2.3 之后）：进游戏后第一次遗物奖励/裂罅识别应在 ~5 s 内出结果（worker 冷启动）；
+  挂机 10 分钟以上后，`state\RelicChineseOcr\bridge-audit.log` 应出现 `PADDLE_IDLE_EXIT` 与 `PADDLE_EXIT`，
+  任务管理器里 python 的提交内存回落；再次识别仍正常。
 
 ## 5. Refresh / Toggle
 

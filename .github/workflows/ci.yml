@@ -40,3 +40,4 @@ jobs:
           node tests/search-feature.test.mjs
           node tests/riven-search-coverage.test.mjs
           node tests/riven-app-hook.test.mjs
+          node tests/ocr-idle-recycle.test.mjs
